@@ -1,0 +1,2 @@
+# checkermate
+checker bot
