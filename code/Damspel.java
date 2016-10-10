@@ -80,8 +80,10 @@ public class Damspel {
         			beëindigBeurt(bord);
         	}
         	else if(input.equals("draai") || input.equals("draaien") || input.equals("draai bord")){
+        		System.out.println("Na uw opdracht ziet het bord er zo uit:");
         		bord.draaiBord();
-        		beëindigBeurt(bord);
+        		bord.printBord();
+        		System.out.println("Welke opdracht wilt u uitvoeren?");
         	}
         	else if(input.equals("score")){
         		bord.printScore();

@@ -5,6 +5,7 @@ public class Dambord {
 	//################################# FIELDS #####################################
 	
 	//0 = geen steen, 1 = zwart, 2 = wit
+	
 	private int[][] stenen = 
 		   {{0,1,0,1,0,1,0,1,0,1},
 			{1,0,1,0,1,0,1,0,1,0},
@@ -31,20 +32,40 @@ public class Dambord {
 	private int aantalZwarteStenen = 20;
 	private int aantalWitteStenen = 20;
 	
+	private String foutmelding = "";
+	
 	//################################# METHODS #####################################
 	
-	public void setGeselecteerd(int x, int y){
+	public String getFoutmelding(){
+		return foutmelding;
+	}
+	
+	public boolean setGeselecteerd(int x, int y){
 		if(stenen[x][y] != LEEG){
 			geselecteerd[0] = x;
 			geselecteerd[1] = y;
+			return true;
 		}
 		else{
-			System.out.println("Op het geselecteerde vakje ligt geen steen.");
+			foutmelding = "Op het geselecteerde vakje ligt geen steen.";
+			return false;
 		}
 	}
 	
 	public int getGeselecteerd(){
 		return stenen[geselecteerd[0]][geselecteerd[1]];
+	}
+	
+	public int getGeselecteerdeX(){
+		return geselecteerd[0];
+	}
+	
+	public int getGeselecteerdeY(){
+		return geselecteerd[1];
+	}
+	
+	public int getSoortSteen(int x, int y){
+		return stenen[x][y];
 	}
 	
 	public void printScore(){
@@ -67,13 +88,13 @@ public class Dambord {
 						stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 						stenen[geselecteerd[0]-1][geselecteerd[1]-1] = temp;
 						//als de steen naar de rand van de tegenstander is geschoven, wordt het een dam.
-						if(geselecteerd[0]-1 == 0){
+						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
 						return true;
 				}
 				else{
-					System.out.println("Deze steen kan hier niet heen schuiven.");
+					foutmelding = "Deze steen kan hier niet heen schuiven.";
 					return false;
 				}
 			}
@@ -86,13 +107,13 @@ public class Dambord {
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]-1][geselecteerd[1]+1] = temp;
 					//als de steen naar de rand van de tegenstander is geschoven, wordt het een dam.
-					if(geselecteerd[0]-1 == 0){
-						stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
+					if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
+						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
 					}
 					return true;
 				}
 				else{
-					System.out.println("Deze steen kan hier niet heen schuiven.");
+					foutmelding = "Deze steen kan hier niet heen schuiven.";
 					return false;
 				}
 			}
@@ -106,7 +127,7 @@ public class Dambord {
 					return true;
 				}
 				else{
-					System.out.println("Deze steen kan hier niet heen schuiven.");
+					foutmelding = "Deze steen kan hier niet heen schuiven.";
 					return false;
 				}
 			}
@@ -120,17 +141,17 @@ public class Dambord {
 					return true;
 				}
 				else{
-					System.out.println("Deze steen kan hier niet heen schuiven.");
+					foutmelding = "Deze steen kan hier niet heen schuiven.";
 					return false;
 				}
 			}
 			else{
-				System.out.println("Deze steen kan hier niet heen schuiven.");
+				foutmelding = "Deze steen kan hier niet heen schuiven.";
 				return false;
 			}
 		}
 		else{
-			System.out.println("U kan niet schuiven omdat er geslagen kan worden.");
+			foutmelding = "U kan niet schuiven omdat er geslagen kan worden.";
 			return false;
 		}
 	}
@@ -250,7 +271,7 @@ public class Dambord {
 			}
 		}
 		else{
-			System.out.println("Er kan niet geslagen worden.");
+			foutmelding = "Er kan niet geslagen worden.";
 			return false;
 		}
 		return false;
