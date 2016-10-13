@@ -19,7 +19,6 @@ import java.awt.event.FocusEvent;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Dambord bord = new Dambord();
@@ -27,6 +26,7 @@ public class GUI extends JFrame {
 	private JTextField txtSchuiven;
 	private JTextField txtSlaan;
 	private JLabel[][] stenen = new JLabel[10][10];
+	private JTextArea statusText;
 
 	//Launch the application.
 	public static void main(String[] args) {
@@ -54,7 +54,6 @@ public class GUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		// ######## TEXT AREA ########
-		
 		final JTextArea infoText = new JTextArea();
 		infoText.setFont(new Font("Arial", Font.PLAIN, 15));
 		infoText.setEditable(false);
@@ -65,211 +64,209 @@ public class GUI extends JFrame {
 		contentPane.add(infoText);
 		
 		//  ######### LABELS #########
-		
-		
 		final JLabel zwart1 = new JLabel("");	
-		maakFocusListener(zwart1);
-		maakMouseListener(zwart1, 0, 1);
-		maakLayout(zwart1, "/black circle.png", 83, 6, 0, 1);
+		maakSteenFocusListener(zwart1);
+		maakSteenMouseListener(zwart1, 0, 1);
+		maakSteenLayout(zwart1, "/black circle.png", 83, 6, 0, 1);
 
 		final JLabel zwart2 = new JLabel("");
-		maakFocusListener(zwart2);
-		maakMouseListener(zwart2, 0, 3);
-		maakLayout(zwart2, "/black circle.png", 232, 6, 0, 3);
+		maakSteenFocusListener(zwart2);
+		maakSteenMouseListener(zwart2, 0, 3);
+		maakSteenLayout(zwart2, "/black circle.png", 232, 6, 0, 3);
 		
 		final JLabel zwart3 = new JLabel("");
-		maakFocusListener(zwart3);
-		maakMouseListener(zwart3, 0, 5);
-		maakLayout(zwart3, "/black circle.png", 380, 6, 0, 5);
+		maakSteenFocusListener(zwart3);
+		maakSteenMouseListener(zwart3, 0, 5);
+		maakSteenLayout(zwart3, "/black circle.png", 380, 6, 0, 5);
 
 		final JLabel zwart4 = new JLabel("");
-		maakFocusListener(zwart4);
-		maakMouseListener(zwart4, 0, 7);
-		maakLayout(zwart4, "/black circle.png", 534, 6, 0, 7);
+		maakSteenFocusListener(zwart4);
+		maakSteenMouseListener(zwart4, 0, 7);
+		maakSteenLayout(zwart4, "/black circle.png", 534, 6, 0, 7);
 
 		final JLabel zwart5 = new JLabel("");
-		maakFocusListener(zwart5);
-		maakMouseListener(zwart5, 0, 9);
-		maakLayout(zwart5, "/black circle.png", 688, 6, 0, 9);
+		maakSteenFocusListener(zwart5);
+		maakSteenMouseListener(zwart5, 0, 9);
+		maakSteenLayout(zwart5, "/black circle.png", 688, 6, 0, 9);
 
 		final JLabel zwart6 = new JLabel("");
-		maakFocusListener(zwart6);
-		maakMouseListener(zwart6, 1, 0);
-		maakLayout(zwart6, "/black circle.png", 5, 81, 1, 0);
+		maakSteenFocusListener(zwart6);
+		maakSteenMouseListener(zwart6, 1, 0);
+		maakSteenLayout(zwart6, "/black circle.png", 5, 81, 1, 0);
 
 		final JLabel zwart7 = new JLabel("");
-		maakFocusListener(zwart7);
-		maakMouseListener(zwart7, 1, 2);
-		maakLayout(zwart7, "/black circle.png", 157, 81, 1, 2);
+		maakSteenFocusListener(zwart7);
+		maakSteenMouseListener(zwart7, 1, 2);
+		maakSteenLayout(zwart7, "/black circle.png", 157, 81, 1, 2);
 
 		final JLabel zwart8 = new JLabel("");
-		maakFocusListener(zwart8);
-		maakMouseListener(zwart8, 1, 4);
-		maakLayout(zwart8, "/black circle.png", 307, 81, 1, 4);
+		maakSteenFocusListener(zwart8);
+		maakSteenMouseListener(zwart8, 1, 4);
+		maakSteenLayout(zwart8, "/black circle.png", 307, 81, 1, 4);
 
 		final JLabel zwart9 = new JLabel("");
-		maakFocusListener(zwart9);
-		maakMouseListener(zwart9, 1, 6);
-		maakLayout(zwart9, "/black circle.png", 457, 81, 1, 6);
+		maakSteenFocusListener(zwart9);
+		maakSteenMouseListener(zwart9, 1, 6);
+		maakSteenLayout(zwart9, "/black circle.png", 457, 81, 1, 6);
 
 		final JLabel zwart10 = new JLabel("");
-		maakFocusListener(zwart10);
-		maakMouseListener(zwart10, 1, 8);
-		maakLayout(zwart10, "/black circle.png", 607, 81, 1, 8);
+		maakSteenFocusListener(zwart10);
+		maakSteenMouseListener(zwart10, 1, 8);
+		maakSteenLayout(zwart10, "/black circle.png", 607, 81, 1, 8);
 
 		final JLabel zwart11 = new JLabel("");
-		maakFocusListener(zwart11);
-		maakMouseListener(zwart11, 2, 1);
-		maakLayout(zwart11, "/black circle.png", 83, 155, 2, 1);
+		maakSteenFocusListener(zwart11);
+		maakSteenMouseListener(zwart11, 2, 1);
+		maakSteenLayout(zwart11, "/black circle.png", 83, 155, 2, 1);
 
 		final JLabel zwart12 = new JLabel("");
-		maakFocusListener(zwart12);
-		maakMouseListener(zwart12, 2, 3);
-		maakLayout(zwart12, "/black circle.png", 232, 155, 2, 3);
+		maakSteenFocusListener(zwart12);
+		maakSteenMouseListener(zwart12, 2, 3);
+		maakSteenLayout(zwart12, "/black circle.png", 232, 155, 2, 3);
 
 		final JLabel zwart13 = new JLabel("");
-		maakFocusListener(zwart13);
-		maakMouseListener(zwart13, 2, 5);
-		maakLayout(zwart13, "/black circle.png", 380, 155, 2, 5);
+		maakSteenFocusListener(zwart13);
+		maakSteenMouseListener(zwart13, 2, 5);
+		maakSteenLayout(zwart13, "/black circle.png", 380, 155, 2, 5);
 
 		final JLabel zwart14 = new JLabel("");
-		maakFocusListener(zwart14);
-		maakMouseListener(zwart14, 2, 7);
-		maakLayout(zwart14, "/black circle.png", 534, 155, 2, 7);
+		maakSteenFocusListener(zwart14);
+		maakSteenMouseListener(zwart14, 2, 7);
+		maakSteenLayout(zwart14, "/black circle.png", 534, 155, 2, 7);
 
 		final JLabel zwart15 = new JLabel("");
-		maakFocusListener(zwart15);
-		maakMouseListener(zwart15, 2, 9);
-		maakLayout(zwart15, "/black circle.png", 688, 155, 2, 9);
+		maakSteenFocusListener(zwart15);
+		maakSteenMouseListener(zwart15, 2, 9);
+		maakSteenLayout(zwart15, "/black circle.png", 688, 155, 2, 9);
 
 		final JLabel zwart16 = new JLabel("");
-		maakFocusListener(zwart16);
-		maakMouseListener(zwart16, 3, 0);
-		maakLayout(zwart16, "/black circle.png", 5, 230, 3, 0);
+		maakSteenFocusListener(zwart16);
+		maakSteenMouseListener(zwart16, 3, 0);
+		maakSteenLayout(zwart16, "/black circle.png", 5, 230, 3, 0);
 
 		final JLabel zwart17 = new JLabel("");
-		maakFocusListener(zwart17);
-		maakMouseListener(zwart17, 3, 2);
-		maakLayout(zwart17, "/black circle.png", 157, 230, 3, 2);
+		maakSteenFocusListener(zwart17);
+		maakSteenMouseListener(zwart17, 3, 2);
+		maakSteenLayout(zwart17, "/black circle.png", 157, 230, 3, 2);
 
 		final JLabel zwart18 = new JLabel("");
-		maakFocusListener(zwart18);
-		maakMouseListener(zwart18, 3, 4);
-		maakLayout(zwart18, "/black circle.png", 307, 230, 3, 4);
+		maakSteenFocusListener(zwart18);
+		maakSteenMouseListener(zwart18, 3, 4);
+		maakSteenLayout(zwart18, "/black circle.png", 307, 230, 3, 4);
 
 		final JLabel zwart19 = new JLabel("");
-		maakFocusListener(zwart19);
-		maakMouseListener(zwart19, 3, 6);
-		maakLayout(zwart19, "/black circle.png", 457, 230, 3, 6);
+		maakSteenFocusListener(zwart19);
+		maakSteenMouseListener(zwart19, 3, 6);
+		maakSteenLayout(zwart19, "/black circle.png", 457, 230, 3, 6);
 
 		final JLabel zwart20 = new JLabel("");
-		maakFocusListener(zwart20);
-		maakMouseListener(zwart20, 3, 8);
-		maakLayout(zwart20, "/black circle.png", 607, 230, 3, 8);
+		maakSteenFocusListener(zwart20);
+		maakSteenMouseListener(zwart20, 3, 8);
+		maakSteenLayout(zwart20, "/black circle.png", 607, 230, 3, 8);
 
 		final JLabel wit1 = new JLabel("");
-		maakFocusListener(wit1);
-		maakMouseListener(wit1, 6, 1);
-		maakLayout(wit1, "white circle.png", 83, 456, 6, 1);
+		maakSteenFocusListener(wit1);
+		maakSteenMouseListener(wit1, 6, 1);
+		maakSteenLayout(wit1, "white circle.png", 83, 456, 6, 1);
 
 		final JLabel wit2 = new JLabel("");
-		maakFocusListener(wit2);
-		maakMouseListener(wit2, 6, 3);
-		maakLayout(wit2, "/white circle.png", 232, 456, 6, 3);
+		maakSteenFocusListener(wit2);
+		maakSteenMouseListener(wit2, 6, 3);
+		maakSteenLayout(wit2, "/white circle.png", 232, 456, 6, 3);
 		
 		final JLabel wit3 = new JLabel("");
-		maakFocusListener(wit3);
-		maakMouseListener(wit3, 6, 5);
-		maakLayout(wit3, "/white circle.png", 380, 456, 6, 5);
+		maakSteenFocusListener(wit3);
+		maakSteenMouseListener(wit3, 6, 5);
+		maakSteenLayout(wit3, "/white circle.png", 380, 456, 6, 5);
 		
 		final JLabel wit4 = new JLabel("");
-		maakFocusListener(wit4);
-		maakMouseListener(wit4, 6, 7);
-		maakLayout(wit4, "/white circle.png", 534, 456, 6, 7);
+		maakSteenFocusListener(wit4);
+		maakSteenMouseListener(wit4, 6, 7);
+		maakSteenLayout(wit4, "/white circle.png", 534, 456, 6, 7);
 		
 		final JLabel wit5 = new JLabel("");
-		maakFocusListener(wit5);
-		maakMouseListener(wit5, 6, 9);
-		maakLayout(wit5, "/white circle.png", 688, 456, 6, 9);
+		maakSteenFocusListener(wit5);
+		maakSteenMouseListener(wit5, 6, 9);
+		maakSteenLayout(wit5, "/white circle.png", 688, 456, 6, 9);
 		
 		final JLabel wit6 = new JLabel("");
-		maakFocusListener(wit6);
-		maakMouseListener(wit6, 7, 0);
-		maakLayout(wit6, "/white circle.png", 10, 534, 7, 0);
+		maakSteenFocusListener(wit6);
+		maakSteenMouseListener(wit6, 7, 0);
+		maakSteenLayout(wit6, "/white circle.png", 10, 534, 7, 0);
 
 		final JLabel wit7 = new JLabel("");
-		maakFocusListener(wit7);
-		maakMouseListener(wit7, 7, 2);
-		maakLayout(wit7, "/white circle.png", 157, 534, 7, 2);
+		maakSteenFocusListener(wit7);
+		maakSteenMouseListener(wit7, 7, 2);
+		maakSteenLayout(wit7, "/white circle.png", 157, 534, 7, 2);
 			
 		final JLabel wit8 = new JLabel("");
-		maakFocusListener(wit8);
-		maakMouseListener(wit8, 7, 4);
-		maakLayout(wit8, "/white circle.png", 307, 534, 7, 4);
+		maakSteenFocusListener(wit8);
+		maakSteenMouseListener(wit8, 7, 4);
+		maakSteenLayout(wit8, "/white circle.png", 307, 534, 7, 4);
 		
 		final JLabel wit9 = new JLabel("");
-		maakFocusListener(wit9);
-		maakMouseListener(wit9, 7, 6);
-		maakLayout(wit9, "/white circle.png", 457, 534, 7, 6);
+		maakSteenFocusListener(wit9);
+		maakSteenMouseListener(wit9, 7, 6);
+		maakSteenLayout(wit9, "/white circle.png", 457, 534, 7, 6);
 
 		final JLabel wit10 = new JLabel("");
-		maakFocusListener(wit10);
-		maakMouseListener(wit10, 7, 8);
-		maakLayout(wit10, "/white circle.png", 607, 534, 7, 8);
+		maakSteenFocusListener(wit10);
+		maakSteenMouseListener(wit10, 7, 8);
+		maakSteenLayout(wit10, "/white circle.png", 607, 534, 7, 8);
 
 		final JLabel wit11 = new JLabel("");
-		maakFocusListener(wit11);
-		maakMouseListener(wit11, 8, 1);
-		maakLayout(wit11, "/white circle.png", 83, 609, 8, 1);
+		maakSteenFocusListener(wit11);
+		maakSteenMouseListener(wit11, 8, 1);
+		maakSteenLayout(wit11, "/white circle.png", 83, 609, 8, 1);
 		
 		final JLabel wit12 = new JLabel("");
-		maakFocusListener(wit12);
-		maakMouseListener(wit12, 8, 3);
-		maakLayout(wit12, "/white circle.png", 232, 609, 8, 3);
+		maakSteenFocusListener(wit12);
+		maakSteenMouseListener(wit12, 8, 3);
+		maakSteenLayout(wit12, "/white circle.png", 232, 609, 8, 3);
 
 		final JLabel wit13 = new JLabel("");
-		maakFocusListener(wit13);
-		maakMouseListener(wit13, 8, 5);
-		maakLayout(wit13, "/white circle.png", 380, 609, 8, 5);
+		maakSteenFocusListener(wit13);
+		maakSteenMouseListener(wit13, 8, 5);
+		maakSteenLayout(wit13, "/white circle.png", 380, 609, 8, 5);
 		
 		final JLabel wit14 = new JLabel("");
-		maakFocusListener(wit14);
-		maakMouseListener(wit14, 8, 7);
-		maakLayout(wit14, "/white circle.png", 534, 609, 8, 7);
+		maakSteenFocusListener(wit14);
+		maakSteenMouseListener(wit14, 8, 7);
+		maakSteenLayout(wit14, "/white circle.png", 534, 609, 8, 7);
 		
 		final JLabel wit15 = new JLabel("");
-		maakFocusListener(wit15);
-		maakMouseListener(wit15, 8, 9);
-		maakLayout(wit15, "/white circle.png", 688, 609, 8, 9);
+		maakSteenFocusListener(wit15);
+		maakSteenMouseListener(wit15, 8, 9);
+		maakSteenLayout(wit15, "/white circle.png", 688, 609, 8, 9);
 
 		final JLabel wit16 = new JLabel("");
-		maakFocusListener(wit16);
-		maakMouseListener(wit16, 9, 0);
-		maakLayout(wit16, "/white circle.png", 10, 686, 9, 0);
+		maakSteenFocusListener(wit16);
+		maakSteenMouseListener(wit16, 9, 0);
+		maakSteenLayout(wit16, "/white circle.png", 10, 686, 9, 0);
 
 		final JLabel wit17 = new JLabel("");
-		maakFocusListener(wit17);
-		maakMouseListener(wit17, 9, 2);
-		maakLayout(wit17, "/white circle.png", 157, 686, 9, 2);
+		maakSteenFocusListener(wit17);
+		maakSteenMouseListener(wit17, 9, 2);
+		maakSteenLayout(wit17, "/white circle.png", 157, 686, 9, 2);
 		
 		final JLabel wit18 = new JLabel("");
-		maakFocusListener(wit18);
-		maakMouseListener(wit18, 9, 4);
-		maakLayout(wit18, "/white circle.png", 307, 686, 9, 4);
+		maakSteenFocusListener(wit18);
+		maakSteenMouseListener(wit18, 9, 4);
+		maakSteenLayout(wit18, "/white circle.png", 307, 686, 9, 4);
 	
 		final JLabel wit19 = new JLabel("");
-		maakFocusListener(wit19);
-		maakMouseListener(wit19, 9, 6);
-		maakLayout(wit19, "/white circle.png", 457, 686, 9, 6);
+		maakSteenFocusListener(wit19);
+		maakSteenMouseListener(wit19, 9, 6);
+		maakSteenLayout(wit19, "/white circle.png", 457, 686, 9, 6);
 
 		final JLabel wit20 = new JLabel("");
-		maakFocusListener(wit20);
-		maakMouseListener(wit20, 9, 8);
-		maakLayout(wit20, "/white circle.png", 607, 686, 9, 8);
+		maakSteenFocusListener(wit20);
+		maakSteenMouseListener(wit20, 9, 8);
+		maakSteenLayout(wit20, "/white circle.png", 607, 686, 9, 8);
 
 		final JLabel leeg1 = new JLabel("");
-		maakFocusListener(leeg1);
-		maakLayout(leeg1, 83, 306, 4, 1);
+		maakSteenFocusListener(leeg1);
+		maakSteenLayout(leeg1, "", 83, 306, 4, 1);
 		
 		leeg1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -281,51 +278,51 @@ public class GUI extends JFrame {
 		});
 		
 		final JLabel leeg2 = new JLabel("");
-		maakFocusListener(leeg2);
-		maakMouseListener(leeg2, 4, 3);
-		maakLayout(leeg2, 232, 306, 4, 3);
+		maakSteenFocusListener(leeg2);
+		maakSteenMouseListener(leeg2, 4, 3);
+		maakSteenLayout(leeg2, "", 232, 306, 4, 3);
 		
 		final JLabel leeg3 = new JLabel("");
-		maakFocusListener(leeg3);
-		maakMouseListener(leeg3, 4, 5);
-		maakLayout(leeg3, 380, 306, 4, 5);
+		maakSteenFocusListener(leeg3);
+		maakSteenMouseListener(leeg3, 4, 5);
+		maakSteenLayout(leeg3, "", 380, 306, 4, 5);
 		
 		final JLabel leeg4 = new JLabel("");
-		maakFocusListener(leeg4);
-		maakMouseListener(leeg4, 4, 7);
-		maakLayout(leeg4, 534, 306, 4, 7);
+		maakSteenFocusListener(leeg4);
+		maakSteenMouseListener(leeg4, 4, 7);
+		maakSteenLayout(leeg4, "", 534, 306, 4, 7);
 
 		final JLabel leeg5 = new JLabel("");
-		maakFocusListener(leeg5);
-		maakMouseListener(leeg5, 4, 9);
-		maakLayout(leeg5, 688, 306, 4, 9);
+		maakSteenFocusListener(leeg5);
+		maakSteenMouseListener(leeg5, 4, 9);
+		maakSteenLayout(leeg5, "", 688, 306, 4, 9);
 
 		final JLabel leeg6 = new JLabel("");
-		maakFocusListener(leeg6);
-		maakMouseListener(leeg6, 5, 0);
-		maakLayout(leeg6, 10, 383, 5, 0);
+		maakSteenFocusListener(leeg6);
+		maakSteenMouseListener(leeg6, 5, 0);
+		maakSteenLayout(leeg6, "", 10, 383, 5, 0);
 
 		final JLabel leeg7 = new JLabel("");
-		maakFocusListener(leeg7);
-		maakMouseListener(leeg7, 5, 2);
-		maakLayout(leeg7, 157, 383, 5, 2);
+		maakSteenFocusListener(leeg7);
+		maakSteenMouseListener(leeg7, 5, 2);
+		maakSteenLayout(leeg7, "", 157, 383, 5, 2);
 
 		final JLabel leeg8 = new JLabel("");
-		maakFocusListener(leeg8);
-		maakMouseListener(leeg8, 5, 4);
-		maakLayout(leeg8, 307, 383, 5, 4);
+		maakSteenFocusListener(leeg8);
+		maakSteenMouseListener(leeg8, 5, 4);
+		maakSteenLayout(leeg8, "", 307, 383, 5, 4);
 
 		final JLabel leeg9 = new JLabel("");
-		maakFocusListener(leeg9);
-		maakMouseListener(leeg9, 5, 6);
-		maakLayout(leeg9, 457, 383, 5, 6);
+		maakSteenFocusListener(leeg9);
+		maakSteenMouseListener(leeg9, 5, 6);
+		maakSteenLayout(leeg9, "", 457, 383, 5, 6);
 
 		final JLabel leeg10 = new JLabel("");
-		maakFocusListener(leeg10);
-		maakMouseListener(leeg10, 5, 8);
-		maakLayout(leeg10, 607, 383, 5, 8);
+		maakSteenFocusListener(leeg10);
+		maakSteenMouseListener(leeg10, 5, 8);
+		maakSteenLayout(leeg10, "", 607, 383, 5, 8);
 
-		final JTextArea statusText = new JTextArea();
+		statusText = new JTextArea();
 		statusText.setWrapStyleWord(true);
 		statusText.setLineWrap(true);
 		statusText.setEditable(false);
@@ -341,68 +338,21 @@ public class GUI extends JFrame {
 		txtSchuiven.setColumns(10);
 		
 		JButton schuifLinksboven = new JButton("Linksboven");
-		schuifLinksboven.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		schuifLinksboven.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.schuif("linksboven")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		schuifLinksboven.setBounds(773, 207, 89, 23);
-		contentPane.add(schuifLinksboven);
-		
+		maakButtonMouseListener(schuifLinksboven, "linksboven", "schuif");
+		maakButtonLayout(schuifLinksboven, 773, 207, 89);
+	
 		JButton schuifRechtsboven = new JButton("Rechtsboven");
-		schuifRechtsboven.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		schuifRechtsboven.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.schuif("rechtsboven")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		schuifRechtsboven.setBounds(950, 207, 99, 23);
-		contentPane.add(schuifRechtsboven);
-		
+		maakButtonMouseListener(schuifRechtsboven, "rechtsboven", "schuif");
+		maakButtonLayout(schuifRechtsboven, 950, 207, 99);
+
 		JButton schuifLinksonder = new JButton("Linksonder");
 		schuifLinksonder.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		schuifLinksonder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.schuif("linksonder")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		schuifLinksonder.setBounds(773, 273, 89, 23);
-		contentPane.add(schuifLinksonder);
+		maakButtonMouseListener(schuifLinksonder, "linksonder", "schuif");
+		maakButtonLayout(schuifLinksonder, 773, 273, 89);
 		
 		JButton schuifRechtsonder = new JButton("Rechtsonder");
-		schuifRechtsonder.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		schuifRechtsonder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.schuif("rechtsonder")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		schuifRechtsonder.setBounds(950, 273, 99, 23);
-		contentPane.add(schuifRechtsonder);
+		maakButtonMouseListener(schuifRechtsonder, "rechtsonder", "schuif");
+		maakButtonLayout(schuifRechtsonder, 950, 273, 99);
 		
 		txtSlaan = new JTextField();
 		txtSlaan.setEditable(false);
@@ -413,69 +363,21 @@ public class GUI extends JFrame {
 		txtSlaan.setColumns(10);
 		
 		JButton slaLinksboven = new JButton("Linksboven");
-		slaLinksboven.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		slaLinksboven.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.sla("linksboven")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		slaLinksboven.setBounds(773, 358, 89, 23);
-		contentPane.add(slaLinksboven);
-		
+		maakButtonMouseListener(slaLinksboven, "linksboven", "sla");
+		maakButtonLayout(slaLinksboven, 773, 358, 89);
+
 		JButton slaLinksonder = new JButton("Linksonder");
-		slaLinksonder.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		slaLinksonder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.sla("linksonder")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		slaLinksonder.setBounds(773, 420, 89, 23);
-		contentPane.add(slaLinksonder);
-		
+		maakButtonMouseListener(slaLinksonder, "linksonder", "sla");
+		maakButtonLayout(slaLinksonder, 773, 420, 89);
+
 		JButton slaRechtsboven = new JButton("Rechtsboven");
-		slaRechtsboven.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		slaRechtsboven.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.sla("rechtsboven")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		slaRechtsboven.setBounds(950, 358, 99, 23);
-		contentPane.add(slaRechtsboven);
+		maakButtonMouseListener(slaRechtsboven, "rechtsboven", "sla");
+		maakButtonLayout(slaRechtsboven, 950, 358, 99);
 		
 		JButton slaRechtsonder = new JButton("Rechtsonder");
-		slaRechtsonder.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		slaRechtsonder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.sla("rechtsonder")){
-					updatePanel();
-				}
-				else{
-					statusText.setText(bord.getFoutmelding());
-				}
-			}
-		});
-		slaRechtsonder.setBounds(950, 422, 99, 23);
-		contentPane.add(slaRechtsonder);
-		
+		maakButtonMouseListener(slaRechtsonder, "rechtsonder", "sla");
+		maakButtonLayout(slaRechtsonder, 950, 422, 99);
+
 		JLabel dambord = new JLabel("");
 		dambord.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		dambord.setBounds(5, 0, 758, 761);
@@ -543,7 +445,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	private void maakFocusListener(JLabel steen){
+	private void maakSteenFocusListener(JLabel steen){
 		steen.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -556,7 +458,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	private void maakMouseListener(JLabel steen, int posX, int posY){
+	private void maakSteenMouseListener(JLabel steen, int posX, int posY){
 		steen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -567,19 +469,43 @@ public class GUI extends JFrame {
 		});		
 	}
 	
-	private void maakLayout(JLabel steen, String picture, int size1, int size2, int posX, int posY){
-		steen.setIcon(new ImageIcon(GUI.class.getResource(picture)));
+	private void maakButtonMouseListener(JButton button, String richting, String soort){
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				if (soort == "schuif"){
+					if(bord.schuif(richting)){
+						updatePanel();
+					}
+					else{
+						statusText.setText(bord.getFoutmelding());
+					}
+				}
+				else if (soort == "sla"){
+					if(bord.sla(richting)){
+						updatePanel();
+					}
+					else{
+						statusText.setText(bord.getFoutmelding());
+					}
+				}
+			}
+		});
+	}
+	
+	private void maakSteenLayout(JLabel steen, String picture, int size1, int size2, int posX, int posY){
+		if (picture != null){
+			steen.setIcon(new ImageIcon(GUI.class.getResource(picture)));
+		}
 		steen.setHorizontalAlignment(SwingConstants.CENTER);
 		steen.setBounds(size1, size2, 75, 75);
 		stenen[posX][posY] = steen;
 		contentPane.add(steen);
 	}
 	
-	private void maakLayout(JLabel steen, int size1, int size2, int posX, int posY){
-		steen.setHorizontalAlignment(SwingConstants.CENTER);
-		steen.setBounds(size1, size2, 75, 75);
-		stenen[posX][posY] = steen;
-		contentPane.add(steen);
-		
+	private void maakButtonLayout(JButton button, int size1, int size2, int size3){
+		button.setBounds(size1, size2, size3, 23);
+		contentPane.add(button);
+		button.setFont(new Font("Tahoma", Font.PLAIN, 10));
 	}
 }
