@@ -66,979 +66,211 @@ public class GUI extends JFrame {
 		
 		//  ######### LABELS #########
 		
-		final JLabel zwart1 = new JLabel("");
-		zwart1.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.setGeselecteerd(0, 1)){
-					zwart1.requestFocusInWindow();
-				}
-			}
-		});
-		zwart1.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart1);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart1.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart1.setBounds(83, 6, 75, 75);
-		stenen[0][1] = zwart1;
-		contentPane.add(zwart1);
 		
+		final JLabel zwart1 = new JLabel("");	
+		maakFocusListener(zwart1);
+		maakMouseListener(zwart1, 0, 1);
+		maakLayout(zwart1, "/black circle.png", 83, 6, 0, 1);
+
 		final JLabel zwart2 = new JLabel("");
-		zwart2.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart2);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				if(bord.setGeselecteerd(0, 3)){
-					zwart2.requestFocusInWindow();
-				}
-			}
-		});
-		zwart2.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart2.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart2.setBounds(232, 6, 75, 75);
-		stenen[0][3] = zwart2;
-		contentPane.add(zwart2);
+		maakFocusListener(zwart2);
+		maakMouseListener(zwart2, 0, 3);
+		maakLayout(zwart2, "/black circle.png", 232, 6, 0, 3);
 		
 		final JLabel zwart3 = new JLabel("");
-		zwart3.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart3);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(0, 5);
-				zwart3.requestFocusInWindow();
-			}
-		});
-		zwart3.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart3.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart3.setBounds(380, 6, 75, 75);
-		stenen[0][5] = zwart3;
-		contentPane.add(zwart3);
-		
+		maakFocusListener(zwart3);
+		maakMouseListener(zwart3, 0, 5);
+		maakLayout(zwart3, "/black circle.png", 380, 6, 0, 5);
+
 		final JLabel zwart4 = new JLabel("");
-		zwart4.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart4);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(0, 7);
-				zwart4.requestFocusInWindow();
-			}
-		});
-		zwart4.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart4.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart4.setBounds(534, 6, 75, 75);
-		stenen[0][7] = zwart4;
-		contentPane.add(zwart4);
-		
+		maakFocusListener(zwart4);
+		maakMouseListener(zwart4, 0, 7);
+		maakLayout(zwart4, "/black circle.png", 534, 6, 0, 7);
+
 		final JLabel zwart5 = new JLabel("");
-		zwart5.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart5);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart5.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(0, 9);
-				zwart5.requestFocusInWindow();
-			}
-		});
-		zwart5.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart5.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart5.setBounds(688, 6, 75, 75);
-		stenen[0][9] = zwart5;
-		contentPane.add(zwart5);
-		
+		maakFocusListener(zwart5);
+		maakMouseListener(zwart5, 0, 9);
+		maakLayout(zwart5, "/black circle.png", 688, 6, 0, 9);
+
 		final JLabel zwart6 = new JLabel("");
-		zwart6.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart6);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart6.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(1, 0);
-				zwart6.requestFocusInWindow();
-			}
-		});
-		zwart6.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart6.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart6.setBounds(5, 81, 75, 75);
-		stenen[1][0] = zwart6;
-		contentPane.add(zwart6);
-		
+		maakFocusListener(zwart6);
+		maakMouseListener(zwart6, 1, 0);
+		maakLayout(zwart6, "/black circle.png", 5, 81, 1, 0);
+
 		final JLabel zwart7 = new JLabel("");
-		zwart7.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart7);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart7.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(1, 2);
-				zwart7.requestFocusInWindow();
-			}
-		});
-		zwart7.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart7.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart7.setBounds(157, 81, 75, 75);
-		stenen[1][2] = zwart7;
-		contentPane.add(zwart7);
-		
+		maakFocusListener(zwart7);
+		maakMouseListener(zwart7, 1, 2);
+		maakLayout(zwart7, "/black circle.png", 157, 81, 1, 2);
+
 		final JLabel zwart8 = new JLabel("");
-		zwart8.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart8);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(1, 4);
-				zwart8.requestFocusInWindow();
-			}
-		});
-		zwart8.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart8.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart8.setBounds(307, 81, 75, 75);
-		stenen[1][4] = zwart8;
-		contentPane.add(zwart8);
-		
+		maakFocusListener(zwart8);
+		maakMouseListener(zwart8, 1, 4);
+		maakLayout(zwart8, "/black circle.png", 307, 81, 1, 4);
+
 		final JLabel zwart9 = new JLabel("");
-		zwart9.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart9);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart9.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(1, 6);
-				zwart9.requestFocusInWindow();
-			}
-		});
-		zwart9.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart9.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart9.setBounds(457, 81, 75, 75);
-		stenen[1][6] = zwart9;
-		contentPane.add(zwart9);
-		
+		maakFocusListener(zwart9);
+		maakMouseListener(zwart9, 1, 6);
+		maakLayout(zwart9, "/black circle.png", 457, 81, 1, 6);
+
 		final JLabel zwart10 = new JLabel("");
-		zwart10.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart10);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart10.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(1, 8);
-				zwart10.requestFocusInWindow();
-			}
-		});
-		zwart10.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart10.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart10.setBounds(607, 81, 75, 75);
-		stenen[1][8] = zwart10;
-		contentPane.add(zwart10);
-		
+		maakFocusListener(zwart10);
+		maakMouseListener(zwart10, 1, 8);
+		maakLayout(zwart10, "/black circle.png", 607, 81, 1, 8);
+
 		final JLabel zwart11 = new JLabel("");
-		zwart11.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart11);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart11.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(2, 1);
-				zwart11.requestFocusInWindow();
-			}
-		});
-		zwart11.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart11.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart11.setBounds(83, 155, 75, 75);
-		stenen[2][1] = zwart11;
-		contentPane.add(zwart11);
-		
+		maakFocusListener(zwart11);
+		maakMouseListener(zwart11, 2, 1);
+		maakLayout(zwart11, "/black circle.png", 83, 155, 2, 1);
+
 		final JLabel zwart12 = new JLabel("");
-		zwart12.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart12);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart12.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(2, 3);
-				zwart12.requestFocusInWindow();
-			}
-		});
-		zwart12.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart12.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart12.setBounds(232, 155, 75, 75);
-		stenen[2][3] = zwart12;
-		contentPane.add(zwart12);
-		
+		maakFocusListener(zwart12);
+		maakMouseListener(zwart12, 2, 3);
+		maakLayout(zwart12, "/black circle.png", 232, 155, 2, 3);
+
 		final JLabel zwart13 = new JLabel("");
-		zwart13.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart13);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart13.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(2, 5);
-				zwart13.requestFocusInWindow();
-			}
-		});
-		zwart13.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart13.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart13.setBounds(380, 155, 75, 75);
-		stenen[2][5] = zwart13;
-		contentPane.add(zwart13);
-		
+		maakFocusListener(zwart13);
+		maakMouseListener(zwart13, 2, 5);
+		maakLayout(zwart13, "/black circle.png", 380, 155, 2, 5);
+
 		final JLabel zwart14 = new JLabel("");
-		zwart14.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart14);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart14.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(2, 7);
-				zwart14.requestFocusInWindow();
-			}
-		});
-		zwart14.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart14.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart14.setBounds(534, 155, 75, 75);
-		stenen[2][7] = zwart14;
-		contentPane.add(zwart14);
-		
+		maakFocusListener(zwart14);
+		maakMouseListener(zwart14, 2, 7);
+		maakLayout(zwart14, "/black circle.png", 534, 155, 2, 7);
+
 		final JLabel zwart15 = new JLabel("");
-		zwart15.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart15);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart15.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(2, 9);
-				zwart15.requestFocusInWindow();
-			}
-		});
-		zwart15.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart15.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart15.setBounds(688, 155, 75, 75);
-		stenen[2][9] = zwart15;
-		contentPane.add(zwart15);
-		
+		maakFocusListener(zwart15);
+		maakMouseListener(zwart15, 2, 9);
+		maakLayout(zwart15, "/black circle.png", 688, 155, 2, 9);
+
 		final JLabel zwart16 = new JLabel("");
-		zwart16.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart16);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart16.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(3, 0);
-				zwart16.requestFocusInWindow();
-			}
-		});
-		zwart16.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart16.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart16.setBounds(5, 230, 75, 75);
-		stenen[3][0] = zwart16;
-		contentPane.add(zwart16);
-		
+		maakFocusListener(zwart16);
+		maakMouseListener(zwart16, 3, 0);
+		maakLayout(zwart16, "/black circle.png", 5, 230, 3, 0);
+
 		final JLabel zwart17 = new JLabel("");
-		zwart17.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart17);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart17.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(3, 2);
-				zwart17.requestFocusInWindow();
-			}
-		});
-		zwart17.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart17.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart17.setBounds(157, 230, 75, 75);
-		stenen[3][2] = zwart17;
-		contentPane.add(zwart17);
-		
+		maakFocusListener(zwart17);
+		maakMouseListener(zwart17, 3, 2);
+		maakLayout(zwart17, "/black circle.png", 157, 230, 3, 2);
+
 		final JLabel zwart18 = new JLabel("");
-		zwart18.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart18);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart18.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(3, 4);
-				zwart18.requestFocusInWindow();
-			}
-		});
-		zwart18.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart18.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart18.setBounds(307, 230, 75, 75);
-		stenen[3][4] = zwart18;
-		contentPane.add(zwart18);
-		
+		maakFocusListener(zwart18);
+		maakMouseListener(zwart18, 3, 4);
+		maakLayout(zwart18, "/black circle.png", 307, 230, 3, 4);
+
 		final JLabel zwart19 = new JLabel("");
-		zwart19.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart19);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart19.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(3, 6);
-				zwart19.requestFocusInWindow();
-			}
-		});
-		zwart19.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart19.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart19.setBounds(457, 230, 75, 75);
-		stenen[3][6] = zwart19;
-		contentPane.add(zwart19);
-		
+		maakFocusListener(zwart19);
+		maakMouseListener(zwart19, 3, 6);
+		maakLayout(zwart19, "/black circle.png", 457, 230, 3, 6);
+
 		final JLabel zwart20 = new JLabel("");
-		zwart20.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(zwart20);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		zwart20.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(3, 8);
-				zwart20.requestFocusInWindow();
-			}
-		});
-		zwart20.setIcon(new ImageIcon(GUI.class.getResource("/black circle.png")));
-		zwart20.setHorizontalAlignment(SwingConstants.CENTER);
-		zwart20.setBounds(607, 230, 75, 75);
-		stenen[3][8] = zwart20;
-		contentPane.add(zwart20);
-		
+		maakFocusListener(zwart20);
+		maakMouseListener(zwart20, 3, 8);
+		maakLayout(zwart20, "/black circle.png", 607, 230, 3, 8);
+
 		final JLabel wit1 = new JLabel("");
-		wit1.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit1);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(6, 1);
-				wit1.requestFocusInWindow();
-			}
-		});
-		wit1.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit1.setHorizontalAlignment(SwingConstants.CENTER);
-		wit1.setBounds(83, 456, 75, 75);
-		stenen[6][1] = wit1;
-		contentPane.add(wit1);
-		
+		maakFocusListener(wit1);
+		maakMouseListener(wit1, 6, 1);
+		maakLayout(wit1, "white circle.png", 83, 456, 6, 1);
+
 		final JLabel wit2 = new JLabel("");
-		wit2.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit2);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit2.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(6, 3);
-				wit2.requestFocusInWindow();
-			}
-		});
-		wit2.setHorizontalAlignment(SwingConstants.CENTER);
-		wit2.setBounds(232, 456, 75, 75);
-		stenen[6][3] = wit2;
-		contentPane.add(wit2);
+		maakFocusListener(wit2);
+		maakMouseListener(wit2, 6, 3);
+		maakLayout(wit2, "/white circle.png", 232, 456, 6, 3);
 		
 		final JLabel wit3 = new JLabel("");
-		wit3.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit3);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit3.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(6, 5);
-				wit3.requestFocusInWindow();
-			}
-		});
-		wit3.setHorizontalAlignment(SwingConstants.CENTER);
-		wit3.setBounds(380, 456, 75, 75);
-		stenen[6][5] = wit3;
-		contentPane.add(wit3);
+		maakFocusListener(wit3);
+		maakMouseListener(wit3, 6, 5);
+		maakLayout(wit3, "/white circle.png", 380, 456, 6, 5);
 		
 		final JLabel wit4 = new JLabel("");
-		wit4.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit4);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit4.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(6, 7);
-				wit4.requestFocusInWindow();
-			}
-		});
-		wit4.setHorizontalAlignment(SwingConstants.CENTER);
-		wit4.setBounds(534, 456, 75, 75);
-		stenen[6][7] = wit4;
-		contentPane.add(wit4);
+		maakFocusListener(wit4);
+		maakMouseListener(wit4, 6, 7);
+		maakLayout(wit4, "/white circle.png", 534, 456, 6, 7);
 		
 		final JLabel wit5 = new JLabel("");
-		wit5.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit5);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit5.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit5.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(6, 9);
-				wit5.requestFocusInWindow();
-			}
-		});
-		wit5.setHorizontalAlignment(SwingConstants.CENTER);
-		wit5.setBounds(688, 456, 75, 75);
-		stenen[6][9] = wit5;
-		contentPane.add(wit5);
+		maakFocusListener(wit5);
+		maakMouseListener(wit5, 6, 9);
+		maakLayout(wit5, "/white circle.png", 688, 456, 6, 9);
 		
 		final JLabel wit6 = new JLabel("");
-		wit6.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit6);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit6.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit6.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(7, 0);
-				wit6.requestFocusInWindow();
-			}
-		});
-		wit6.setHorizontalAlignment(SwingConstants.CENTER);
-		wit6.setBounds(10, 534, 75, 75);
-		stenen[7][0] = wit6;
-		contentPane.add(wit6);
-		
+		maakFocusListener(wit6);
+		maakMouseListener(wit6, 7, 0);
+		maakLayout(wit6, "/white circle.png", 10, 534, 7, 0);
+
 		final JLabel wit7 = new JLabel("");
-		wit7.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit7);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit7.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit7.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(7, 2);
-				wit7.requestFocusInWindow();
-			}
-		});
-		wit7.setHorizontalAlignment(SwingConstants.CENTER);
-		wit7.setBounds(157, 534, 75, 75);
-		stenen[7][2] = wit7;
-		contentPane.add(wit7);
-		
+		maakFocusListener(wit7);
+		maakMouseListener(wit7, 7, 2);
+		maakLayout(wit7, "/white circle.png", 157, 534, 7, 2);
+			
 		final JLabel wit8 = new JLabel("");
-		wit8.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit8);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit8.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(7, 4);
-				wit8.requestFocusInWindow();
-			}
-		});
-		wit8.setHorizontalAlignment(SwingConstants.CENTER);
-		wit8.setBounds(307, 534, 75, 75);
-		stenen[7][4] = wit8;
-		contentPane.add(wit8);
+		maakFocusListener(wit8);
+		maakMouseListener(wit8, 7, 4);
+		maakLayout(wit8, "/white circle.png", 307, 534, 7, 4);
 		
 		final JLabel wit9 = new JLabel("");
-		wit9.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit9);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit9.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit9.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(7, 6);
-				wit9.requestFocusInWindow();
-			}
-		});
-		wit9.setHorizontalAlignment(SwingConstants.CENTER);
-		wit9.setBounds(457, 534, 75, 75);
-		stenen[7][6] = wit9;
-		contentPane.add(wit9);
-		
+		maakFocusListener(wit9);
+		maakMouseListener(wit9, 7, 6);
+		maakLayout(wit9, "/white circle.png", 457, 534, 7, 6);
+
 		final JLabel wit10 = new JLabel("");
-		wit10.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit10);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit10.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit10.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(7, 8);
-				wit10.requestFocusInWindow();
-			}
-		});
-		wit10.setHorizontalAlignment(SwingConstants.CENTER);
-		wit10.setBounds(607, 534, 75, 75);
-		stenen[7][8] = wit10;
-		contentPane.add(wit10);
-		
+		maakFocusListener(wit10);
+		maakMouseListener(wit10, 7, 8);
+		maakLayout(wit10, "/white circle.png", 607, 534, 7, 8);
+
 		final JLabel wit11 = new JLabel("");
-		wit11.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit11);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit11.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit11.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(8, 1);
-				wit11.requestFocusInWindow();
-			}
-		});
-		wit11.setHorizontalAlignment(SwingConstants.CENTER);
-		wit11.setBounds(83, 609, 75, 75);
-		stenen[8][1] = wit11;
-		contentPane.add(wit11);
+		maakFocusListener(wit11);
+		maakMouseListener(wit11, 8, 1);
+		maakLayout(wit11, "/white circle.png", 83, 609, 8, 1);
 		
 		final JLabel wit12 = new JLabel("");
-		wit12.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit12);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit12.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit12.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(8, 3);
-				wit12.requestFocusInWindow();
-			}
-		});
-		wit12.setHorizontalAlignment(SwingConstants.CENTER);
-		wit12.setBounds(232, 609, 75, 75);
-		stenen[8][3] = wit12;
-		contentPane.add(wit12);
-		
+		maakFocusListener(wit12);
+		maakMouseListener(wit12, 8, 3);
+		maakLayout(wit12, "/white circle.png", 232, 609, 8, 3);
+
 		final JLabel wit13 = new JLabel("");
-		wit13.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit13);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit13.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit13.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(8, 5);
-				wit13.requestFocusInWindow();
-			}
-		});
-		wit13.setHorizontalAlignment(SwingConstants.CENTER);
-		wit13.setBounds(380, 609, 75, 75);
-		stenen[8][5] = wit13;
-		contentPane.add(wit13);
+		maakFocusListener(wit13);
+		maakMouseListener(wit13, 8, 5);
+		maakLayout(wit13, "/white circle.png", 380, 609, 8, 5);
 		
 		final JLabel wit14 = new JLabel("");
-		wit14.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit14);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit14.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit14.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(8, 7);
-				wit14.requestFocusInWindow();
-			}
-		});
-		wit14.setHorizontalAlignment(SwingConstants.CENTER);
-		wit14.setBounds(534, 609, 75, 75);
-		stenen[8][7] = wit14;
-		contentPane.add(wit14);
+		maakFocusListener(wit14);
+		maakMouseListener(wit14, 8, 7);
+		maakLayout(wit14, "/white circle.png", 534, 609, 8, 7);
 		
 		final JLabel wit15 = new JLabel("");
-		wit15.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit15);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit15.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit15.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(8, 9);
-				wit15.requestFocusInWindow();
-			}
-		});
-		wit15.setHorizontalAlignment(SwingConstants.CENTER);
-		wit15.setBounds(688, 609, 75, 75);
-		stenen[8][9] = wit15;
-		contentPane.add(wit15);
-		
+		maakFocusListener(wit15);
+		maakMouseListener(wit15, 8, 9);
+		maakLayout(wit15, "/white circle.png", 688, 609, 8, 9);
+
 		final JLabel wit16 = new JLabel("");
-		wit16.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit16);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit16.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit16.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(9, 0);
-				wit16.requestFocusInWindow();
-			}
-		});
-		wit16.setHorizontalAlignment(SwingConstants.CENTER);
-		wit16.setBounds(10, 686, 75, 75);
-		stenen[9][0] = wit16;
-		contentPane.add(wit16);
-		
+		maakFocusListener(wit16);
+		maakMouseListener(wit16, 9, 0);
+		maakLayout(wit16, "/white circle.png", 10, 686, 9, 0);
+
 		final JLabel wit17 = new JLabel("");
-		wit17.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit17);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit17.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit17.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(9, 2);
-				wit17.requestFocusInWindow();
-			}
-		});
-		wit17.setHorizontalAlignment(SwingConstants.CENTER);
-		wit17.setBounds(157, 686, 75, 75);
-		stenen[9][2] = wit17;
-		contentPane.add(wit17);
+		maakFocusListener(wit17);
+		maakMouseListener(wit17, 9, 2);
+		maakLayout(wit17, "/white circle.png", 157, 686, 9, 2);
 		
 		final JLabel wit18 = new JLabel("");
-		wit18.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit18);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit18.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit18.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(9, 4);
-				wit18.requestFocusInWindow();
-			}
-		});
-		wit18.setHorizontalAlignment(SwingConstants.CENTER);
-		wit18.setBounds(307, 686, 75, 75);
-		stenen[9][4] = wit18;
-		contentPane.add(wit18);
-		
+		maakFocusListener(wit18);
+		maakMouseListener(wit18, 9, 4);
+		maakLayout(wit18, "/white circle.png", 307, 686, 9, 4);
+	
 		final JLabel wit19 = new JLabel("");
-		wit19.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit19);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit19.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit19.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(9, 6);
-				wit19.requestFocusInWindow();
-			}
-		});
-		wit19.setHorizontalAlignment(SwingConstants.CENTER);
-		wit19.setBounds(457, 686, 75, 75);
-		stenen[9][6] = wit19;
-		contentPane.add(wit19);
-		
+		maakFocusListener(wit19);
+		maakMouseListener(wit19, 9, 6);
+		maakLayout(wit19, "/white circle.png", 457, 686, 9, 6);
+
 		final JLabel wit20 = new JLabel("");
-		wit20.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(wit20);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		wit20.setIcon(new ImageIcon(GUI.class.getResource("/white circle.png")));
-		wit20.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(9, 8);
-				wit20.requestFocusInWindow();
-			}
-		});
-		wit20.setHorizontalAlignment(SwingConstants.CENTER);
-		wit20.setBounds(607, 686, 75, 75);
-		stenen[9][8] = wit20;
-		contentPane.add(wit20);
-		
+		maakFocusListener(wit20);
+		maakMouseListener(wit20, 9, 8);
+		maakLayout(wit20, "/white circle.png", 607, 686, 9, 8);
+
 		final JLabel leeg1 = new JLabel("");
-		leeg1.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg1);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
+		maakFocusListener(leeg1);
+		maakLayout(leeg1, 83, 306, 4, 1);
+		
 		leeg1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -1047,225 +279,58 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		leeg1.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg1.setBounds(83, 306, 75, 75);
-		stenen[4][1] = leeg1;
-		contentPane.add(leeg1);
 		
 		final JLabel leeg2 = new JLabel("");
-		leeg2.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg2);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(4, 3);
-				leeg2.requestFocusInWindow();
-			}
-		});
-		leeg2.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg2.setBounds(232, 306, 75, 75);
-		stenen[4][3] = leeg2;
-		contentPane.add(leeg2);
+		maakFocusListener(leeg2);
+		maakMouseListener(leeg2, 4, 3);
+		maakLayout(leeg2, 232, 306, 4, 3);
 		
 		final JLabel leeg3 = new JLabel("");
-		leeg3.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg3);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(4, 5);
-				leeg3.requestFocusInWindow();
-			}
-		});
-		leeg3.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg3.setBounds(380, 306, 75, 75);
-		stenen[4][5] = leeg3;
-		contentPane.add(leeg3);
+		maakFocusListener(leeg3);
+		maakMouseListener(leeg3, 4, 5);
+		maakLayout(leeg3, 380, 306, 4, 5);
 		
 		final JLabel leeg4 = new JLabel("");
-		leeg4.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg4);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(4, 7);
-				leeg4.requestFocusInWindow();
-			}
-		});
-		leeg4.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg4.setBounds(534, 306, 75, 75);
-		stenen[4][7] = leeg4;
-		contentPane.add(leeg4);
-		
+		maakFocusListener(leeg4);
+		maakMouseListener(leeg4, 4, 7);
+		maakLayout(leeg4, 534, 306, 4, 7);
+
 		final JLabel leeg5 = new JLabel("");
-		leeg5.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg5);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg5.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(4, 9);
-				leeg5.requestFocusInWindow();
-			}
-		});
-		leeg5.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg5.setBounds(688, 306, 75, 75);
-		stenen[4][9] = leeg5;
-		contentPane.add(leeg5);
-		
+		maakFocusListener(leeg5);
+		maakMouseListener(leeg5, 4, 9);
+		maakLayout(leeg5, 688, 306, 4, 9);
+
 		final JLabel leeg6 = new JLabel("");
-		leeg6.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg6);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg6.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(5, 0);
-				leeg6.requestFocusInWindow();
-			}
-		});
-		leeg6.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg6.setBounds(10, 383, 75, 75);
-		stenen[5][0] = leeg6;
-		contentPane.add(leeg6);
-		
+		maakFocusListener(leeg6);
+		maakMouseListener(leeg6, 5, 0);
+		maakLayout(leeg6, 10, 383, 5, 0);
+
 		final JLabel leeg7 = new JLabel("");
-		leeg7.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg7);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg7.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(5, 2);
-				leeg7.requestFocusInWindow();
-			}
-		});
-		leeg7.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg7.setBounds(157, 383, 75, 75);
-		stenen[5][2] = leeg7;
-		contentPane.add(leeg7);
-		
+		maakFocusListener(leeg7);
+		maakMouseListener(leeg7, 5, 2);
+		maakLayout(leeg7, 157, 383, 5, 2);
+
 		final JLabel leeg8 = new JLabel("");
-		leeg8.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg8);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(5, 4);
-				leeg8.requestFocusInWindow();
-			}
-		});
-		leeg8.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg8.setBounds(307, 383, 75, 75);
-		stenen[5][4] = leeg8;
-		contentPane.add(leeg8);
-		
+		maakFocusListener(leeg8);
+		maakMouseListener(leeg8, 5, 4);
+		maakLayout(leeg8, 307, 383, 5, 4);
+
 		final JLabel leeg9 = new JLabel("");
-		leeg9.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg9);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg9.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(5, 6);
-				leeg9.requestFocusInWindow();
-			}
-		});
-		leeg9.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg9.setBounds(457, 383, 75, 75);
-		stenen[5][6] = leeg9;
-		contentPane.add(leeg9);
-		
+		maakFocusListener(leeg9);
+		maakMouseListener(leeg9, 5, 6);
+		maakLayout(leeg9, 457, 383, 5, 6);
+
 		final JLabel leeg10 = new JLabel("");
-		leeg10.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				getFocusIcon(leeg10);
-			}
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				updatePanel();
-			}
-		});
-		leeg10.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				bord.setGeselecteerd(5, 8);
-				leeg10.requestFocusInWindow();
-			}
-		});
-		leeg10.setHorizontalAlignment(SwingConstants.CENTER);
-		leeg10.setBounds(607, 383, 75, 75);
-		stenen[5][8] = leeg10;
-		contentPane.add(leeg10);
-		
+		maakFocusListener(leeg10);
+		maakMouseListener(leeg10, 5, 8);
+		maakLayout(leeg10, 607, 383, 5, 8);
+
 		final JTextArea statusText = new JTextArea();
 		statusText.setWrapStyleWord(true);
 		statusText.setLineWrap(true);
 		statusText.setEditable(false);
 		statusText.setBounds(773, 508, 266, 57);
 		contentPane.add(statusText);
-		
 		
 		txtSchuiven = new JTextField();
 		txtSchuiven.setEditable(false);
@@ -1476,5 +541,45 @@ public class GUI extends JFrame {
 				}
 			}
 		}
+	}
+	
+	private void maakFocusListener(JLabel steen){
+		steen.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				getFocusIcon(steen);
+			}
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				updatePanel();
+			}
+		});
+	}
+	
+	private void maakMouseListener(JLabel steen, int posX, int posY){
+		steen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				if(bord.setGeselecteerd(posX, posY)){
+					steen.requestFocusInWindow();
+				}
+			}
+		});		
+	}
+	
+	private void maakLayout(JLabel steen, String picture, int size1, int size2, int posX, int posY){
+		steen.setIcon(new ImageIcon(GUI.class.getResource(picture)));
+		steen.setHorizontalAlignment(SwingConstants.CENTER);
+		steen.setBounds(size1, size2, 75, 75);
+		stenen[posX][posY] = steen;
+		contentPane.add(steen);
+	}
+	
+	private void maakLayout(JLabel steen, int size1, int size2, int posX, int posY){
+		steen.setHorizontalAlignment(SwingConstants.CENTER);
+		steen.setBounds(size1, size2, 75, 75);
+		stenen[posX][posY] = steen;
+		contentPane.add(steen);
+		
 	}
 }
