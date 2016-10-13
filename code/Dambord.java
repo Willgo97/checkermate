@@ -1,9 +1,5 @@
-
-public class Dambord {
-	
-	
+public class Dambord {	
 	//################################# FIELDS #####################################
-	
 	//0 = geen steen, 1 = zwart, 2 = wit
 	
 	private int[][] stenen = 

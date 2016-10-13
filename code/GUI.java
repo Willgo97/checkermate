@@ -21,9 +21,6 @@ import javax.swing.JButton;
 
 
 public class GUI extends JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Dambord bord = new Dambord();
 	private JPanel contentPane;
@@ -31,9 +28,7 @@ public class GUI extends JFrame {
 	private JTextField txtSlaan;
 	private JLabel[][] stenen = new JLabel[10][10];
 
-	/**
-	 * Launch the application.
-	 */
+	//Launch the application.
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -46,10 +41,8 @@ public class GUI extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
+	
+	 //Create the frame.
 	public GUI() {
 		setResizable(false);
 		setTitle("CheckerMate dammen");

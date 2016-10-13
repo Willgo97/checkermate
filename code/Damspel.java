@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 public class Damspel {
 	
 	public static void beëindigBeurt(Dambord bord){
@@ -43,8 +42,6 @@ public class Damspel {
 		
 		bord.printScore();
 		*/
-		
-		
 		
 		boolean flag = false;
 		Scanner sc = new Scanner(System.in);
@@ -95,5 +92,4 @@ public class Damspel {
         }
         sc.close();
 	}
-	
 }
