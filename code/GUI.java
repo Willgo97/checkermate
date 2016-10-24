@@ -18,6 +18,7 @@ import java.awt.event.FocusEvent;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +28,8 @@ public class GUI extends JFrame {
 	private JTextField txtSlaan;
 	private JLabel[][] stenen = new JLabel[10][10];
 	private JTextArea statusText;
+	private JTextArea geschiedenisTekst;
+	private JTextField aanDeBeurtTekst;
 
 	//Launch the application.
 	public static void main(String[] args) {
@@ -326,7 +329,7 @@ public class GUI extends JFrame {
 		statusText.setWrapStyleWord(true);
 		statusText.setLineWrap(true);
 		statusText.setEditable(false);
-		statusText.setBounds(773, 508, 266, 57);
+		statusText.setBounds(773, 466, 266, 57);
 		contentPane.add(statusText);
 		
 		txtSchuiven = new JTextField();
@@ -385,6 +388,7 @@ public class GUI extends JFrame {
 		contentPane.add(dambord);
 		
 		JButton btnNewButton = new JButton("Draai bord");
+		btnNewButton.setVisible(false);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -393,11 +397,32 @@ public class GUI extends JFrame {
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnNewButton.setBounds(849, 609, 139, 63);
+		btnNewButton.setBounds(839, 684, 139, 63);
 		contentPane.add(btnNewButton);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(773, 553, 266, 120);
+		contentPane.add(scrollPane);
+		
+		geschiedenisTekst = new JTextArea();
+		geschiedenisTekst.setFont(new Font("Monospaced", Font.PLAIN, 12));
+		geschiedenisTekst.setEditable(false);
+		geschiedenisTekst.setWrapStyleWord(true);
+		geschiedenisTekst.setLineWrap(true);
+		scrollPane.setViewportView(geschiedenisTekst);
+		
+		aanDeBeurtTekst = new JTextField();
+		aanDeBeurtTekst.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		aanDeBeurtTekst.setHorizontalAlignment(SwingConstants.CENTER);
+		aanDeBeurtTekst.setText("Wit is aan de beurt.");
+		aanDeBeurtTekst.setEditable(false);
+		aanDeBeurtTekst.setBounds(804, 148, 204, 30);
+		contentPane.add(aanDeBeurtTekst);
+		aanDeBeurtTekst.setColumns(10);
 	}
 	
 	public void updatePanel(){
+		aanDeBeurtTekst.setText(bord.getBeurt());
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] != null){
@@ -445,7 +470,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	private void maakSteenFocusListener(JLabel steen){
+	private void maakSteenFocusListener(final JLabel steen){
 		steen.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -458,7 +483,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	private void maakSteenMouseListener(JLabel steen, int posX, int posY){
+	private void maakSteenMouseListener(final JLabel steen, final int posX, final int posY){
 		steen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -469,13 +494,14 @@ public class GUI extends JFrame {
 		});		
 	}
 	
-	private void maakButtonMouseListener(JButton button, String richting, String soort){
+	private void maakButtonMouseListener(JButton button, final String richting, final String soort){
 		button.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				if (soort == "schuif"){
 					if(bord.schuif(richting)){
 						updatePanel();
+						geschiedenisTekst.append("Steen " + bord.getVeldNummer() + " schoof naar " + bord.getVeldNummer(richting) + ".\n");
 					}
 					else{
 						statusText.setText(bord.getFoutmelding());
@@ -484,6 +510,7 @@ public class GUI extends JFrame {
 				else if (soort == "sla"){
 					if(bord.sla(richting)){
 						updatePanel();
+						geschiedenisTekst.append("Steen " + bord.getVeldNummer() + " sloeg " + bord.getVeldNummer(richting) + " en belandde op " + bord.getVeldNummerNaSlaan(richting) +".\n");
 					}
 					else{
 						statusText.setText(bord.getFoutmelding());

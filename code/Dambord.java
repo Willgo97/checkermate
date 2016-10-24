@@ -29,11 +29,17 @@ public class Dambord {
 	private int aantalWitteStenen = 20;
 	
 	private String foutmelding = "";
+	private String beurt = "Wit is aan de beurt.";
 	
 	//################################# METHODS #####################################
 	
 	public String getFoutmelding(){
 		return foutmelding;
+	}
+	
+	//giggity
+	public String getBeurt(){
+		return beurt;
 	}
 	
 	public boolean setGeselecteerd(int x, int y){
@@ -64,6 +70,68 @@ public class Dambord {
 		return stenen[x][y];
 	}
 	
+	public int getVeldNummer(){
+			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 1;
+	}
+	
+	public int getVeldNummer(String richting){
+		if(getGeselecteerdeX() % 2 == 0){
+			switch(richting){
+			case "linksboven": 
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 4;
+			case "rechtsboven":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 3;
+			case "linksonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 6;
+			case "rechtsonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 7;
+			default: return 0;
+			}
+		}
+		else{
+			switch(richting){
+			case "linksboven": 
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 5;
+			case "rechtsboven":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 4;
+			case "linksonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 5;
+			case "rechtsonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 6;
+			default: return 0;
+			}
+		}
+	}
+	
+	public int getVeldNummerNaSlaan(String richting){
+		if(getGeselecteerdeX() % 2 == 0){
+			switch(richting){
+			case "linksboven": 
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 10;
+			case "rechtsboven":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 8;
+			case "linksonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 10;
+			case "rechtsonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 13;
+			default: return 0;
+			}
+		}
+		else{
+			switch(richting){
+			case "linksboven": 
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 10;
+			case "rechtsboven":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 8;
+			case "linksonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 10;
+			case "rechtsonder":
+				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 12;
+			default: return 0;
+			}
+		}
+	}
+	
 	public void printScore(){
 		if(aantalWitteStenen == 0)
 			System.out.println("Zwart heeft gewonnen.");
@@ -77,7 +145,7 @@ public class Dambord {
 	public boolean schuif(String richting){
 		if(!kanSlaan()){
 			//schuif steen 1 plaats naar boven en 1 plaats naar links
-			if(richting.equals("linksboven") && geselecteerd[0] != 0 && geselecteerd[1] != 0){
+			if(richting.equals("linksboven") && geselecteerd[0] != 0 && geselecteerd[1] != 0 && ((getGeselecteerd() == speler && getGeselecteerd() == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
 				//als er geen steen links-boven ligt:
 				if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == LEEG){
 						int temp = getGeselecteerd();
@@ -87,6 +155,7 @@ public class Dambord {
 						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
+						beurtVoorbij();
 						return true;
 				}
 				else{
@@ -96,7 +165,7 @@ public class Dambord {
 			}
 		
 			//schuif steen 1 plaats naar boven en 1 plaats naar rechts
-			else if(richting.equals("rechtsboven") && geselecteerd[0] != 0 && geselecteerd[1] != 9){
+			else if(richting.equals("rechtsboven") && geselecteerd[0] != 0 && geselecteerd[1] != 9 && ((getGeselecteerd() == speler && getGeselecteerd() == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
 				//als er geen steen rechts-boven ligt:
 				if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == LEEG){
 					int temp = getGeselecteerd();
@@ -106,6 +175,7 @@ public class Dambord {
 					if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
 					}
+					beurtVoorbij();
 					return true;
 				}
 				else{
@@ -114,12 +184,13 @@ public class Dambord {
 				}
 			}
 			//schuif steen 1 plaats naar links en 1 plaats naar onder. Alleen bij een dam.
-			else if(richting.equals("linksonder") && geselecteerd[0] != 9 && geselecteerd[1] != 0 && (getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM)){
+			else if(richting.equals("linksonder") && geselecteerd[0] != 9 && geselecteerd[1] != 0 && ((getGeselecteerd() == speler && getGeselecteerd() == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
 				//als er geen steen links-onder ligt:
 				if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == LEEG){
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]-1] = temp;
+					beurtVoorbij();
 					return true;
 				}
 				else{
@@ -128,12 +199,13 @@ public class Dambord {
 				}
 			}
 			//schuif steen 1 plaats naar rechts en 1 plaats naar onder. Alleen bij een dam.
-			else if(richting.equals("rechtsonder") && geselecteerd[0] != 9 && geselecteerd[1] != 9 && (getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM)){
+			else if(richting.equals("rechtsonder") && geselecteerd[0] != 9 && geselecteerd[1] != 9 && ((getGeselecteerd() == speler && getGeselecteerd() == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM)){
 				//als er geen steen rechts-onder ligt:
 				if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == LEEG){
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]+1] = temp;
+					beurtVoorbij();
 					return true;
 				}
 				else{
@@ -200,7 +272,7 @@ public class Dambord {
 		if(kanSlaan()){
 			switch(richting){
 			case "linksboven": 
-				if(geselecteerd[0] != 0 && geselecteerd[1] != 0){
+				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && getGeselecteerd() == speler){
 					if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == tegenstander && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]-2] == LEEG){
 							if(getGeselecteerd() == WIT)
@@ -210,13 +282,17 @@ public class Dambord {
 							stenen[geselecteerd[0]-2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							if(!kanSlaan())
+								beurtVoorbij();
+							else
+								foutmelding = "U kunt nog een keer slaan";
 							return true;
 						}
 					}
 				}
 				break;
 			case "rechtsboven":
-				if(geselecteerd[0] != 0 && geselecteerd[1] != 9){
+				if(geselecteerd[0] != 0 && geselecteerd[1] != 9 && getGeselecteerd() == speler){
 					if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == tegenstander && geselecteerd[0]-1 != 0 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]+2] == LEEG){
 							if(getGeselecteerd() == WIT)
@@ -226,13 +302,17 @@ public class Dambord {
 							stenen[geselecteerd[0]-2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							if(!kanSlaan())
+								beurtVoorbij();
+							else
+								foutmelding = "U kunt nog een keer slaan";
 							return true;
 						}
 					}
 				}
 				break;
 			case "linksonder":
-				if(geselecteerd[0] != 9 && geselecteerd[1] != 0){
+				if(geselecteerd[0] != 9 && geselecteerd[1] != 0 && getGeselecteerd() == speler){
 					if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == tegenstander && geselecteerd[0]+1 != 9 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]-2] == LEEG){
 							if(getGeselecteerd() == WIT)
@@ -242,13 +322,17 @@ public class Dambord {
 							stenen[geselecteerd[0]+2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							if(!kanSlaan())
+								beurtVoorbij();
+							else
+								foutmelding = "U kunt nog een keer slaan";
 							return true;
 						}
 					}
 				}
 				break;
 			case "rechtsonder":
-				if(geselecteerd[0] != 9 && geselecteerd[1] != 9){
+				if(geselecteerd[0] != 9 && geselecteerd[1] != 9 && getGeselecteerd() == speler){
 					if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == tegenstander && geselecteerd[0]+1 != 9 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]+2] == LEEG){
 							if(getGeselecteerd() == WIT)
@@ -258,6 +342,10 @@ public class Dambord {
 							stenen[geselecteerd[0]+2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							if(!kanSlaan())
+								beurtVoorbij();
+							else
+								foutmelding = "U kunt nog een keer slaan";
 							return true;
 						}
 					}
@@ -281,10 +369,18 @@ public class Dambord {
 			}
 		}
 		stenen = stenen2;
-		//beurt voorbij, dus wissel speler en tegenstander
-		int temp = speler;
-		speler = tegenstander;
-		tegenstander = temp;
+	}
+	
+	public void beurtVoorbij(){
+			int temp = speler;
+			speler = tegenstander;
+			tegenstander = temp;
+			String spelerString = "";
+			if(speler == 2 || speler == 4)
+				spelerString = "Wit";
+			if(speler == 1 || speler == 3)
+				spelerString = "Zwart";
+			beurt = spelerString + " is aan de beurt.";
 	}
 	
 	public void printBord(){
