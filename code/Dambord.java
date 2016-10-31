@@ -1,7 +1,7 @@
 public class Dambord {	
 	//################################# FIELDS #####################################
-	//0 = geen steen, 1 = zwart, 2 = wit
 	
+	//0 = geen steen, 1 = zwart, 2 = wit
 	private int[][] stenen = 
 		   {{0,1,0,1,0,1,0,1,0,1},
 			{1,0,1,0,1,0,1,0,1,0},
@@ -31,17 +31,26 @@ public class Dambord {
 	private String foutmelding = "";
 	private String beurt = "Wit is aan de beurt.";
 	
+	private ArduinoJavaComms arduino = new ArduinoJavaComms();
+	
 	//################################# METHODS #####################################
 	
+	//constructor
+	public Dambord(){
+		//arduino.initialize();
+	}
+	
+	//stuurt een foutmelding naar de GUI
 	public String getFoutmelding(){
 		return foutmelding;
 	}
 	
-	//giggity
+	//stuurt wie er aan de beurt is naar de GUI
 	public String getBeurt(){
 		return beurt;
 	}
 	
+	//steenselectiemethode
 	public boolean setGeselecteerd(int x, int y){
 		if(stenen[x][y] != LEEG){
 			geselecteerd[0] = x;
@@ -54,26 +63,32 @@ public class Dambord {
 		}
 	}
 	
+	//krijg de kleur van de geselecteerde steen
 	public int getGeselecteerd(){
 		return stenen[geselecteerd[0]][geselecteerd[1]];
 	}
 	
+	//krijg de x-coordinaat van de geselecteerde steen
 	public int getGeselecteerdeX(){
 		return geselecteerd[0];
 	}
 	
+	//krijg de y-coordinaat van de geselecteerde steen
 	public int getGeselecteerdeY(){
 		return geselecteerd[1];
 	}
 	
+	//krijg de kleur van een steen op positie <x,y>
 	public int getSoortSteen(int x, int y){
 		return stenen[x][y];
 	}
 	
+	//krijg de officiële nummering van het veld waar de steen op ligt
 	public int getVeldNummer(){
 			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 1;
 	}
 	
+	//krijg het veldnummer in de richting vanaf de geselecteerde steen
 	public int getVeldNummer(String richting){
 		if(getGeselecteerdeX() % 2 == 0){
 			switch(richting){
@@ -103,6 +118,7 @@ public class Dambord {
 		}
 	}
 	
+	//krijg het veldnummer in de richting 2 plaatsen van de geselecteerde steen vandaan
 	public int getVeldNummerNaSlaan(String richting){
 		if(getGeselecteerdeX() % 2 == 0){
 			switch(richting){
@@ -132,6 +148,7 @@ public class Dambord {
 		}
 	}
 	
+	//geeft de score weer
 	public void printScore(){
 		if(aantalWitteStenen == 0)
 			System.out.println("Zwart heeft gewonnen.");
@@ -142,6 +159,7 @@ public class Dambord {
 		}
 	}
 	
+	//schuift een steen in een bepaalde richting
 	public boolean schuif(String richting){
 		if(!kanSlaan()){
 			//schuif steen 1 plaats naar boven en 1 plaats naar links
@@ -155,6 +173,7 @@ public class Dambord {
 						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
+						arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
 						beurtVoorbij();
 						return true;
 				}
@@ -175,6 +194,7 @@ public class Dambord {
 					if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
 					}
+					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1);
 					beurtVoorbij();
 					return true;
 				}
@@ -190,6 +210,7 @@ public class Dambord {
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]-1] = temp;
+					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1);
 					beurtVoorbij();
 					return true;
 				}
@@ -205,6 +226,7 @@ public class Dambord {
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]+1] = temp;
+					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1);
 					beurtVoorbij();
 					return true;
 				}
@@ -219,7 +241,7 @@ public class Dambord {
 			}
 		}
 		else{
-			foutmelding = "U kan niet schuiven omdat er geslagen kan worden.";
+			foutmelding = "U mag niet schuiven omdat er geslagen kan worden.";
 			return false;
 		}
 	}
@@ -268,6 +290,7 @@ public class Dambord {
 		return false;
 	}
 	
+	//slaat in de richting die aangegeven is, als dit mogelijk is.
 	public boolean sla(String richting){
 		if(kanSlaan()){
 			switch(richting){
@@ -282,6 +305,7 @@ public class Dambord {
 							stenen[geselecteerd[0]-2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -302,6 +326,7 @@ public class Dambord {
 							stenen[geselecteerd[0]-2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -322,6 +347,7 @@ public class Dambord {
 							stenen[geselecteerd[0]+2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -342,6 +368,7 @@ public class Dambord {
 							stenen[geselecteerd[0]+2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -361,6 +388,7 @@ public class Dambord {
 		return false;
 	}
 	
+	//draait het bord 90 graden (ondersteboven)
 	public void draaiBord(){
 		int stenen2[][] = new int[10][10];
 		for(int x = 0; x <= 9; x++){
@@ -371,6 +399,7 @@ public class Dambord {
 		stenen = stenen2;
 	}
 	
+	//methode om de volgende speler aan de beurt te laten gaan
 	public void beurtVoorbij(){
 			int temp = speler;
 			speler = tegenstander;
@@ -383,6 +412,7 @@ public class Dambord {
 			beurt = spelerString + " is aan de beurt.";
 	}
 	
+	//geeft het bord weer in de output console
 	public void printBord(){
 		for(int x = 0; x <= 9; x++){
 			for(int y = 0; y <= 9; y++){
