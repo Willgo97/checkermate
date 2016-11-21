@@ -305,7 +305,7 @@ public class Dambord {
 							stenen[geselecteerd[0]-2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2);
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[0]-1);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -326,7 +326,7 @@ public class Dambord {
 							stenen[geselecteerd[0]-2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2);
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-1, geselecteerd[0]+1);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -347,7 +347,7 @@ public class Dambord {
 							stenen[geselecteerd[0]+2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2);
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+1, geselecteerd[0]-1);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else
@@ -368,7 +368,7 @@ public class Dambord {
 							stenen[geselecteerd[0]+2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2);
+							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+1, geselecteerd[0]+1);
 							if(!kanSlaan())
 								beurtVoorbij();
 							else

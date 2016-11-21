@@ -31,6 +31,7 @@ public class GUI extends JFrame {
 	private JTextArea statusText;
 	private JTextArea geschiedenisTekst;
 	private JTextField aanDeBeurtTekst;
+	private static ArduinoJavaComms arduino = new ArduinoJavaComms();
 
 	//Begint de applicatie.
 	public static void main(String[] args) {
@@ -44,6 +45,14 @@ public class GUI extends JFrame {
 				}
 			}
 		});
+		
+		Thread thread = new Thread(new Runnable() {
+		    @Override
+		    public void run() {
+		        arduino.initialize();
+		    }
+		});
+		thread.run();
 	}
 	
 	 //creeert de grafische user interface.
@@ -429,6 +438,7 @@ public class GUI extends JFrame {
 		aanDeBeurtTekst.setBounds(804, 148, 204, 30);
 		contentPane.add(aanDeBeurtTekst);
 		aanDeBeurtTekst.setColumns(10);
+		
 	}
 	
 	//refresht de interface
