@@ -18,11 +18,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 
     private static final int TIME_OUT = 1000; // Port open timeout
     private static final String PORT_NAMES[] = {  // PORTS
-//        "tty.usbmodem", // Mac OS X
-//        "usbdev", // Linux
-//        "tty", // Linux
-//        "serial", // Linux
-            "COM10","COM9","COM8","COM7", "COM6", "COM5", "COM4", "COM3", "COM2", "COM1" // Windows
+            "COM10","COM9","COM8","COM7", "COM6", "COM5", "COM4", "COM3", "COM2", "COM1" // Windows only
     };
 
     //main om te testen.
@@ -47,9 +43,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
                     if ( portid.getName().equals(portName)
                             || portid.getName().contains(portName)) {  // CONTAINS
                         port = (SerialPort) portid.open("ArduinoJavaComms", TIME_OUT);
-                        port.setFlowControlMode(
-                                SerialPort.FLOWCONTROL_XONXOFF_IN+
-                                        SerialPort.FLOWCONTROL_XONXOFF_OUT); // FLOW-CONTROL
+                        port.setFlowControlMode(SerialPort.FLOWCONTROL_XONXOFF_IN+SerialPort.FLOWCONTROL_XONXOFF_OUT); // FLOW-CONTROL
                         //open streams
                         input = new BufferedReader(
                                 new InputStreamReader( port.getInputStream() ));
@@ -62,7 +56,6 @@ public class ArduinoJavaComms implements SerialPortEventListener {
                     }
                 }
             }
-
             while ( true) {
                 try { Thread.sleep(100); } catch (Exception ex) { }
             }
@@ -97,22 +90,18 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 
     //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan slaan.
     public void robotSlaat(int oldX, int oldY, int newX, int newY, int geslagenX, int geslagenY){
-        
     	System.out.println("robot slaat.");
     	send(oldX, oldY);
     	send(newX, newY);
     	send(geslagenX, geslagenY);
     	send(10,10);
-    	  
     }
 
     //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan schuiven.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
-      
     	System.out.println("robot schuift.");
     	send(oldX,oldY);
     	send(newX,newY);
-    	
     }
     
     public int naarCoördinaten(int dambordpositie){

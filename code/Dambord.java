@@ -91,60 +91,34 @@ public class Dambord {
 	//krijg het veldnummer in de richting vanaf de geselecteerde steen
 	public int getVeldNummer(String richting){
 		if(getGeselecteerdeX() % 2 == 0){
-			switch(richting){
-			case "linksboven": 
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 4;
-			case "rechtsboven":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 3;
-			case "linksonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 6;
-			case "rechtsonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 7;
-			default: return 0;
-			}
+			return(getFieldDirection(richting, 4, 3, 6, 7));
 		}
 		else{
-			switch(richting){
-			case "linksboven": 
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 5;
-			case "rechtsboven":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 4;
-			case "linksonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 5;
-			case "rechtsonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 6;
-			default: return 0;
-			}
+			return(getFieldDirection(richting, 5, 4, 5, 6));
 		}
 	}
 	
 	//krijg het veldnummer in de richting 2 plaatsen van de geselecteerde steen vandaan
 	public int getVeldNummerNaSlaan(String richting){
 		if(getGeselecteerdeX() % 2 == 0){
-			switch(richting){
-			case "linksboven": 
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 10;
-			case "rechtsboven":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 8;
-			case "linksonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 10;
-			case "rechtsonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 13;
-			default: return 0;
-			}
+			return(getFieldDirection(richting, 10, 8, 10, 13));
 		}
 		else{
-			switch(richting){
-			case "linksboven": 
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 10;
-			case "rechtsboven":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - 8;
-			case "linksonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 10;
-			case "rechtsonder":
-				return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 12;
-			default: return 0;
-			}
+			return(getFieldDirection(richting, 10, 8, 10, 12));
+		}
+	}
+	
+	public int getFieldDirection(String richting, int a, int b, int x, int y){
+		switch(richting){
+		case "linksboven": 
+			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - a;
+		case "rechtsboven":
+			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 - b;
+		case "linksonder":
+			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + x;
+		case "rechtsonder":
+			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + y;
+		default: return 0;
 		}
 	}
 	
@@ -289,7 +263,7 @@ public class Dambord {
 		}
 		return false;
 	}
-	
+
 	//slaat in de richting die aangegeven is, als dit mogelijk is.
 	public boolean sla(String richting){
 		if(kanSlaan()){
@@ -386,7 +360,7 @@ public class Dambord {
 			return false;
 		}
 		return false;
-	}
+	}	
 	
 	//draait het bord 90 graden (ondersteboven)
 	public void draaiBord(){
