@@ -29,7 +29,7 @@ int gotoX;
 int gotoY;
 
 void loop() {
-  while(Serial.available()){
+  if(Serial.available() && beweegArm==0){
            
       char byteIn = Serial.read();
       //met 'c' vanuit Java begint de motor naar de volgende 2 coördinaten te gaan
@@ -47,6 +47,7 @@ void loop() {
   }
   if(beweegArm){
     moveRobot(gotoX,gotoY);
+    delay(6000);
     beweegArm = 0;
   }
 }
