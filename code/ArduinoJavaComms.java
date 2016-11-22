@@ -97,75 +97,22 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 
     //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan slaan.
     public void robotSlaat(int oldX, int oldY, int newX, int newY, int geslagenX, int geslagenY){
-        try{
-        	System.out.println("robot slaat.");
-        	output.write('c'); 
-        	output.flush();
-        	output.write(naarCoördinaten(oldX));
-        	output.flush();
-        	output.write(naarCoördinaten(oldY));
-        	output.flush();
-        	
-        	//robot pakt de steen
-        	
-        	output.write('c');
-        	output.flush();
-        	output.write(naarCoördinaten(newX));
-        	output.flush();
-        	output.write(naarCoördinaten(newY));
-            output.flush();
-            
-            //robot legt steen neer
-            
-            output.write('c');
-        	output.flush();
-        	output.write(naarCoördinaten(geslagenX));
-        	output.flush();
-        	output.write(naarCoördinaten(geslagenY));
-            output.flush();
-            
-          //robot pakt de steen 
-            
-            output.write('c');
-        	output.flush();
-        	output.write(naarCoördinaten(10));
-        	output.flush();
-        	output.write(naarCoördinaten(10));
-            output.flush();
-            
-          //robot legt steen neer
-            
-        }
-        catch(IOException|NullPointerException e){
-            System.out.println("er ging iets fout met het slaan " + e);
-        }
+        
+    	System.out.println("robot slaat.");
+    	send(oldX, oldY);
+    	send(newX, newY);
+    	send(geslagenX, geslagenY);
+    	send(10,10);
+    	  
     }
 
     //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan schuiven.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
-        try{
-        	System.out.println("robot schuift.");
-        	output.write('c'); 
-        	output.flush();
-        	output.write(naarCoördinaten(oldX));
-        	output.flush();
-        	output.write(naarCoördinaten(oldY));
-        	output.flush();
-        	
-        	//robot pakt de steen
-        	
-        	output.write('c');
-        	output.flush();
-        	output.write(naarCoördinaten(newX));
-        	output.flush();
-        	output.write(naarCoördinaten(newY));
-            output.flush();
-            
-            //robot legt steen neer
-        }
-        catch(IOException|NullPointerException e){
-            System.out.println("er ging iets fout met het schuiven " + e);
-        }
+      
+    	System.out.println("robot schuift.");
+    	send(oldX,oldY);
+    	send(newX,newY);
+    	
     }
     
     public int naarCoördinaten(int dambordpositie){
@@ -175,5 +122,16 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	//buiten het bord: 10
     	else
     		return 450;
+    }
+    
+    public void send(int x, int y){
+    	try{
+    		String coords = "c " + naarCoördinaten(x) + " " + naarCoördinaten(y) + " ";
+        	output.write(coords.getBytes());
+        	output.flush();
+    	}
+    	catch(IOException|NullPointerException e){
+            System.out.println("Er ging iets fout met het sturen van coördinaten " + e);
+        }
     }
 }
