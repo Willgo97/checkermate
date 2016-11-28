@@ -1,7 +1,11 @@
 import java.util.Scanner;
 
+//Klasse voor Unit Tests en een commandline spelervaring (zonder grafische interface).
+
 public class Damspel {
 	
+	
+	//Laat de volgende speler aan de beurt zijn
 	public static void beëindigBeurt(Dambord bord){
 		System.out.println("Na uw opdracht ziet het bord er zo uit:");
 		bord.printBord();
@@ -11,6 +15,7 @@ public class Damspel {
 		System.out.println("Welke opdracht wilt u uitvoeren?");
 	}
 	
+	//main voor unit tests. De-comment een blok om de methode te testen.
 	public static void main(String[] args){
 		Dambord bord = new Dambord();
 		/*
@@ -43,6 +48,20 @@ public class Damspel {
 		bord.printScore();
 		*/
 		
+		bord.testFysiekBord("1 lol ik kan hier alles zetten  1 1 1 1 1 1 1 1 1, "
+						  + "1 1 zo 1 1 1 1 1 1 1 1, "
+						  + "1 1 1 lang 1 1 1 1 1 1 1, "
+						  + "0000000000, er "
+						  + "1 100101010,    maar "
+						  + "1 1 1 1 1 1 1 1 1 1, tien"
+						  + "1 1 1 1 1 1 1 1 1 1,       getallen"
+						  + "1919191919191919191,                van nul t/m vier"
+						  + "1 1 1 1 1 1 1 1 1 1, 									per rij"
+						  + "1 2 3 4 1 2 3 4 1 2											staan.");
+						 
+		
+		/*
+		//begintekst
 		boolean flag = false;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welkom bij dammen met CheckerMate!");
@@ -51,6 +70,7 @@ public class Damspel {
 		System.out.println("Legenda: 0 = een leeg veld, 1 = een zwarte steen, 2 = een witte steen, 3 = een zwarte dam, 4 = een witte dam.");
 		System.out.println("Geldige opdrachten zijn:\n- exit/stop/afsluiten\n- selecteer x y\n- schuif {linksboven, linksonder, rechtsboven, rechtsonder}\n- sla {linksboven, linksonder, rechtsboven, rechtsonder}\n- draai/draaien/draai bord\n- score\nWelke opdracht wilt u nu uitvoeren?");
 		
+		//inputscanner
         while(sc.hasNextLine() && !flag){
         	
         	String input = sc.nextLine();
@@ -91,5 +111,6 @@ public class Damspel {
         	}
         }
         sc.close();
+        */
 	}
 }

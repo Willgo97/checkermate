@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
+//Klasse die de verbinding met de Arduino maakt
 
 public class ArduinoJavaComms implements SerialPortEventListener {
     SerialPort port = null;
@@ -20,6 +21,8 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     private static final String PORT_NAMES[] = {  // PORTS
             "COM10","COM9","COM8","COM7", "COM6", "COM5", "COM4", "COM3", "COM2", "COM1" // Windows only
     };
+    
+    private int[][] fysiekDambord;
 
     //main om te testen.
     public static void main(String[] args) {
@@ -77,6 +80,9 @@ public class ArduinoJavaComms implements SerialPortEventListener {
                     }
                     else if(inputLine.length() > 1){
                         System.out.println(inputLine);
+                        if(inputLine.startsWith("f")){
+                        	setFysiekDambord(inputLine);
+                        }
                     }
                     break;
                 default:
@@ -90,7 +96,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 
     //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan slaan.
     public void robotSlaat(int oldX, int oldY, int newX, int newY, int geslagenX, int geslagenY){
-    	System.out.println("robot slaat.");
+    	System.out.println("Proberen om met de robot te slaan...");
     	send(oldX, oldY);
     	send(newX, newY);
     	send(geslagenX, geslagenY);
@@ -99,7 +105,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 
     //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan schuiven.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
-    	System.out.println("robot schuift.");
+    	System.out.println("Proberen om met de robot te schuiven...");
     	send(oldX,oldY);
     	send(newX,newY);
     }
@@ -113,14 +119,48 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     		return 450;
     }
     
+    //hulpmethode om coördinaten naar de Arduino te sturen
     public void send(int x, int y){
     	try{
     		String coords = "c " + naarCoördinaten(x) + " " + naarCoördinaten(y) + " ";
         	output.write(coords.getBytes());
         	output.flush();
+        	System.out.println("Gelukt!");
     	}
     	catch(IOException|NullPointerException e){
-            System.out.println("Er ging iets fout met het sturen van coördinaten " + e);
+            System.out.println("Er ging iets fout met het sturen van coördinaten, namelijk " + e);
         }
     }
+
+    //returnt ontvangen data van het fysieke dambord
+	public int[][] getFysiekDambord() {
+		return fysiekDambord;
+	}
+
+	/*set fysieke dambord-data vanuit een verkregen string:
+	//inputstring format: "f <getallen van 0 t/m 4, na iedere 10 cijfers komt een komma>"
+	LEEG = 0
+	ZWART = 1
+	WIT = 2
+	ZWARTEDAM = 3
+	WITTEDAM = 4
+	 */
+	public void setFysiekDambord(String rauweInput) {
+		int[][] updatedBord = new int[10][10];
+		int x = 0;
+		int y = 0;
+		for(int i = 0; i < rauweInput.length(); i++){
+			if(rauweInput.charAt(i) == '0' || rauweInput.charAt(i) == '1' || rauweInput.charAt(i) == '2' || rauweInput.charAt(i) == '3' || rauweInput.charAt(i) == '4'){
+				updatedBord[y][x] = Character.getNumericValue(rauweInput.charAt(i));
+				x = (x + 1) % 10;
+			}
+			if(rauweInput.charAt(i) == ','){
+				y++;	
+			}
+			else{
+				continue;
+			}
+		}
+		this.fysiekDambord = updatedBord;
+	}
 }

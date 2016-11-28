@@ -40,6 +40,13 @@ public class Dambord {
 		//arduino.initialize();
 	}
 	
+	//testmethode voor de arduino om de data van het fysieke dambord door te geven.
+	public void testFysiekBord(String input){
+		arduino.setFysiekDambord(input);
+		stenen = arduino.getFysiekDambord();
+		printBord();
+	}
+	
 	//stuurt een foutmelding naar de GUI
 	public String getFoutmelding(){
 		return foutmelding;
@@ -108,6 +115,7 @@ public class Dambord {
 		}
 	}
 	
+	//hulpmethode voor het verkrijgen van het veldnummer
 	public int getFieldDirection(String richting, int a, int b, int x, int y){
 		switch(richting){
 		case "linksboven": 

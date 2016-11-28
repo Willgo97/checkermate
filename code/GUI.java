@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
+//Grafische User Interface van het damspel
+
 public class GUI extends JFrame {
 	//Fields
 	private static final long serialVersionUID = 1L;
@@ -403,7 +405,7 @@ public class GUI extends JFrame {
 		dambord.setIcon(new ImageIcon(GUI.class.getResource("/checkers-board.jpg")));
 		contentPane.add(dambord);
 		
-		//draai bord knop
+		//draai bord knop (is voor nu onzichtbaar)
 		JButton btnNewButton = new JButton("Draai bord");
 		btnNewButton.setVisible(false);
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -429,7 +431,7 @@ public class GUI extends JFrame {
 		geschiedenisTekst.setLineWrap(true);
 		scrollPane.setViewportView(geschiedenisTekst);
 		
-		//tekst voor wie er aan de beurt wius
+		//tekst voor wie er aan de beurt is
 		aanDeBeurtTekst = new JTextField();
 		aanDeBeurtTekst.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		aanDeBeurtTekst.setHorizontalAlignment(SwingConstants.CENTER);
@@ -441,7 +443,7 @@ public class GUI extends JFrame {
 		
 	}
 	
-	//refresht de interface
+	//updatet de interface
 	public void updatePanel(){
 		aanDeBeurtTekst.setText(bord.getBeurt());
 		for(int i = 0; i <= 9; i++){
@@ -467,7 +469,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	//verandert het icoon wanneer er op een steen geklikt wordt
+	//Verduidelijkt het icoon wanneer er op een steen geklikt wordt.
 	public void getFocusIcon(JLabel label){
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
@@ -492,7 +494,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	//methode voor focus listeners voor stenen
+	//hulpmethode voor focus listeners voor stenen
 	private void maakSteenFocusListener(final JLabel steen){
 		steen.addFocusListener(new FocusAdapter() {
 			@Override
@@ -506,7 +508,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	//methode voor mouse listeners voor stenen
+	//hulpmethode voor mouse listeners voor stenen
 	private void maakSteenMouseListener(final JLabel steen, final int posX, final int posY){
 		steen.addMouseListener(new MouseAdapter() {
 			@Override
@@ -518,7 +520,7 @@ public class GUI extends JFrame {
 		});		
 	}
 	
-	//methode voor mouse listeners voor de buttons
+	//hulpmethode voor mouse listeners voor de buttons
 	private void maakButtonMouseListener(JButton button, final String richting, final String soort){
 		button.addMouseListener(new MouseAdapter() {
 			@Override
@@ -545,7 +547,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	//methode voor de layout van de stenen te maken
+	//hulpmethode voor de layout van de stenen te maken
 	private void maakSteenLayout(JLabel steen, String picture, int size1, int size2, int posX, int posY){
 		if (picture != null){
 			steen.setIcon(new ImageIcon(GUI.class.getResource(picture)));
@@ -556,7 +558,7 @@ public class GUI extends JFrame {
 		contentPane.add(steen);
 	}
 	
-	//methode voor de layout van de buttons te maken
+	//hulpmethode voor de layout van de buttons te maken
 	private void maakButtonLayout(JButton button, int size1, int size2, int size3){
 		button.setBounds(size1, size2, size3, 23);
 		contentPane.add(button);
