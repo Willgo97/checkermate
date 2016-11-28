@@ -32,6 +32,7 @@ void loop() {
   while(Serial.available()){
            
       char byteIn = Serial.read();
+      //met 'c' vanuit Java begint de motor naar de volgende 2 coördinaten te gaan
       if(byteIn == 'c') {
         gotoX = Serial.parseInt();
         gotoY = Serial.parseInt();
@@ -49,8 +50,8 @@ void loop() {
     beweegArm = 0;
   }
 }
-
-void moveRobot(int x, int y){ //  beweeg de robot naar deze positie in mm
+//  beweeg de robot naar deze positie in mm
+void moveRobot(int x, int y){
 
   int diffX = x-curX;
   int diffY = y-curY;
@@ -107,7 +108,8 @@ void moveRobot(int x, int y){ //  beweeg de robot naar deze positie in mm
   curY = y;
 }
 
-void resetRobot(){ // beweeg de robot terug naar de begin positie
+// beweeg de robot terug naar de begin positie
+void resetRobot(){ 
   boolean endX = digitalRead(limitsX);
   boolean endY = digitalRead(limitsY);
 
