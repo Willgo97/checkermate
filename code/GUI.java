@@ -1,5 +1,3 @@
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -20,8 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
-//Grafische User Interface van het damspel
-
+//Graphical User Interface of the checkers game
 public class GUI extends JFrame {
 	//Fields
 	private static final long serialVersionUID = 1L;
@@ -33,31 +30,8 @@ public class GUI extends JFrame {
 	private JTextArea statusText;
 	private JTextArea geschiedenisTekst;
 	private JTextField aanDeBeurtTekst;
-	private static ArduinoJavaComms arduino = new ArduinoJavaComms();
-
-	//Begint de applicatie.
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI frame = new GUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		Thread thread = new Thread(new Runnable() {
-		    @Override
-		    public void run() {
-		        arduino.initialize();
-		    }
-		});
-		thread.run();
-	}
 	
-	 //creeert de grafische user interface.
+	 //creates the graphical user interface.
 	public GUI() {
 		setResizable(false);
 		setTitle("CheckerMate dammen");
@@ -337,7 +311,7 @@ public class GUI extends JFrame {
 		maakSteenMouseListener(leeg10, 5, 8);
 		maakSteenLayout(leeg10, "", 607, 383, 5, 8);
 		
-		//statustekst
+		//statustext
 		statusText = new JTextArea();
 		statusText.setWrapStyleWord(true);
 		statusText.setLineWrap(true);
@@ -345,7 +319,7 @@ public class GUI extends JFrame {
 		statusText.setBounds(773, 466, 266, 57);
 		contentPane.add(statusText);
 		
-		//schuiftekst
+		//movetext
 		txtSchuiven = new JTextField();
 		txtSchuiven.setEditable(false);
 		txtSchuiven.setHorizontalAlignment(SwingConstants.CENTER);
@@ -354,7 +328,7 @@ public class GUI extends JFrame {
 		contentPane.add(txtSchuiven);
 		txtSchuiven.setColumns(10);
 		
-		//buttons voor het schuiven
+		//buttons to move
 		JButton schuifLinksboven = new JButton("Linksboven");
 		maakButtonMouseListener(schuifLinksboven, "linksboven", "schuif");
 		maakButtonLayout(schuifLinksboven, 773, 207, 89);
@@ -372,7 +346,7 @@ public class GUI extends JFrame {
 		maakButtonMouseListener(schuifRechtsonder, "rechtsonder", "schuif");
 		maakButtonLayout(schuifRechtsonder, 950, 273, 99);
 		
-		//slaantekst
+		//capturetext
 		txtSlaan = new JTextField();
 		txtSlaan.setEditable(false);
 		txtSlaan.setHorizontalAlignment(SwingConstants.CENTER);
@@ -381,7 +355,7 @@ public class GUI extends JFrame {
 		contentPane.add(txtSlaan);
 		txtSlaan.setColumns(10);
 		
-		//buttons voor het slaan
+		//buttons to capture
 		JButton slaLinksboven = new JButton("Linksboven");
 		maakButtonMouseListener(slaLinksboven, "linksboven", "sla");
 		maakButtonLayout(slaLinksboven, 773, 358, 89);
@@ -398,14 +372,14 @@ public class GUI extends JFrame {
 		maakButtonMouseListener(slaRechtsonder, "rechtsonder", "sla");
 		maakButtonLayout(slaRechtsonder, 950, 422, 99);
 
-		//achtergrond
+		//background image
 		JLabel dambord = new JLabel("");
 		dambord.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		dambord.setBounds(5, 0, 758, 761);
 		dambord.setIcon(new ImageIcon(GUI.class.getResource("/checkers-board.jpg")));
 		contentPane.add(dambord);
 		
-		//draai bord knop (is voor nu onzichtbaar)
+		//turn board 90 degrees (invisible)
 		JButton btnNewButton = new JButton("Draai bord");
 		btnNewButton.setVisible(false);
 		btnNewButton.addMouseListener(new MouseAdapter() {
@@ -419,7 +393,7 @@ public class GUI extends JFrame {
 		btnNewButton.setBounds(839, 684, 139, 63);
 		contentPane.add(btnNewButton);
 		
-		//geschiedenis van de zetten
+		//move history
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(773, 553, 266, 120);
 		contentPane.add(scrollPane);
@@ -431,7 +405,7 @@ public class GUI extends JFrame {
 		geschiedenisTekst.setLineWrap(true);
 		scrollPane.setViewportView(geschiedenisTekst);
 		
-		//tekst voor wie er aan de beurt is
+		//text to show who's turn it is.
 		aanDeBeurtTekst = new JTextField();
 		aanDeBeurtTekst.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		aanDeBeurtTekst.setHorizontalAlignment(SwingConstants.CENTER);
@@ -443,7 +417,7 @@ public class GUI extends JFrame {
 		
 	}
 	
-	//updatet de interface
+	//updates the interface
 	public void updatePanel(){
 		aanDeBeurtTekst.setText(bord.getBeurt());
 		for(int i = 0; i <= 9; i++){
@@ -469,7 +443,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	//Verduidelijkt het icoon wanneer er op een steen geklikt wordt.
+	//Focuses the icon that is clicked on.
 	public void getFocusIcon(JLabel label){
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
@@ -494,7 +468,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	//hulpmethode voor focus listeners voor stenen
+	//helper method for focus listeners for pieces
 	private void maakSteenFocusListener(final JLabel steen){
 		steen.addFocusListener(new FocusAdapter() {
 			@Override
@@ -508,7 +482,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	//hulpmethode voor mouse listeners voor stenen
+	//helper method for mouse listeners for pieces
 	private void maakSteenMouseListener(final JLabel steen, final int posX, final int posY){
 		steen.addMouseListener(new MouseAdapter() {
 			@Override
@@ -520,7 +494,7 @@ public class GUI extends JFrame {
 		});		
 	}
 	
-	//hulpmethode voor mouse listeners voor de buttons
+	//helper method for mouse listeners for buttons
 	private void maakButtonMouseListener(JButton button, final String richting, final String soort){
 		button.addMouseListener(new MouseAdapter() {
 			@Override
@@ -547,7 +521,7 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	//hulpmethode voor de layout van de stenen te maken
+	//helper method for layout of the pieces
 	private void maakSteenLayout(JLabel steen, String picture, int size1, int size2, int posX, int posY){
 		if (picture != null){
 			steen.setIcon(new ImageIcon(GUI.class.getResource(picture)));
@@ -558,7 +532,7 @@ public class GUI extends JFrame {
 		contentPane.add(steen);
 	}
 	
-	//hulpmethode voor de layout van de buttons te maken
+	//helper method for layout of the buttons
 	private void maakButtonLayout(JButton button, int size1, int size2, int size3){
 		button.setBounds(size1, size2, size3, 23);
 		contentPane.add(button);

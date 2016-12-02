@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Enumeration;
 
-//Klasse die de verbinding met de Arduino maakt
+//Class that makes communication channels with the Arduino.
 
 public class ArduinoJavaComms implements SerialPortEventListener {
     SerialPort port = null;
@@ -24,15 +24,10 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     
     private int[][] fysiekDambord;
 
-    //main om te testen.
-    public static void main(String[] args) {
-        ArduinoJavaComms arduino = new ArduinoJavaComms();
-        arduino.initialize();
-    }
-
-    //begint de communicatie
+    //Starts the communication.
     public void initialize() {
         try {
+        	System.out.println("Trying to connect to Arduino...");
             CommPortIdentifier portid = null;
             Enumeration<CommPortIdentifier> portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -68,7 +63,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
         }
     }
 
-    //handelt output van de arduino af die in de inputStream van Java staat.
+    //Handles the Arduino output that comes in Java's InputStream
     @Override
     public void serialEvent(SerialPortEvent event) {
         try {
@@ -94,32 +89,32 @@ public class ArduinoJavaComms implements SerialPortEventListener {
         }
     }
 
-    //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan slaan.
+    //Method to send codes to the Arduino so that the robot can capture a piece.
     public void robotSlaat(int oldX, int oldY, int newX, int newY, int geslagenX, int geslagenY){
-    	System.out.println("Proberen om met de robot te slaan...");
+    	System.out.println("Trying to capture a piece with the robot...");
     	send(oldX, oldY);
     	send(newX, newY);
     	send(geslagenX, geslagenY);
     	send(10,10);
     }
 
-    //methode om een reeks codes naar de Arduino te sturen zodat de robotarm kan schuiven.
+    //Method to send codes to the Arduino so that the robot can capture a piece.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
-    	System.out.println("Proberen om met de robot te schuiven...");
+    	System.out.println("Trying to move a piece with the robot...");
     	send(oldX,oldY);
     	send(newX,newY);
     }
     
     public int naarCoördinaten(int dambordpositie){
-    	//binnen het bord: 0 t/m 9
+    	//Within range of the board: 0 t/m 9
     	if(dambordpositie < 10)
     		return dambordpositie * 40 + 20;
-    	//buiten het bord: 10
+    	//Outside range of the board: 10
     	else
     		return 450;
     }
     
-    //hulpmethode om coördinaten naar de Arduino te sturen
+    //Helper method to send coordinates to the Arduino.
     public void send(int x, int y){
     	try{
     		String coords = "c " + naarCoördinaten(x) + " " + naarCoördinaten(y) + " ";
@@ -132,18 +127,18 @@ public class ArduinoJavaComms implements SerialPortEventListener {
         }
     }
 
-    //returnt ontvangen data van het fysieke dambord
+    //Returns data retrieved from physical board.
 	public int[][] getFysiekDambord() {
 		return fysiekDambord;
 	}
 
-	/*set fysieke dambord-data vanuit een verkregen string:
-	//inputstring format: "f <getallen van 0 t/m 4, na iedere 10 cijfers komt een komma>"
-	LEEG = 0
-	ZWART = 1
-	WIT = 2
-	ZWARTEDAM = 3
-	WITTEDAM = 4
+	/*Sets physical board data from a given String.
+	//Inputstring format: "f <numbers from 0 to 4 inclusive, after every 10 digits follows a comma>"
+	EMPTY = 0
+	BLACK = 1
+	WHITE = 2
+	BLACKKING = 3
+	WHITEKING = 4
 	 */
 	public void setFysiekDambord(String rauweInput) {
 		int[][] updatedBord = new int[10][10];

@@ -1,7 +1,7 @@
 public class Dambord {	
 	//################################# FIELDS #####################################
 	
-	//0 = geen steen, 1 = zwart, 2 = wit
+	//0 = empty, 1 = black, 2 = white
 	private int[][] stenen = 
 		   {{0,1,0,1,0,1,0,1,0,1},
 			{1,0,1,0,1,0,1,0,1,0},
@@ -22,7 +22,7 @@ public class Dambord {
 	private static final int ZWARTEDAM = 3;
 	private static final int WITTEDAM = 4;
 	
-	//Wit begint altijd met de eerste zet.
+	//White always begins turn one.
 	private int speler = WIT;
 	private int tegenstander = ZWART;
 	private int aantalZwarteStenen = 20;
@@ -37,27 +37,27 @@ public class Dambord {
 	
 	//constructor
 	public Dambord(){
-		//arduino.initialize();
+		
 	}
 	
-	//testmethode voor de arduino om de data van het fysieke dambord door te geven.
+	//testing method for the Arduino to send data of the physical checkers board.
 	public void testFysiekBord(String input){
 		arduino.setFysiekDambord(input);
 		stenen = arduino.getFysiekDambord();
 		printBord();
 	}
 	
-	//stuurt een foutmelding naar de GUI
+	//Sends an error message to the GUI
 	public String getFoutmelding(){
 		return foutmelding;
 	}
 	
-	//stuurt wie er aan de beurt is naar de GUI
+	//Sends who's turn it is to the GUI
 	public String getBeurt(){
 		return beurt;
 	}
 	
-	//steenselectiemethode
+	//Piece selection method
 	public boolean setGeselecteerd(int x, int y){
 		if(stenen[x][y] != LEEG){
 			geselecteerd[0] = x;
@@ -70,32 +70,32 @@ public class Dambord {
 		}
 	}
 	
-	//krijg de kleur van de geselecteerde steen
+	//Returns the kind of piece that is currently selected
 	public int getGeselecteerd(){
 		return stenen[geselecteerd[0]][geselecteerd[1]];
 	}
 	
-	//krijg de x-coordinaat van de geselecteerde steen
+	//Returns the x coordinate of the selected piece.
 	public int getGeselecteerdeX(){
 		return geselecteerd[0];
 	}
 	
-	//krijg de y-coordinaat van de geselecteerde steen
+	//Returns the y coordinate of the selected piece.
 	public int getGeselecteerdeY(){
 		return geselecteerd[1];
 	}
 	
-	//krijg de kleur van een steen op positie <x,y>
+	//Returns the kind of piece that is currently on (x,y)
 	public int getSoortSteen(int x, int y){
 		return stenen[x][y];
 	}
 	
-	//krijg de officiële nummering van het veld waar de steen op ligt
+	//Returns the official field number the selected piece is on.
 	public int getVeldNummer(){
 			return getGeselecteerdeX() * 5 + getGeselecteerdeY()/2 + 1;
 	}
 	
-	//krijg het veldnummer in de richting vanaf de geselecteerde steen
+	//Returns the official field number of the piece in a direction from the selected piece.
 	public int getVeldNummer(String richting){
 		if(getGeselecteerdeX() % 2 == 0){
 			return(getFieldDirection(richting, 4, 3, 6, 7));
@@ -105,7 +105,7 @@ public class Dambord {
 		}
 	}
 	
-	//krijg het veldnummer in de richting 2 plaatsen van de geselecteerde steen vandaan
+	//Returns the official field number of the piece in two times a direction from the selected piece.
 	public int getVeldNummerNaSlaan(String richting){
 		if(getGeselecteerdeX() % 2 == 0){
 			return(getFieldDirection(richting, 10, 8, 10, 13));
@@ -115,7 +115,7 @@ public class Dambord {
 		}
 	}
 	
-	//hulpmethode voor het verkrijgen van het veldnummer
+	//Helper method to get the official field number.
 	public int getFieldDirection(String richting, int a, int b, int x, int y){
 		switch(richting){
 		case "linksboven": 
@@ -130,7 +130,7 @@ public class Dambord {
 		}
 	}
 	
-	//geeft de score weer
+	//Prints the current score
 	public void printScore(){
 		if(aantalWitteStenen == 0)
 			System.out.println("Zwart heeft gewonnen.");
@@ -141,17 +141,17 @@ public class Dambord {
 		}
 	}
 	
-	//schuift een steen in een bepaalde richting
+	//Moves the selected piece in a certain direction
 	public boolean schuif(String richting){
 		if(!kanSlaan()){
-			//schuif steen 1 plaats naar boven en 1 plaats naar links
+			//moves a piece 1 up and 1 left
 			if(richting.equals("linksboven") && geselecteerd[0] != 0 && geselecteerd[1] != 0 && ((getGeselecteerd() == speler && getGeselecteerd() == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
-				//als er geen steen links-boven ligt:
+				//if no piece is left-up from it:
 				if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == LEEG){
 						int temp = getGeselecteerd();
 						stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 						stenen[geselecteerd[0]-1][geselecteerd[1]-1] = temp;
-						//als de steen naar de rand van de tegenstander is geschoven, wordt het een dam.
+						//If a piece moved to the side of the opponent, it becomes a king.
 						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
@@ -165,14 +165,14 @@ public class Dambord {
 				}
 			}
 		
-			//schuif steen 1 plaats naar boven en 1 plaats naar rechts
+			//moves a piece 1 up and 1 right
 			else if(richting.equals("rechtsboven") && geselecteerd[0] != 0 && geselecteerd[1] != 9 && ((getGeselecteerd() == speler && getGeselecteerd() == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
-				//als er geen steen rechts-boven ligt:
+				//if no piece is right-up from it:
 				if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == LEEG){
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]-1][geselecteerd[1]+1] = temp;
-					//als de steen naar de rand van de tegenstander is geschoven, wordt het een dam.
+					//If a piece moved to the side of the opponent, it becomes a king.
 					if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
 					}
@@ -185,9 +185,9 @@ public class Dambord {
 					return false;
 				}
 			}
-			//schuif steen 1 plaats naar links en 1 plaats naar onder. Alleen bij een dam.
+			//moves a piece 1 down and 1 left. Only usable by a king.
 			else if(richting.equals("linksonder") && geselecteerd[0] != 9 && geselecteerd[1] != 0 && ((getGeselecteerd() == speler && getGeselecteerd() == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
-				//als er geen steen links-onder ligt:
+				//if no piece is left-down from it:
 				if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == LEEG){
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
@@ -201,9 +201,9 @@ public class Dambord {
 					return false;
 				}
 			}
-			//schuif steen 1 plaats naar rechts en 1 plaats naar onder. Alleen bij een dam.
+			//moves a piece 1 down and 1 right. Only usable by a king.
 			else if(richting.equals("rechtsonder") && geselecteerd[0] != 9 && geselecteerd[1] != 9 && ((getGeselecteerd() == speler && getGeselecteerd() == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM)){
-				//als er geen steen rechts-onder ligt:
+				//if no piece is right-down from it:
 				if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == LEEG){
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
@@ -228,13 +228,13 @@ public class Dambord {
 		}
 	}
 	
-	//Als je kan slaan, moet je slaan.
+	//If you are able to capture, you must capture.
 	public boolean kanSlaan(){
 		
 		for(int x = 0; x <= 9; x++){
 			for(int y = 0; y <= 9; y++){
 				if(stenen[x][y] == speler ){
-					//check links-boven
+					//check left-up
 					if(x != 0 && y != 0){
 						if(stenen[x-1][y-1] == tegenstander && x-1 != 0 && y-1 != 0){
 							if(stenen[x-2][y-2] == LEEG){
@@ -242,7 +242,7 @@ public class Dambord {
 							}
 						}
 					}
-					//check rechts-boven
+					//check right-up
 					if(x != 0 && y != 9){
 						if(stenen[x-1][y+1] == tegenstander && x-1 != 0 && y+1 != 9){
 							if(stenen[x-2][y+2] == LEEG){
@@ -250,7 +250,7 @@ public class Dambord {
 							}
 						}
 					}
-					//check links-onder
+					//check left-down
 					if(x != 9 && y != 0){
 						if(stenen[x+1][y-1] == tegenstander && x+1 != 9 && y-1 != 0){
 							if(stenen[x+2][y-2] == LEEG){
@@ -258,7 +258,7 @@ public class Dambord {
 							}
 						}
 					}
-					//check rechts-onder
+					//check right-down
 					if(x != 9 && y != 9){
 						if(stenen[x+1][y+1] == tegenstander && x+1 != 9 && y+1 != 9){
 							if(stenen[x+2][y+2] == LEEG){
@@ -272,7 +272,7 @@ public class Dambord {
 		return false;
 	}
 
-	//slaat in de richting die aangegeven is, als dit mogelijk is.
+	//Captures a piece in a certain direction, if possible.
 	public boolean sla(String richting){
 		if(kanSlaan()){
 			switch(richting){
@@ -370,7 +370,7 @@ public class Dambord {
 		return false;
 	}	
 	
-	//draait het bord 90 graden (ondersteboven)
+	//Rotates the board 90 degrees.
 	public void draaiBord(){
 		int stenen2[][] = new int[10][10];
 		for(int x = 0; x <= 9; x++){
@@ -381,7 +381,7 @@ public class Dambord {
 		stenen = stenen2;
 	}
 	
-	//methode om de volgende speler aan de beurt te laten gaan
+	//Method to pass the turn to the opponent.
 	public void beurtVoorbij(){
 			int temp = speler;
 			speler = tegenstander;
@@ -394,7 +394,7 @@ public class Dambord {
 			beurt = spelerString + " is aan de beurt.";
 	}
 	
-	//geeft het bord weer in de output console
+	//Prints the board in the output console.
 	public void printBord(){
 		for(int x = 0; x <= 9; x++){
 			for(int y = 0; y <= 9; y++){

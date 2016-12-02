@@ -1,11 +1,10 @@
 import java.util.Scanner;
 
-//Klasse voor Unit Tests en een commandline spelervaring (zonder grafische interface).
+//Class for Unit Tests and a command line game experience (no graphical interface).
 
 public class Damspel {
 	
-	
-	//Laat de volgende speler aan de beurt zijn
+	//Ends the turn for the current player
 	public static void beëindigBeurt(Dambord bord){
 		System.out.println("Na uw opdracht ziet het bord er zo uit:");
 		bord.printBord();
@@ -15,11 +14,11 @@ public class Damspel {
 		System.out.println("Welke opdracht wilt u uitvoeren?");
 	}
 	
-	//main voor unit tests. De-comment een blok om de methode te testen.
+	//main for unit tests. De-comment a block to test the method.
 	public static void main(String[] args){
 		Dambord bord = new Dambord();
 		/*
-		// Slaan- en schuiftesten
+		// Capture and move tests
 		bord.setGeselecteerd(6, 1);
 		bord.schuif("linksboven");
 		bord.printBord();
@@ -61,7 +60,7 @@ public class Damspel {
 						 
 		
 		/*
-		//begintekst
+		//starting text
 		boolean flag = false;
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Welkom bij dammen met CheckerMate!");
