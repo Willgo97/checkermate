@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class App {
@@ -12,6 +13,7 @@ public class App {
 
 	//Starts the main application.
 	public static void main(String[] args) {
+		
 		//Creates threads for the Arduino, Server and Client
 		Thread arduinoThread = new Thread(new Runnable() {
 		    @Override
@@ -51,19 +53,27 @@ public class App {
 	    if(response == 3 || response == -1){
 	    	System.exit(0);
 	    }
+	    
 	    else{
 	    	boolean connected = false;
 	    	if(response == 1){
 				serverThread.start();
+				JDialog message = showMessage("Wachten tot iemand de uitnodiging accepteert...");
 				while(!connected){
 					connected = server.isConnected();
 				}
+				message.setVisible(false);
+				message.dispose();
+				
 			}
 	    	if(response == 2){
 	    		clientThread.start();
+	    		JDialog message = showMessage("Bezig met zoeken naar een verbinding...");
 				while(!connected){
 					connected = client.isConnected();
 				}
+				message.setVisible(false);
+				message.dispose();
 	    	}
 	    	if(response == 0 || connected){
 	    		//starts GUI and Arduino threads
@@ -80,5 +90,21 @@ public class App {
 				arduinoThread.start();
 	    	}
 		}
+	}
+	
+	public static JDialog showMessage(String message){
+		final JOptionPane optionPane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+
+		final JDialog dialog = new JDialog();
+		dialog.setTitle("CheckerMate");
+		dialog.setModal(false);
+
+		dialog.setContentPane(optionPane);
+
+		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
+		return dialog;
 	}
 }
