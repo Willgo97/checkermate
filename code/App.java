@@ -60,20 +60,38 @@ public class App {
 				serverThread.start();
 				JDialog message = showMessage("Wachten tot iemand de uitnodiging accepteert...");
 				while(!connected){
-					connected = server.isConnected();
+					connected = server.hasConnection();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				message.setVisible(false);
-				message.dispose();
-				
+				if(connected){
+					message.setVisible(false);
+					message.dispose();
+				}
 			}
 	    	if(response == 2){
+	    		String serverAddress = JOptionPane.showInputDialog(
+	    	            "Voer IP-adres in van de host op poort 13337");
+	    		client.setIP(serverAddress);
 	    		clientThread.start();
 	    		JDialog message = showMessage("Bezig met zoeken naar een verbinding...");
 				while(!connected){
-					connected = client.isConnected();
+					connected = client.hasConnection();
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				message.setVisible(false);
-				message.dispose();
+				if(connected){
+					message.setVisible(false);
+					message.dispose();
+				}
 	    	}
 	    	if(response == 0 || connected){
 	    		//starts GUI and Arduino threads

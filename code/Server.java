@@ -10,15 +10,14 @@ public class Server {
 	private static boolean connectionEstablished = false;
 	
 	//check for connection with this method
-	public boolean isConnected(){
+	public boolean hasConnection(){
 		return connectionEstablished;
 	}
 	
 	//tries to run the server connection
     public void run(){
     	System.out.println("Server hosting connection on port " + portNumber + "...");
-    	boolean connected = false;
-        while(portNumber < 65000 && !connected){
+        while(!hasConnection()){
         	try (
                     ServerSocket serverSocket =
                         new ServerSocket(portNumber);
@@ -28,19 +27,18 @@ public class Server {
                     BufferedReader in = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
                 ) {
+        			connectionEstablished = true;
                     String inputLine;
-                    System.out.println("Connected on port " + portNumber + ".");
-                    connected = true;
-                    connectionEstablished = true;
-                    while ((inputLine = in.readLine()) != null) {
+                    System.out.println("Connected to client on port " + portNumber + ".");
+                    
+                    while ((inputLine = in.readLine()) != null) { 
+                    	//<process inputLine here>
                         out.println("Hoi ik ben de server, je zei: " + inputLine);
                     }
                 } catch (IOException e) {
                     System.out.println("Exception caught when trying to listen on port "
                         + portNumber + " or listening for a connection");
                     System.out.println(e.getMessage());
-                    portNumber++;
-                    connected = false;
                 }
         }
     }
