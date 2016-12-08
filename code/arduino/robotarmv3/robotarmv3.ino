@@ -1,21 +1,8 @@
-/*
-   BYJ48 Stepper motor code
-   Connect :
-   IN1 >> D8
-   IN2 >> D9
-   IN3 >> D10
-   IN4 >> D11
-   VCC ... 5V Prefer to use external 5V Source
-   Gnd
-   written By :Mohannad Rawashdeh
-  http://www.instructables.com/member/Mohannad+Rawashdeh/
-     28/9/2013
-  */
 
-#define IN1  8
-#define IN2  9
-#define IN3  10
-#define IN4  11
+#define IN1  46
+#define IN2  44
+#define IN3  42
+#define IN4  40
 int Steps = 0;
 boolean Direction = true;// gre
 unsigned long last_time;
@@ -28,8 +15,9 @@ const int stepPin = 3;
 const int stepPin2 = 5;
 const int dirPin = 4;
 const int dirPin2 = 6;
-const int limitsX = 13;
-const int limitsY = 12;
+const int limitsX = 52;
+const int limitsY = 50;
+const int limitsZ = 48;
 
 
 void setup() {
@@ -103,7 +91,7 @@ void loop() {
 }
 
 void moveMagnet(){
-    steps_left = 4095;
+    steps_left = 8192;
     if(beweegMagneet == 1){
       Direction = true;
     }else{
