@@ -1,21 +1,7 @@
-/*
-   BYJ48 Stepper motor code
-   Connect :
-   IN1 >> D8
-   IN2 >> D9
-   IN3 >> D10
-   IN4 >> D11
-   VCC ... 5V Prefer to use external 5V Source
-   Gnd
-   written By :Mohannad Rawashdeh
-  http://www.instructables.com/member/Mohannad+Rawashdeh/
-     28/9/2013
-  */
-
-#define IN1  8
-#define IN2  9
-#define IN3  10
-#define IN4  11
+#define IN1  46
+#define IN2  44
+#define IN3  42
+#define IN4  40
 int Steps = 0;
 boolean Direction = true;// gre
 unsigned long last_time;
@@ -24,17 +10,19 @@ int steps_left = 0;
 
 // defines pins numbers
 const int magnetPin = 2;
-const int stepPin = 3;
-const int stepPin2 = 5;
+const int stepPin = 3; // X as
+const int stepPin2 = 5; // Y as
 const int dirPin = 4;
 const int dirPin2 = 6;
-const int limitsX = 13;
-const int limitsY = 12;
+const int limitsX = 52;
+const int limitsY = 50;
+const int limitsZ = 48;
+const int magnet = 14;
 
 // checkerboard
 const int columns[10] = {33,35,37,39,41,43,45,47,49,51};
 const int rows[5] = {23,25,27,29,31};
-int array[10][5];
+int array[10][10];
 
 
 void setup() {
@@ -43,7 +31,8 @@ void setup() {
   pinMode(dirPin, OUTPUT);
   pinMode(stepPin2, OUTPUT);
   pinMode(dirPin2, OUTPUT);
-
+  
+  
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
@@ -101,7 +90,7 @@ void loop() {
       Serial.println(digitalRead(limitsX));
       resetRobot();
     }
-    if(byteIn== 'p'){
+    if(byteIn== 'b'){
       Serial.println("printing board layout");
       checkBoard();
       printBoard(); 
@@ -124,7 +113,7 @@ void loop() {
 }
 
 void moveMagnet(){
-    steps_left = 4095;
+    steps_left = 8192;
     if(beweegMagneet == 1){
       Direction = true;
     }else{
@@ -200,18 +189,20 @@ void moveRobot(int x, int y) { //  beweeg de robot naar deze positie in mm
 
 void resetRobot() { // beweeg de robot terug naar de begin positie
   boolean endX = digitalRead(limitsX);
-  boolean endY = true; //digitalRead(limitsY);
+  boolean endY = digitalRead(limitsY);
 
   digitalWrite(dirPin, HIGH);
-  digitalWrite(dirPin2, HIGH);
+  digitalWrite(dirPin2, LOW);
   
 
   while (endX == false || endY == false) {
+
     if (endX == false) {
       endX = digitalRead(limitsX);
     }
     if (endY == false) {
       endY = digitalRead(limitsY);
+      Serial.println(endY);
     }
 
     if (endX == false) {
@@ -316,32 +307,43 @@ void SetDirection() {
 }
 
 void checkBoard(){ // This reads the sensors under the board to determine the position of all the pieces
+  int foo = 0;
   for(int i =0; i<10;i++){
     digitalWrite(columns[i],HIGH);
     delay(2);
     for(int j=0; j<5;j++){
       delay(2);
+       //Serial.print(digitalRead(rows[j]));
+       if(i%2 == 0 ){
+         foo = 1;
+       }else{
+         foo =0;
+       }
        if(digitalRead(rows[j])){
-         array[i][j] = 0;
+         array[(j*2)+foo][i] = 0;
        } else{
-         array[i][j] = 1;
+         array[(j*2)+foo][i] = 1;
        }
     }
     digitalWrite(columns[i],LOW);
     delay(2);
+    //Serial.println();
   }
 }
 
 void printBoard(){
   for(int i = 0; i<10; i++){
-      for (int j = 0; j<5;j++){
+      for (int j = 0; j<10;j++){
          if(array[i][j]){
-            Serial.print("1");//Serial.print("[X]");
+            Serial.print("1");
+            //Serial.print("[X]");
          }else{
-           Serial.print("0");//Serial.print("[ ]");
+           Serial.print("0");
+           //Serial.print("[ ]");
          }
       }
       Serial.print(",");
+      //Serial.println();
     }
     Serial.println();
 }
