@@ -22,7 +22,7 @@ import javax.swing.JScrollPane;
 public class GUI extends JFrame {
 	//Fields
 	private static final long serialVersionUID = 1L;
-	private Dambord bord = new Dambord();
+	//private Dambord bord = new Dambord();
 	private JPanel contentPane;
 	private JTextField txtSchuiven;
 	private JTextField txtSlaan;
@@ -260,7 +260,7 @@ public class GUI extends JFrame {
 		leeg1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				if(bord.setGeselecteerd(4, 1)){
+				if(Dambord.bord.setGeselecteerd(4, 1)){
 					leeg1.requestFocusInWindow();
 				}
 			}
@@ -385,7 +385,7 @@ public class GUI extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				bord.draaiBord();
+				Dambord.bord.draaiBord();
 				updatePanel();
 			}
 		});
@@ -419,11 +419,11 @@ public class GUI extends JFrame {
 	
 	//updates the interface
 	public void updatePanel(){
-		aanDeBeurtTekst.setText(bord.getBeurt());
+		aanDeBeurtTekst.setText(Dambord.bord.getBeurt());
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] != null){
-					int kleur = bord.getSoortSteen(i, j);
+					int kleur = Dambord.bord.getSoortSteen(i, j);
 					switch(kleur){
 						case 0: stenen[i][j].setIcon(null);
 								break;
@@ -448,7 +448,7 @@ public class GUI extends JFrame {
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] == label){
-					int kleur = bord.getSoortSteen(i, j);
+					int kleur = Dambord.bord.getSoortSteen(i, j);
 					switch(kleur){
 						case 0: stenen[i][j].setIcon(null);
 								break;
@@ -487,7 +487,7 @@ public class GUI extends JFrame {
 		steen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				if(bord.setGeselecteerd(posX, posY)){
+				if(Dambord.bord.setGeselecteerd(posX, posY)){
 					steen.requestFocusInWindow();
 				}
 			}
@@ -500,21 +500,21 @@ public class GUI extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				if (soort == "schuif"){
-					if(bord.schuif(richting)){
+					if(Dambord.bord.schuif(richting)){
 						updatePanel();
-						geschiedenisTekst.append("Steen " + bord.getVeldNummer() + " schoof naar " + bord.getVeldNummer(richting) + ".\n");
+						geschiedenisTekst.append("Steen " + Dambord.bord.getVeldNummer() + " schoof naar " + Dambord.bord.getVeldNummer(richting) + ".\n");
 					}
 					else{
-						statusText.setText(bord.getFoutmelding());
+						statusText.setText(Dambord.bord.getFoutmelding());
 					}
 				}
 				else if (soort == "sla"){
-					if(bord.sla(richting)){
+					if(Dambord.bord.sla(richting)){
 						updatePanel();
-						geschiedenisTekst.append("Steen " + bord.getVeldNummer() + " sloeg " + bord.getVeldNummer(richting) + " en belandde op " + bord.getVeldNummerNaSlaan(richting) +".\n");
+						geschiedenisTekst.append("Steen " + Dambord.bord.getVeldNummer() + " sloeg " + Dambord.bord.getVeldNummer(richting) + " en belandde op " + Dambord.bord.getVeldNummerNaSlaan(richting) +".\n");
 					}
 					else{
-						statusText.setText(bord.getFoutmelding());
+						statusText.setText(Dambord.bord.getFoutmelding());
 					}
 				}
 			}

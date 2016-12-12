@@ -10,6 +10,7 @@ public class App {
 	private static ArduinoJavaComms arduino = new ArduinoJavaComms();
 	private static Server server = new Server();
 	private static Client client = new Client();
+	private static GUI frame = new GUI();
 
 	//Starts the main application.
 	public static void main(String[] args) {
@@ -98,7 +99,6 @@ public class App {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							GUI frame = new GUI();
 							frame.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -106,6 +106,15 @@ public class App {
 					}
 				});
 				arduinoThread.start();
+	    	}
+	    	while(connected){
+	    		try{
+	    			frame.updatePanel();
+	    			Thread.sleep(100);
+	    		}
+	    		catch(InterruptedException e){
+	    			e.printStackTrace();
+	    		}
 	    	}
 		}
 	}

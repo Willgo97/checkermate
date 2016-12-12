@@ -46,7 +46,7 @@ public class Damspel {
 		
 		bord.printScore();
 		*/
-		
+		/*
 		bord.testFysiekBord("1 lol ik kan hier alles zetten  1 1 1 1 1 1 1 1 1, "
 						  + "1 1 zo 1 1 1 1 1 1 1 1, "
 						  + "1 1 1 lang 1 1 1 1 1 1 1, "
@@ -57,7 +57,19 @@ public class Damspel {
 						  + "1919191919191919191,                van nul t/m vier"
 						  + "1 1 1 1 1 1 1 1 1 1, 									per rij"
 						  + "1 2 3 4 1 2 3 4 1 2											staan.");
-						 
+		*/
+		
+		bord.setBord("1 lol ik kan hier alles zetten  1 1 1 1 1 1 1 1 1\n "
+						  + "1 1 zo 1 1 1 1 1 1 1 1\n "
+						  + "1 1 1 lang 1 1 1 1 1 1 1\n "
+						  + "0000000000\n er "
+						  + "1 100101010\n    maar "
+						  + "1 1 1 1 1 1 1 1 1 1\n tien"
+						  + "1 1 1 1 1 1 1 1 1 1\n       getallen"
+						  + "1919191919191919191\n                van nul t/m vier"
+						  + "1 1 1 1 1 1 1 1 1 1\n 									per rij"
+						  + "1 2 3 4 1 2 3 4 1 2											staan.");
+		System.out.println(bord.getBord());
 		
 		/*
 		//starting text

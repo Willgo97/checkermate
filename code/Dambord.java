@@ -1,4 +1,4 @@
-public class Dambord {	
+public class Dambord{	
 	//################################# FIELDS #####################################
 	
 	//0 = empty, 1 = black, 2 = white
@@ -30,14 +30,28 @@ public class Dambord {
 	
 	private String foutmelding = "";
 	private String beurt = "Wit is aan de beurt.";
+	private boolean klaarVoorVerzending = false;
+	private String laatsteZet = "";
 	
 	private ArduinoJavaComms arduino = new ArduinoJavaComms();
 	
 	//################################# METHODS #####################################
 	
-	//constructor
-	public Dambord(){
-		
+	//Constructor. One board is used by one program.
+	//Static, so other classes can share this one board.
+	public static Dambord bord = new Dambord();
+	
+	//Prints last turn for online communication.
+	public boolean klaarVoorVerzending(){
+		return klaarVoorVerzending;
+	}
+	
+	public void verzonden(){
+		klaarVoorVerzending = false;
+	}
+	
+	public String getLaatsteZet(){
+		return laatsteZet;
 	}
 	
 	//testing method for the Arduino to send data of the physical checkers board.
@@ -156,7 +170,9 @@ public class Dambord {
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
 						arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+						laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 						beurtVoorbij();
+						klaarVoorVerzending = true;
 						return true;
 				}
 				else{
@@ -177,7 +193,9 @@ public class Dambord {
 						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
 					}
 					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1);
+					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
+					klaarVoorVerzending = true;
 					return true;
 				}
 				else{
@@ -193,7 +211,9 @@ public class Dambord {
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]-1] = temp;
 					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1);
+					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
+					klaarVoorVerzending = true;
 					return true;
 				}
 				else{
@@ -209,7 +229,9 @@ public class Dambord {
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]+1] = temp;
 					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1);
+					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
+					klaarVoorVerzending = true;
 					return true;
 				}
 				else{
@@ -288,8 +310,11 @@ public class Dambord {
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[0]-1);
-							if(!kanSlaan())
+							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							klaarVoorVerzending = true;
+							if(!kanSlaan()){
 								beurtVoorbij();
+							}
 							else
 								foutmelding = "U kunt nog een keer slaan";
 							return true;
@@ -309,8 +334,11 @@ public class Dambord {
 							stenen[geselecteerd[0]-1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-1, geselecteerd[0]+1);
-							if(!kanSlaan())
+							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							klaarVoorVerzending = true;
+							if(!kanSlaan()){
 								beurtVoorbij();
+							}
 							else
 								foutmelding = "U kunt nog een keer slaan";
 							return true;
@@ -330,8 +358,11 @@ public class Dambord {
 							stenen[geselecteerd[0]+1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+1, geselecteerd[0]-1);
-							if(!kanSlaan())
+							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							klaarVoorVerzending = true;
+							if(!kanSlaan()){
 								beurtVoorbij();
+							}
 							else
 								foutmelding = "U kunt nog een keer slaan";
 							return true;
@@ -351,8 +382,11 @@ public class Dambord {
 							stenen[geselecteerd[0]+1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+1, geselecteerd[0]+1);
-							if(!kanSlaan())
+							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							klaarVoorVerzending = true;
+							if(!kanSlaan()){
 								beurtVoorbij();
+							}
 							else
 								foutmelding = "U kunt nog een keer slaan";
 							return true;
@@ -392,6 +426,34 @@ public class Dambord {
 			if(speler == 1 || speler == 3)
 				spelerString = "Zwart";
 			beurt = spelerString + " is aan de beurt.";
+	}
+	
+	public String getBord(){
+		String bord = "";
+		for(int x = 0; x <= 9; x++){
+			for(int y = 0; y <= 9; y++){
+				bord += (stenen[x][y] + " ");
+			}
+			bord += '\n';
+		}
+		return bord;
+	}
+	
+	public void setBord(String newBord){
+		int x = 0;
+		int y = 0;
+		for(int i = 0; i < newBord.length(); i++){
+			if(newBord.charAt(i) == '0' || newBord.charAt(i) == '1' || newBord.charAt(i) == '2' || newBord.charAt(i) == '3' || newBord.charAt(i) == '4'){
+				stenen[y][x] = Character.getNumericValue(newBord.charAt(i));
+				x = (x + 1) % 10;
+			}
+			if(newBord.charAt(i) == '\n'){
+				y++;	
+			}
+			else{
+				continue;
+			}
+		}
 	}
 	
 	//Prints the board in the output console.
