@@ -22,7 +22,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
             "COM10","COM9","COM8","COM7", "COM6", "COM5", "COM4", "COM3", "COM2", "COM1" // Windows only
     };
     
-    private int[][] fysiekDambord;
+    public static int[][] fysiekDambord = new int[10][10];
 
     //Starts the communication.
     public void initialize() {
@@ -126,26 +126,40 @@ public class ArduinoJavaComms implements SerialPortEventListener {
             System.out.println("Er ging iets fout met het sturen van coördinaten, namelijk " + e);
         }
     }
+    public void printBoard(){
+    	try{
+        	output.write('b');
+        	output.flush();
+        	System.out.println("Gelukt!");
+    	}
+    	catch(IOException|NullPointerException e){
+            System.out.println("Er ging iets fout met het sturen van een printverzoek namelijk: " + e);
+        }
+    }
 
     //Returns data retrieved from physical board.
 	public int[][] getFysiekDambord() {
+		System.out.println("Print de return shit");
+		for(int i = 0; i <= 9; i++){
+			for(int j = 0; j <= 9; j++){
+				System.out.print(fysiekDambord[i][j] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println("return nu de shit");
 		return fysiekDambord;
 	}
 
-	/*Sets physical board data from a given String.
-	//Inputstring format: "f <numbers from 0 to 4 inclusive, after every 10 digits follows a comma>"
-	EMPTY = 0
-	BLACK = 1
-	WHITE = 2
-	BLACKKING = 3
-	WHITEKING = 4
-	 */
+	//Sets physical board data from a given String.
+	//Inputstring format: "f <numbers 0 and 1, after every 10 digits follows a comma>"
+
+
 	public void setFysiekDambord(String rauweInput) {
 		int[][] updatedBord = new int[10][10];
 		int x = 0;
 		int y = 0;
 		for(int i = 0; i < rauweInput.length(); i++){
-			if(rauweInput.charAt(i) == '0' || rauweInput.charAt(i) == '1' || rauweInput.charAt(i) == '2' || rauweInput.charAt(i) == '3' || rauweInput.charAt(i) == '4'){
+			if(rauweInput.charAt(i) == '0' || rauweInput.charAt(i) == '1'){
 				updatedBord[y][x] = Character.getNumericValue(rauweInput.charAt(i));
 				x = (x + 1) % 10;
 			}
@@ -157,5 +171,6 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 			}
 		}
 		this.fysiekDambord = updatedBord;
+		
 	}
 }

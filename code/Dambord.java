@@ -13,7 +13,17 @@ public class Dambord{
 			{2,0,2,0,2,0,2,0,2,0},
 			{0,2,0,2,0,2,0,2,0,2},
 			{2,0,2,0,2,0,2,0,2,0}};
-	
+	private int[][] fysiekStenen = {{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0}};
+
 	private int[] geselecteerd = {9,0};
 	
 	private static final int LEEG = 0;
@@ -55,11 +65,54 @@ public class Dambord{
 	}
 	
 	//testing method for the Arduino to send data of the physical checkers board.
-	public void testFysiekBord(String input){
-		arduino.setFysiekDambord(input);
-		stenen = arduino.getFysiekDambord();
-		printBord();
+	public void testFysiekBord(){
+		//arduino.setFysiekDambord(input);
+		fysiekStenen = arduino.getFysiekDambord();
+		
+		int movedPiece = 0; // a piece that was moved by the player this turn, either a normal piece or a dam
+		
+		System.out.println("oud");
+		for(int row = 0; row<10; row++){ // this loop is the find out which piece was moved by the player
+			for(int column = 0; column<10; column++){
+				
+				int newPiece = fysiekStenen[row][column]; 				// take the new piece from the physical board
+				int oldPiece = stenen[row][column];						// this is the piece that was in the same spot last turn
+				
+				if(newPiece == 0){ 										// if there is no piece
+					if(oldPiece > 0){ 									// if there was a piece there previously
+						if(oldPiece == speler || oldPiece == speler+2){ // if that piece belonged to the player who made a move
+							movedPiece = oldPiece;						// save which piece was moved, either a normal piece or a dam
+							System.out.println(movedPiece);
+						}
+					}
+				}
+				System.out.print(oldPiece);
+			}
+			System.out.println();
+			
+		}
+		System.out.println("nieuw");
+		for(int row = 0; row<10; row++){
+			for(int column = 0; column<10; column++){
+				
+				int newPiece = fysiekStenen[row][column]; 				// take the new piece from the physical board
+				int oldPiece = stenen[row][column];						// this is the piece that was in the same spot last turn
+						
+				if(newPiece == 1){ 								// if there is a piece
+					if(oldPiece > 0){ 							// if there also was a piece there last turn
+						fysiekStenen[row][column]=oldPiece; 	// that piece should then still be the same piece
+					}
+					if(oldPiece == 0){							// if there was no piece last turn,
+						fysiekStenen[row][column] = movedPiece; 	// that piece was moved by the player who's turn it was.
+					}
+				}
+				System.out.print(fysiekStenen[row][column]);
+			}
+			System.out.println();
+		}
+		stenen = fysiekStenen;
 	}
+	
 	
 	//Sends an error message to the GUI
 	public String getFoutmelding(){

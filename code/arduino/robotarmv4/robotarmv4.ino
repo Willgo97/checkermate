@@ -32,6 +32,8 @@ void setup() {
   pinMode(stepPin2, OUTPUT);
   pinMode(dirPin2, OUTPUT);
   
+  pinMode(magnet,OUTPUT);
+  digitalWrite(magnet,LOW);
   
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
@@ -95,8 +97,6 @@ void loop() {
       checkBoard();
       printBoard(); 
     }
-
-
   }
   if (beweegArm) {
     moveRobot(gotoX, gotoY);

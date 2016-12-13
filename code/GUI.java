@@ -328,6 +328,18 @@ public class GUI extends JFrame {
 		contentPane.add(txtSchuiven);
 		txtSchuiven.setColumns(10);
 		
+		//button to end turn
+		JButton endTurn = new JButton("EndTurn");
+		endTurn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				Dambord.bord.testFysiekBord();
+				Dambord.bord.beurtVoorbij();
+				updatePanel();
+			}
+		});
+		maakButtonLayout(endTurn, 862, 316, 89);
+		
 		//buttons to move
 		JButton schuifLinksboven = new JButton("Linksboven");
 		maakButtonMouseListener(schuifLinksboven, "linksboven", "schuif");
