@@ -23,7 +23,7 @@ boolean Direction = true;// gre
 unsigned long last_time;
 unsigned long currentMillis ;
 int steps_left = 0;
-
+//_____________________________________________________setup_____________________________________________//
 void setup() {
   pinMode(magnetMotorPin1, OUTPUT);
   pinMode(magnetMotorPin2, OUTPUT);
@@ -60,9 +60,9 @@ int curX = 0;
 int curY = 0;
 int gotoX;
 int gotoY;
-
+//_____________________________________________________loop_____________________________________________//
 void loop() {
-  if (Serial.available() && beweegArm == 0) {
+  if (Serial.available()) {
     char byteIn = Serial.read();
 
     switch (byteIn) {
@@ -70,7 +70,8 @@ void loop() {
         gotoX = Serial.parseInt();
         gotoY = Serial.parseInt();
         printf("X: ", gotoX, " Y: ", gotoY);
-        beweegArm = 1;
+        moveRobot(gotoX, gotoY);
+        delay(1000);
         break;
       case '1' :
         digitalWrite(magnet, HIGH);
@@ -80,11 +81,11 @@ void loop() {
         break;
       case 'p' :
         Serial.println("pick stone up");
-        beweegMagneet = 1;
+        moveMagnet('p');
         break;
       case 'd' :
         Serial.println("drop the stone");
-        beweegMagneet = 2;
+        moveMagnet('d');
         break;
       case 'r' :
         Serial.println("move to origin");
@@ -97,22 +98,11 @@ void loop() {
         break;
     }
   }
-  if (beweegArm) {
-    moveRobot(gotoX, gotoY);
-    delay(1000);
-    beweegArm = 0;
-  }
-
-  if (beweegMagneet) {
-    moveMagnet();
-    beweegMagneet = 0;
-
-  }
 }
 
-void moveMagnet() {
+void moveMagnet(char dir) {
   steps_left = 2048;
-  if (beweegMagneet == 1) {
+  if (dir == 'p') {
     Direction = false;
     while (steps_left > 0 && Direction == false) {
       currentMillis = micros();
@@ -122,16 +112,16 @@ void moveMagnet() {
         steps_left--;
       }
     }
-    delay(3000);
-
-  } else {
+    delay(2000);
+  }
+  else if (dir == 'd') {
     Direction = true;
     while (digitalRead(48) == LOW) {
       stepper(1);
       delay(1);
     }
     digitalWrite(magnet, LOW);
-    delay(3000);
+    delay(2000);
   }
 }
 
@@ -310,7 +300,7 @@ void SetDirection() {
   }
 }
 
-void checkBoard() { // This reads the sensors under the board to determine the position of all the pieces
+void checkB() { // This reads the sensors under the board to determine the position of all the pieces
   int foo = 0;
   for (int i = 0; i < 10; i++) {
     digitalWrite(columns[i], HIGH);
@@ -335,7 +325,7 @@ void checkBoard() { // This reads the sensors under the board to determine the p
   }
 }
 
-void printBoard() {
+void printB() {
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
       if (array[i][j]) {
