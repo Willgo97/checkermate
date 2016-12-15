@@ -20,10 +20,11 @@ const int limitsZ = 48;
 const int magnet = 14;
 
 // checkerboard
-const int columns[10] = {33,35,37,39,41,43,45,47,49,51};
-const int rows[5] = {23,25,27,29,31};
+const int columns[10] = {33, 35, 37, 39, 41, 43, 45, 47, 49, 51};
+const int rows[5] = {23, 25, 27, 29, 31};
 int array[10][10];
 
+const int magnetMOSFET = 12;
 
 void setup() {
   // Sets the pins as outputs
@@ -31,25 +32,27 @@ void setup() {
   pinMode(dirPin, OUTPUT);
   pinMode(stepPin2, OUTPUT);
   pinMode(dirPin2, OUTPUT);
-  
-  pinMode(magnet,OUTPUT);
-  digitalWrite(magnet,LOW);
-  
+
+  pinMode(magnetMOSFET, OUTPUT);
+
+  pinMode(magnet, OUTPUT);
+  digitalWrite(magnet, LOW);
+
   pinMode(IN1, OUTPUT);
   pinMode(IN2, OUTPUT);
   pinMode(IN3, OUTPUT);
   pinMode(IN4, OUTPUT);
-  
+
   // Set the pins for the checkerboard
-  for(int i =0; i<10;i++){
-    pinMode(columns[i],OUTPUT);
-    digitalWrite(columns[i],LOW);
+  for (int i = 0; i < 10; i++) {
+    pinMode(columns[i], OUTPUT);
+    digitalWrite(columns[i], LOW);
   }
-  
-  for(int i =0;i<5;i++){
-    pinMode(rows[i],INPUT);
+
+  for (int i = 0; i < 5; i++) {
+    pinMode(rows[i], INPUT);
   }
-  
+
   // Serial
   Serial.begin(9600);
 }
@@ -76,7 +79,12 @@ void loop() {
       Serial.println();
       beweegArm = 1;
     }
-
+    if (byteIn == '1'){
+      digitalWrite(magnetMOSFET, HIGH);
+    }
+    if (byteIn == '2'){
+      digitalWrite(magnetMOSFET, LOW);
+    }
     if (byteIn == 'p') {//pickup de damsteen
       Serial.println("pak de steen");
       beweegMagneet = 1;
@@ -86,16 +94,16 @@ void loop() {
       Serial.println("drop de steen");
       beweegMagneet = 2;
     }
-    
+
     if (byteIn == 'r') {
       Serial.println("reset");
       Serial.println(digitalRead(limitsX));
       resetRobot();
     }
-    if(byteIn== 'b'){
+    if (byteIn == 'b') {
       Serial.println("printing board layout");
       checkBoard();
-      printBoard(); 
+      printBoard();
     }
   }
   if (beweegArm) {
@@ -108,18 +116,15 @@ void loop() {
     moveMagnet();
     beweegMagneet = 0;
     //digitalWrite(magnetPin,HIGH);
-      
+
   }
 }
 
-void moveMagnet(){
-    steps_left = 8192;
-    if(beweegMagneet == 1){
-      Direction = true;
-    }else{
-      Direction = false;
-    }
-    while (steps_left > 0) {
+void moveMagnet() {
+  steps_left = 2048;
+  if (beweegMagneet == 1) {
+    Direction = false;
+    while (steps_left > 0 && Direction == false) {
       currentMillis = micros();
       if (currentMillis - last_time >= 1000) {
         stepper(1);
@@ -127,8 +132,18 @@ void moveMagnet(){
         steps_left--;
       }
     }
+    delay(3000);
+    
+  } else {
+    Direction = true;
+    while (digitalRead(48) == LOW) {
+        stepper(1);
+        delay(1);
+    }
+    digitalWrite(magnetMOSFET, LOW);
+        delay(3000);
   }
-
+}
 
 void moveRobot(int x, int y) { //  beweeg de robot naar deze positie in mm
 
@@ -191,9 +206,8 @@ void resetRobot() { // beweeg de robot terug naar de begin positie
   boolean endX = digitalRead(limitsX);
   boolean endY = digitalRead(limitsY);
 
-  digitalWrite(dirPin, HIGH);
+  digitalWrite(dirPin, LOW);
   digitalWrite(dirPin2, LOW);
-  
 
   while (endX == false || endY == false) {
 
@@ -224,7 +238,7 @@ void resetRobot() { // beweeg de robot terug naar de begin positie
     delayMicroseconds(1000);
   }
   delay(300);
-  moveRobot(4,0);
+  moveRobot(-4, -4);
 
   curX = 0;
   curY = 0;
@@ -306,44 +320,44 @@ void SetDirection() {
   }
 }
 
-void checkBoard(){ // This reads the sensors under the board to determine the position of all the pieces
+void checkBoard() { // This reads the sensors under the board to determine the position of all the pieces
   int foo = 0;
-  for(int i =0; i<10;i++){
-    digitalWrite(columns[i],HIGH);
+  for (int i = 0; i < 10; i++) {
+    digitalWrite(columns[i], HIGH);
     delay(2);
-    for(int j=0; j<5;j++){
+    for (int j = 0; j < 5; j++) {
       delay(2);
-       //Serial.print(digitalRead(rows[j]));
-       if(i%2 == 0 ){
-         foo = 1;
-       }else{
-         foo =0;
-       }
-       if(digitalRead(rows[j])){
-         array[(j*2)+foo][i] = 0;
-       } else{
-         array[(j*2)+foo][i] = 1;
-       }
+      //Serial.print(digitalRead(rows[j]));
+      if (i % 2 == 0 ) {
+        foo = 1;
+      } else {
+        foo = 0;
+      }
+      if (digitalRead(rows[j])) {
+        array[(j * 2) + foo][i] = 0;
+      } else {
+        array[(j * 2) + foo][i] = 1;
+      }
     }
-    digitalWrite(columns[i],LOW);
+    digitalWrite(columns[i], LOW);
     delay(2);
     //Serial.println();
   }
 }
 
-void printBoard(){
-  for(int i = 0; i<10; i++){
-      for (int j = 0; j<10;j++){
-         if(array[i][j]){
-            Serial.print("1");
-            //Serial.print("[X]");
-         }else{
-           Serial.print("0");
-           //Serial.print("[ ]");
-         }
+void printBoard() {
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) {
+      if (array[i][j]) {
+        Serial.print("1");
+        //Serial.print("[X]");
+      } else {
+        Serial.print("0");
+        //Serial.print("[ ]");
       }
-      Serial.print(",");
-      //Serial.println();
     }
-    Serial.println();
+    Serial.print(",");
+    //Serial.println();
+  }
+  Serial.println();
 }
