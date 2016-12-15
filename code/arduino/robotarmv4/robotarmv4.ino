@@ -1,47 +1,45 @@
-#define IN1  46
-#define IN2  44
-#define IN3  42
-#define IN4  40
+const int stepPinY = 3; // Y axis
+const int dirPinY = 4;
+const int stepPinX = 5; // X axis
+const int dirPinX = 6;
+
+const int magnet = 12;//magnet connected to MOSFET
+
+const int rows[5] = {23, 25, 27, 29, 31};// checkerboard
+const int columns[10] = {33, 35, 37, 39, 41, 43, 45, 47, 49, 51};
+int array[10][10];
+
+const int magnetMotorPin1 = 46;// z axis
+const int magnetMotorPin2 = 44;
+const int magnetMotorPin3 = 42;
+const int magnetMotorPin4 = 40;
+
+const int limitsZ = 48;// limitswitches
+const int limitsY = 50;
+const int limitsX = 52;
+
 int Steps = 0;
 boolean Direction = true;// gre
 unsigned long last_time;
 unsigned long currentMillis ;
 int steps_left = 0;
 
-// defines pins numbers
-const int magnetPin = 2;
-const int stepPin = 3; // X as
-const int stepPin2 = 5; // Y as
-const int dirPin = 4;
-const int dirPin2 = 6;
-const int limitsX = 52;
-const int limitsY = 50;
-const int limitsZ = 48;
-const int magnet = 14;
-
-// checkerboard
-const int columns[10] = {33, 35, 37, 39, 41, 43, 45, 47, 49, 51};
-const int rows[5] = {23, 25, 27, 29, 31};
-int array[10][10];
-
-const int magnetMOSFET = 12;
-
 void setup() {
-  // Sets the pins as outputs
-  pinMode(stepPin, OUTPUT);
-  pinMode(dirPin, OUTPUT);
-  pinMode(stepPin2, OUTPUT);
-  pinMode(dirPin2, OUTPUT);
+  pinMode(magnetMotorPin1, OUTPUT);
+  pinMode(magnetMotorPin2, OUTPUT);
+  pinMode(magnetMotorPin3, OUTPUT);
+  pinMode(magnetMotorPin4, OUTPUT);
 
-  pinMode(magnetMOSFET, OUTPUT);
+  pinMode(stepPinY, OUTPUT);
+  pinMode(dirPinY, OUTPUT);
+  pinMode(stepPinX, OUTPUT);
+  pinMode(dirPinX, OUTPUT);
+
+  pinMode(limitsX, INPUT);
+  pinMode(limitsY, INPUT);
+  pinMode(limitsZ, INPUT);
 
   pinMode(magnet, OUTPUT);
-  digitalWrite(magnet, LOW);
-
-  pinMode(IN1, OUTPUT);
-  pinMode(IN2, OUTPUT);
-  pinMode(IN3, OUTPUT);
-  pinMode(IN4, OUTPUT);
 
   // Set the pins for the checkerboard
   for (int i = 0; i < 10; i++) {
@@ -53,7 +51,6 @@ void setup() {
     pinMode(rows[i], INPUT);
   }
 
-  // Serial
   Serial.begin(9600);
 }
 
@@ -65,45 +62,39 @@ int gotoX;
 int gotoY;
 
 void loop() {
-
   if (Serial.available() && beweegArm == 0) {
-
     char byteIn = Serial.read();
-    if (byteIn == 'c') {
-      gotoX = Serial.parseInt();
-      gotoY = Serial.parseInt();
-      Serial.print("X: ");
-      Serial.print(gotoX);
-      Serial.print(" Y: ");
-      Serial.print(gotoY);
-      Serial.println();
-      beweegArm = 1;
-    }
-    if (byteIn == '1'){
-      digitalWrite(magnetMOSFET, HIGH);
-    }
-    if (byteIn == '2'){
-      digitalWrite(magnetMOSFET, LOW);
-    }
-    if (byteIn == 'p') {//pickup de damsteen
-      Serial.println("pak de steen");
-      beweegMagneet = 1;
-    }
 
-    if (byteIn == 'd') { // drop de damsteen
-      Serial.println("drop de steen");
-      beweegMagneet = 2;
-    }
-
-    if (byteIn == 'r') {
-      Serial.println("reset");
-      Serial.println(digitalRead(limitsX));
-      resetRobot();
-    }
-    if (byteIn == 'b') {
-      Serial.println("printing board layout");
-      checkBoard();
-      printBoard();
+    switch (byteIn) {
+      case 'c':
+        gotoX = Serial.parseInt();
+        gotoY = Serial.parseInt();
+        printf("X: ", gotoX, " Y: ", gotoY);
+        beweegArm = 1;
+        break;
+      case '1' :
+        digitalWrite(magnet, HIGH);
+        break;
+      case '2' :
+        digitalWrite(magnet, LOW);
+        break;
+      case 'p' :
+        Serial.println("pick stone up");
+        beweegMagneet = 1;
+        break;
+      case 'd' :
+        Serial.println("drop the stone");
+        beweegMagneet = 2;
+        break;
+      case 'r' :
+        Serial.println("move to origin");
+        resetRobot();
+        break;
+      case 'b' :
+        Serial.println("printing board layout");
+        checkBoard();
+        printBoard();
+        break;
     }
   }
   if (beweegArm) {
@@ -115,7 +106,6 @@ void loop() {
   if (beweegMagneet) {
     moveMagnet();
     beweegMagneet = 0;
-    //digitalWrite(magnetPin,HIGH);
 
   }
 }
@@ -133,15 +123,15 @@ void moveMagnet() {
       }
     }
     delay(3000);
-    
+
   } else {
     Direction = true;
     while (digitalRead(48) == LOW) {
-        stepper(1);
-        delay(1);
+      stepper(1);
+      delay(1);
     }
-    digitalWrite(magnetMOSFET, LOW);
-        delay(3000);
+    digitalWrite(magnet, LOW);
+    delay(3000);
   }
 }
 
@@ -151,15 +141,15 @@ void moveRobot(int x, int y) { //  beweeg de robot naar deze positie in mm
   int diffY = y - curY;
 
   if (diffX < 0) {
-    digitalWrite(dirPin, HIGH);
+    digitalWrite(dirPinY, HIGH);
   } else {
-    digitalWrite(dirPin, LOW);
+    digitalWrite(dirPinY, LOW);
   }
 
   if (diffY < 0) {
-    digitalWrite(dirPin2, HIGH);
+    digitalWrite(dirPinX, HIGH);
   } else {
-    digitalWrite(dirPin2, LOW);
+    digitalWrite(dirPinX, LOW);
   }
 
   int stepsX = abs(diffX) * 4;
@@ -173,23 +163,23 @@ void moveRobot(int x, int y) { //  beweeg de robot naar deze positie in mm
     steps++;
 
     if (endX == false) {
-      digitalWrite(stepPin, HIGH);
+      digitalWrite(stepPinY, HIGH);
     }
     if (endY == false) {
-      digitalWrite(stepPin2, HIGH);
+      digitalWrite(stepPinX, HIGH);
     }
 
     delayMicroseconds(1000);
 
     if (endX == false) {
-      digitalWrite(stepPin, LOW);
+      digitalWrite(stepPinY, LOW);
       if (steps > stepsX) {
         endX = true;
       }
     }
 
     if (endY == false) {
-      digitalWrite(stepPin2, LOW);
+      digitalWrite(stepPinX, LOW);
       if (steps > stepsY) {
         endY = true;
       }
@@ -206,8 +196,8 @@ void resetRobot() { // beweeg de robot terug naar de begin positie
   boolean endX = digitalRead(limitsX);
   boolean endY = digitalRead(limitsY);
 
-  digitalWrite(dirPin, LOW);
-  digitalWrite(dirPin2, LOW);
+  digitalWrite(dirPinY, LOW);
+  digitalWrite(dirPinX, LOW);
 
   while (endX == false || endY == false) {
 
@@ -220,19 +210,19 @@ void resetRobot() { // beweeg de robot terug naar de begin positie
     }
 
     if (endX == false) {
-      digitalWrite(stepPin, HIGH);
+      digitalWrite(stepPinY, HIGH);
     }
     if (endY == false) {
-      digitalWrite(stepPin2, HIGH);
+      digitalWrite(stepPinX, HIGH);
     }
 
     delayMicroseconds(1000);
 
     if (endX == false) {
-      digitalWrite(stepPin, LOW);
+      digitalWrite(stepPinY, LOW);
     }
     if (endY == false) {
-      digitalWrite(stepPin2, LOW);
+      digitalWrite(stepPinX, LOW);
     }
 
     delayMicroseconds(1000);
@@ -248,58 +238,58 @@ void stepper(int xw) {
   for (int x = 0; x < xw; x++) {
     switch (Steps) {
       case 0:
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, HIGH);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, HIGH);
         break;
       case 1:
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, HIGH);
-        digitalWrite(IN4, HIGH);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, HIGH);
+        digitalWrite(magnetMotorPin4, HIGH);
         break;
       case 2:
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, HIGH);
-        digitalWrite(IN4, LOW);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, HIGH);
+        digitalWrite(magnetMotorPin4, LOW);
         break;
       case 3:
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, HIGH);
-        digitalWrite(IN3, HIGH);
-        digitalWrite(IN4, LOW);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, HIGH);
+        digitalWrite(magnetMotorPin3, HIGH);
+        digitalWrite(magnetMotorPin4, LOW);
         break;
       case 4:
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, HIGH);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, LOW);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, HIGH);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
         break;
       case 5:
-        digitalWrite(IN1, HIGH);
-        digitalWrite(IN2, HIGH);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, LOW);
+        digitalWrite(magnetMotorPin1, HIGH);
+        digitalWrite(magnetMotorPin2, HIGH);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
         break;
       case 6:
-        digitalWrite(IN1, HIGH);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, LOW);
+        digitalWrite(magnetMotorPin1, HIGH);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
         break;
       case 7:
-        digitalWrite(IN1, HIGH);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, HIGH);
+        digitalWrite(magnetMotorPin1, HIGH);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, HIGH);
         break;
       default:
-        digitalWrite(IN1, LOW);
-        digitalWrite(IN2, LOW);
-        digitalWrite(IN3, LOW);
-        digitalWrite(IN4, LOW);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
         break;
     }
     SetDirection();
