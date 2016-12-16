@@ -17,7 +17,7 @@ class MagnetControl{
         void disMagnet();        
         
     private:
-        int _init;
+        int init;
 };
 
 #endif

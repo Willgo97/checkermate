@@ -13,7 +13,7 @@ class CheckBoard{
         void checkB();
         void printB();
     private:
-        int _init;
+        int init;
 };
 
 #endif
