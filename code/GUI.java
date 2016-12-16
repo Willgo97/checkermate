@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -22,7 +23,7 @@ import javax.swing.JScrollPane;
 public class GUI extends JFrame {
 	//Fields
 	private static final long serialVersionUID = 1L;
-	//private Dambord bord = new Dambord();
+	public static GUI gui = new GUI();
 	private JPanel contentPane;
 	private JTextField txtSchuiven;
 	private JTextField txtSlaan;
@@ -42,14 +43,27 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		//Kleurlabel, must be ABOVE (code-wise) infoText in order to appear on top of infoText.
+		JLabel colorLabel = new JLabel(Dambord.bord.getKleurString());
+		colorLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		colorLabel.setFont(new Font("Tahoma", Font.PLAIN, 26));
+		if(Dambord.bord.getKleurString().equals("WIT")){
+			colorLabel.setFont(new Font("Tahoma", Font.BOLD, 26));
+			colorLabel.setForeground(Color.WHITE);
+			colorLabel.setBackground(Color.BLACK);
+			colorLabel.setOpaque(true);
+		}
+		colorLabel.setBounds(943, 97, 86, 23);
+		contentPane.add(colorLabel);
+		
 		// ######## TEXT AREA ########
 		final JTextArea infoText = new JTextArea();
 		infoText.setFont(new Font("Arial", Font.PLAIN, 15));
 		infoText.setEditable(false);
 		infoText.setWrapStyleWord(true);
 		infoText.setLineWrap(true);
-		infoText.setText("Welkom bij dammen met CheckerMate! Klik eerst op een damschijf die u wilt gebruiken en maak daarna uw zet door op de knoppen hieronder te klikken.");
-		infoText.setBounds(773, 11, 256, 107);
+		infoText.setText("Welkom bij dammen met CheckerMate! Klik eerst op een damschijf die u wilt gebruiken en maak daarna uw zet door op de knoppen hieronder te klikken.\nUw gekozen steenkleur is");
+		infoText.setBounds(773, 11, 256, 120);
 		contentPane.add(infoText);
 		
 		//  ######### LABELS #########
@@ -421,11 +435,12 @@ public class GUI extends JFrame {
 		aanDeBeurtTekst = new JTextField();
 		aanDeBeurtTekst.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		aanDeBeurtTekst.setHorizontalAlignment(SwingConstants.CENTER);
-		aanDeBeurtTekst.setText("Wit is aan de beurt.");
+		aanDeBeurtTekst.setText(Dambord.bord.getSpelerBeurtString());
 		aanDeBeurtTekst.setEditable(false);
 		aanDeBeurtTekst.setBounds(804, 148, 204, 30);
 		contentPane.add(aanDeBeurtTekst);
 		aanDeBeurtTekst.setColumns(10);
+		
 		
 	}
 	

@@ -10,7 +10,6 @@ public class App {
 	private static ArduinoJavaComms arduino = new ArduinoJavaComms();
 	private static Server server = new Server();
 	private static Client client = new Client();
-	private static GUI frame = new GUI();
 
 	//Starts the main application.
 	public static void main(String[] args) {
@@ -95,26 +94,36 @@ public class App {
 				}
 	    	}
 	    	if(response == 0 || connected){
+	    		String[] options2 = new String[] {"Wit", "Zwart"};
+	    	    int decision = JOptionPane.showOptionDialog(
+	    	    		null, 
+	    	    		"Welke kleur stenen wilt u gebruiken?", 
+	    	    		"CheckerMate",
+	    	    		JOptionPane.DEFAULT_OPTION, 
+	    	    		JOptionPane.QUESTION_MESSAGE,
+	    	    		null,
+	    	    		options2,
+	    	    		options2[0]);
+	    	    if(decision == 0){
+	    	    	Dambord.bord.setSpelerKleur(2);
+	    	    }
+	    	    if(decision == 1){
+	    	    	Dambord.bord.setSpelerKleur(1);
+	    	    }
+	    	    if(decision == 2){
+	    	    	System.exit(0);
+	    	    }
 	    		//starts GUI and Arduino threads
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							frame.setVisible(true);
+							GUI.gui.setVisible(true);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					}
 				});
 				arduinoThread.start();
-	    	}
-	    	while(connected){
-	    		try{
-	    			frame.updatePanel();
-	    			Thread.sleep(100);
-	    		}
-	    		catch(InterruptedException e){
-	    			e.printStackTrace();
-	    		}
 	    	}
 		}
 	}

@@ -13,6 +13,7 @@ public class Dambord{
 			{2,0,2,0,2,0,2,0,2,0},
 			{0,2,0,2,0,2,0,2,0,2},
 			{2,0,2,0,2,0,2,0,2,0}};
+	
 	private int[][] fysiekStenen = {{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0},
@@ -33,13 +34,14 @@ public class Dambord{
 	private static final int WITTEDAM = 4;
 	
 	//White always begins turn one.
-	private int speler = WIT;
-	private int tegenstander = ZWART;
+	private int spelerKleur = WIT;
+	private int aanDeBeurt = WIT;
+	private int nietAanDeBeurt = ZWART;
 	private int aantalZwarteStenen = 20;
 	private int aantalWitteStenen = 20;
 	
 	private String foutmelding = "";
-	private String beurt = "Wit is aan de beurt.";
+	private String beurt = "";
 	private boolean klaarVoorVerzending = false;
 	private String laatsteZet = "";
 	
@@ -56,12 +58,34 @@ public class Dambord{
 		return klaarVoorVerzending;
 	}
 	
+	//Method to notify a sent message between sockets
 	public void verzonden(){
 		klaarVoorVerzending = false;
 	}
 	
+	//Method to send the last turn to the other player's socket
 	public String getLaatsteZet(){
 		return laatsteZet;
+	}
+	
+	public int getSpelerKleur(){
+		return spelerKleur;
+	}
+	
+	//Method to set the player piece color that was chosen at the start of a match
+	public void setSpelerKleur(int kleur){
+		spelerKleur = kleur;
+		beurt = getSpelerBeurtString();
+	}
+	
+	public String getKleurString(){
+		if(spelerKleur == 1){
+			return "ZWART";
+		}
+		else if(spelerKleur == 2){
+			return "WIT";
+		}
+		else return "???";
 	}
 	
 	//testing method for the Arduino to send data of the physical checkers board.
@@ -80,7 +104,7 @@ public class Dambord{
 				
 				if(newPiece == 0){ 										// if there is no piece
 					if(oldPiece > 0){ 									// if there was a piece there previously
-						if(oldPiece == speler || oldPiece == speler+2){ // if that piece belonged to the player who made a move
+						if(oldPiece == aanDeBeurt || oldPiece == aanDeBeurt+2){ // if that piece belonged to the player who made a move
 							movedPiece = oldPiece;						// save which piece was moved, either a normal piece or a dam
 							System.out.println(movedPiece);
 						}
@@ -212,7 +236,7 @@ public class Dambord{
 	public boolean schuif(String richting){
 		if(!kanSlaan()){
 			//moves a piece 1 up and 1 left
-			if(richting.equals("linksboven") && geselecteerd[0] != 0 && geselecteerd[1] != 0 && ((getGeselecteerd() == speler && getGeselecteerd() == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
+			if(richting.equals("linksboven") && geselecteerd[0] != 0 && geselecteerd[1] != 0 && ((getGeselecteerd() == aanDeBeurt && getGeselecteerd() == WIT && spelerKleur == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
 				//if no piece is left-up from it:
 				if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == LEEG){
 						int temp = getGeselecteerd();
@@ -235,7 +259,7 @@ public class Dambord{
 			}
 		
 			//moves a piece 1 up and 1 right
-			else if(richting.equals("rechtsboven") && geselecteerd[0] != 0 && geselecteerd[1] != 9 && ((getGeselecteerd() == speler && getGeselecteerd() == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
+			else if(richting.equals("rechtsboven") && geselecteerd[0] != 0 && geselecteerd[1] != 9 && ((getGeselecteerd() == aanDeBeurt && getGeselecteerd() == WIT  && spelerKleur == WIT) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
 				//if no piece is right-up from it:
 				if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == LEEG){
 					int temp = getGeselecteerd();
@@ -257,7 +281,7 @@ public class Dambord{
 				}
 			}
 			//moves a piece 1 down and 1 left. Only usable by a king.
-			else if(richting.equals("linksonder") && geselecteerd[0] != 9 && geselecteerd[1] != 0 && ((getGeselecteerd() == speler && getGeselecteerd() == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
+			else if(richting.equals("linksonder") && geselecteerd[0] != 9 && geselecteerd[1] != 0 && ((getGeselecteerd() == aanDeBeurt && getGeselecteerd() == ZWART && spelerKleur == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM) ){
 				//if no piece is left-down from it:
 				if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == LEEG){
 					int temp = getGeselecteerd();
@@ -275,7 +299,7 @@ public class Dambord{
 				}
 			}
 			//moves a piece 1 down and 1 right. Only usable by a king.
-			else if(richting.equals("rechtsonder") && geselecteerd[0] != 9 && geselecteerd[1] != 9 && ((getGeselecteerd() == speler && getGeselecteerd() == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM)){
+			else if(richting.equals("rechtsonder") && geselecteerd[0] != 9 && geselecteerd[1] != 9 && ((getGeselecteerd() == aanDeBeurt && getGeselecteerd() == ZWART  && spelerKleur == ZWART) || getGeselecteerd() == WITTEDAM || getGeselecteerd() == ZWARTEDAM)){
 				//if no piece is right-down from it:
 				if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == LEEG){
 					int temp = getGeselecteerd();
@@ -308,10 +332,10 @@ public class Dambord{
 		
 		for(int x = 0; x <= 9; x++){
 			for(int y = 0; y <= 9; y++){
-				if(stenen[x][y] == speler ){
+				if(stenen[x][y] == aanDeBeurt && stenen[x][y] == spelerKleur){
 					//check left-up
 					if(x != 0 && y != 0){
-						if(stenen[x-1][y-1] == tegenstander && x-1 != 0 && y-1 != 0){
+						if(stenen[x-1][y-1] == nietAanDeBeurt && x-1 != 0 && y-1 != 0){
 							if(stenen[x-2][y-2] == LEEG){
 								return true;
 							}
@@ -319,7 +343,7 @@ public class Dambord{
 					}
 					//check right-up
 					if(x != 0 && y != 9){
-						if(stenen[x-1][y+1] == tegenstander && x-1 != 0 && y+1 != 9){
+						if(stenen[x-1][y+1] == nietAanDeBeurt && x-1 != 0 && y+1 != 9){
 							if(stenen[x-2][y+2] == LEEG){
 								return true;
 							}
@@ -327,7 +351,7 @@ public class Dambord{
 					}
 					//check left-down
 					if(x != 9 && y != 0){
-						if(stenen[x+1][y-1] == tegenstander && x+1 != 9 && y-1 != 0){
+						if(stenen[x+1][y-1] == nietAanDeBeurt && x+1 != 9 && y-1 != 0){
 							if(stenen[x+2][y-2] == LEEG){
 								return true;
 							}
@@ -335,7 +359,7 @@ public class Dambord{
 					}
 					//check right-down
 					if(x != 9 && y != 9){
-						if(stenen[x+1][y+1] == tegenstander && x+1 != 9 && y+1 != 9){
+						if(stenen[x+1][y+1] == nietAanDeBeurt && x+1 != 9 && y+1 != 9){
 							if(stenen[x+2][y+2] == LEEG){
 								return true;
 							}
@@ -352,8 +376,8 @@ public class Dambord{
 		if(kanSlaan()){
 			switch(richting){
 			case "linksboven": 
-				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && getGeselecteerd() == speler){
-					if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == tegenstander && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
+				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && getGeselecteerd() == aanDeBeurt){
+					if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]-2] == LEEG){
 							if(getGeselecteerd() == WIT)
 								aantalZwarteStenen--;
@@ -376,8 +400,8 @@ public class Dambord{
 				}
 				break;
 			case "rechtsboven":
-				if(geselecteerd[0] != 0 && geselecteerd[1] != 9 && getGeselecteerd() == speler){
-					if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == tegenstander && geselecteerd[0]-1 != 0 && geselecteerd[1]+1 != 9){
+				if(geselecteerd[0] != 0 && geselecteerd[1] != 9 && getGeselecteerd() == aanDeBeurt){
+					if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]+2] == LEEG){
 							if(getGeselecteerd() == WIT)
 								aantalZwarteStenen--;
@@ -400,8 +424,8 @@ public class Dambord{
 				}
 				break;
 			case "linksonder":
-				if(geselecteerd[0] != 9 && geselecteerd[1] != 0 && getGeselecteerd() == speler){
-					if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == tegenstander && geselecteerd[0]+1 != 9 && geselecteerd[1]-1 != 0){
+				if(geselecteerd[0] != 9 && geselecteerd[1] != 0 && getGeselecteerd() == aanDeBeurt){
+					if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]+1 != 9 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]-2] == LEEG){
 							if(getGeselecteerd() == WIT)
 								aantalZwarteStenen--;
@@ -424,8 +448,8 @@ public class Dambord{
 				}
 				break;
 			case "rechtsonder":
-				if(geselecteerd[0] != 9 && geselecteerd[1] != 9 && getGeselecteerd() == speler){
-					if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == tegenstander && geselecteerd[0]+1 != 9 && geselecteerd[1]+1 != 9){
+				if(geselecteerd[0] != 9 && geselecteerd[1] != 9 && getGeselecteerd() == aanDeBeurt){
+					if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == nietAanDeBeurt && geselecteerd[0]+1 != 9 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]+2] == LEEG){
 							if(getGeselecteerd() == WIT)
 								aantalZwarteStenen--;
@@ -470,15 +494,31 @@ public class Dambord{
 	
 	//Method to pass the turn to the opponent.
 	public void beurtVoorbij(){
-			int temp = speler;
-			speler = tegenstander;
-			tegenstander = temp;
-			String spelerString = "";
-			if(speler == 2 || speler == 4)
-				spelerString = "Wit";
-			if(speler == 1 || speler == 3)
-				spelerString = "Zwart";
-			beurt = spelerString + " is aan de beurt.";
+			int temp = aanDeBeurt;
+			aanDeBeurt = nietAanDeBeurt;
+			nietAanDeBeurt = temp;
+			beurt = getSpelerBeurtString();
+	}
+	
+	public String getSpelerBeurtString(){
+		String spelerString = "";
+		if(aanDeBeurt == WIT || aanDeBeurt == WITTEDAM){
+			if(spelerKleur == WIT){
+				spelerString = "U bent";
+			}
+			else if(spelerKleur == ZWART){
+				spelerString = "Wit is";
+			}
+		}
+		if(aanDeBeurt == ZWART || aanDeBeurt == ZWARTEDAM){
+			if(spelerKleur == ZWART){
+				spelerString = "U bent";
+			}
+			else if(spelerKleur == WIT){
+				spelerString = "Zwart is";
+			}
+		}
+		return spelerString + " aan de beurt.";
 	}
 	
 	public String getBord(){

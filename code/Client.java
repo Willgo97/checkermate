@@ -28,7 +28,6 @@ public class Client {
     	        	System.out.println("Connected to " + hostName + " on port " + echoSocket.getPort() + ".");
     	           String inputLine;
     	            while (true) {
-    	            	System.out.println("test");
     	            	if(Dambord.bord.klaarVoorVerzending()){
     	            		out.println(Dambord.bord.getLaatsteZet());
     	            		Dambord.bord.verzonden();
@@ -57,12 +56,15 @@ public class Client {
     	}  
     }
 
+    // Sets the IP-address as retrieved from user input for the connection to ServerSocket.
 	public void setIP(String serverAddress) {
 		hostName = serverAddress;	
 	}
 	
+	// Processes the String that was received in the InputStream
 	public void processTurn(String input){
     	if(input.contains("schuif")){
+    		temporarilySwitchPlayers();
     		if(input.contains("linksboven")){
     			Dambord.bord.setGeselecteerd(Character.getNumericValue(input.charAt(0)), Character.getNumericValue(input.charAt(1)));
     			Dambord.bord.schuif("linksboven");
@@ -79,8 +81,11 @@ public class Client {
     			Dambord.bord.setGeselecteerd(Character.getNumericValue(input.charAt(0)), Character.getNumericValue(input.charAt(1)));
     			Dambord.bord.schuif("rechtsonder");
     		}
+    		temporarilySwitchPlayers();
+    		GUI.gui.updatePanel();
     	}
     	else if(input.contains("sla")){
+    		temporarilySwitchPlayers();
     		if(input.contains("linksboven")){
     			Dambord.bord.setGeselecteerd(Character.getNumericValue(input.charAt(0)), Character.getNumericValue(input.charAt(1)));
     			Dambord.bord.sla("linksboven");
@@ -97,9 +102,21 @@ public class Client {
     			Dambord.bord.setGeselecteerd(Character.getNumericValue(input.charAt(0)), Character.getNumericValue(input.charAt(1)));
     			Dambord.bord.sla("rechtsonder");
     		}
+    		temporarilySwitchPlayers();
+    		GUI.gui.updatePanel();
     	}
     	else{
     		System.out.println("No valid String was sent: " + input);
     	}
     }
+	
+	//Method to switch players temporarily so that the turns can be sync'ed correctly
+	public void temporarilySwitchPlayers(){
+		if(Dambord.bord.getSpelerKleur() == 1){
+			Dambord.bord.setSpelerKleur(2);
+		}
+		else if(Dambord.bord.getSpelerKleur() == 2){
+			Dambord.bord.setSpelerKleur(1);
+		}
+	}
 }
