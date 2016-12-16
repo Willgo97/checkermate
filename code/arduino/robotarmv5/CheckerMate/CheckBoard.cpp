@@ -5,24 +5,26 @@
 #include "Arduino.h"
 #include "CheckBoard.h"
 
-CheckBoard::CheckBoard(int rows[5], int columns[10]){
+int array[10][10];
+const int rows[5] = {23, 25, 27, 29, 31};// checkerboard
+const int columns[10] = {33, 35, 37, 39, 41, 43, 45, 47, 49, 51};
+
+CheckBoard::CheckBoard(int init){
     
   // Set the pins for the checkerboard
   for (int i = 0; i < 10; i++) {
     pinMode(columns[i], OUTPUT);
-    _columns[10] = columns[10];
-    digitalWrite(_columns[i], LOW);
+    digitalWrite(columns[i], LOW);
   }
 
   for (int i = 0; i < 5; i++) {
     pinMode(rows[i], INPUT);
-    _rows[5] = rows[5];
   }
 }
 void CheckBoard::checkB() { // This reads the sensors under the board to determine the position of all the pieces
   int foo = 0;
   for (int i = 0; i < 10; i++) {
-    digitalWrite(_columns[i], HIGH);
+    digitalWrite(columns[i], HIGH);
     delay(2);
     for (int j = 0; j < 5; j++) {
       delay(2);
@@ -32,13 +34,13 @@ void CheckBoard::checkB() { // This reads the sensors under the board to determi
       } else {
         foo = 0;
       }
-      if (digitalRead(_rows[j])) {
+      if (digitalRead(rows[j])) {
         array[(j * 2) + foo][i] = 0;
       } else {
         array[(j * 2) + foo][i] = 1;
       }
     }
-    digitalWrite(_columns[i], LOW);
+    digitalWrite(columns[i], LOW);
     delay(2);
     //Serial.println();
   }

@@ -9,13 +9,11 @@
 
 class CheckBoard{
     public:
-        CheckBoard(int rows[5], int columns[10]);
+        CheckBoard(int init);
         void checkB();
         void printB();
     private:
-        int _rows[5];
-        int _columns[10];
-        int array[10][10];
+        int _init;
 };
 
 #endif

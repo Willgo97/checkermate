@@ -1,1 +1,0 @@
-de map CheckBoard moet in /documents/arduino/libraries
