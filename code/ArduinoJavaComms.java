@@ -93,31 +93,60 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     public void robotSlaat(int oldX, int oldY, int newX, int newY, int geslagenX, int geslagenY){
     	System.out.println("Trying to capture a piece with the robot...");
     	send(oldX, oldY);
+    	send("d");
+    	send("a");
+    	send("p");
     	send(newX, newY);
+    	send("d");
+    	send("u");
+    	send("p");
     	send(geslagenX, geslagenY);
+    	send("d");
+    	send("a");
+    	send("p");
     	send(10,10);
+    	send("d");
+    	send("u");
+    	send("p");
+    	send("r");
     }
 
     //Method to send codes to the Arduino so that the robot can capture a piece.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
     	System.out.println("Trying to move a piece with the robot...");
     	send(oldX,oldY);
+    	send("d");
+    	send("a");
+    	send("p");
     	send(newX,newY);
+    	send("d");
+    	send("u");
+    	send("r");    	
     }
     
-    public int naarCoördinaten(int dambordpositie){
-    	//Within range of the board: 0 t/m 9
-    	if(dambordpositie < 10)
-    		return dambordpositie * 40 + 20;
+    public int naarCoördinaten(int dambordpositie, String axis){
+    	//Within range of the board: 0 t/m 9, add 1 to get normal coördinates.
+    	dambordpositie += 1;
+    	
+    	if(dambordpositie <= 10){
+    		if (axis == "x"){
+    			dambordpositie = dambordpositie * 40;
+    		}
+    		else if (axis == "y"){
+    			dambordpositie = dambordpositie * 40 + 40;//The y-axis has a blank spot to put the dead stones 0_o
+    		}
+    		return (dambordpositie);
+    	}
     	//Outside range of the board: 10
-    	else
-    		return 450;
+    	else{
+    		return (450);
+    	}
     }
     
     //Helper method to send coordinates to the Arduino.
     public void send(int x, int y){
     	try{
-    		String coords = "c " + naarCoördinaten(x) + " " + naarCoördinaten(y) + " ";
+    		String coords = "c " + naarCoördinaten(x, "x") + " " + naarCoördinaten(y, "y") + " ";
         	output.write(coords.getBytes());
         	output.flush();
         	System.out.println("Gelukt!");
@@ -126,6 +155,19 @@ public class ArduinoJavaComms implements SerialPortEventListener {
             System.out.println("Er ging iets fout met het sturen van coördinaten, namelijk " + e);
         }
     }
+    //Helper method to send magnet control to Arduino.
+    public void send(String s){
+    	try{
+    		String out = s;
+    		output.write(out.getBytes());
+            output.flush();
+            System.out.println("Gelukt!");	
+    	}
+    	catch(IOException | NullPointerException e){
+    		System.out.println("Er ging iets fout met het sturen van de opdracht, namelijk " + e);
+    	}
+    }
+    
     public void printBoard(){
     	try{
         	output.write('b');
@@ -170,7 +212,6 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 				continue;
 			}
 		}
-		this.fysiekDambord = updatedBord;
-		
+		this.fysiekDambord = updatedBord;	
 	}
 }

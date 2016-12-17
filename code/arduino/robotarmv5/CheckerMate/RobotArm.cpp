@@ -35,8 +35,8 @@ void RobotArm::moveRobot(int x, int y) { //  beweeg de robot naar deze positie i
   (diffX < 0) ? digitalWrite(dirPinX, HIGH) : digitalWrite(dirPinX, LOW);
   (diffY < 0) ? digitalWrite(dirPinY, HIGH) : digitalWrite(dirPinY, LOW);
 
-  int stepsX = abs(diffX) * 4;
-  int stepsY = abs(diffY) * 8;
+  int stepsX = abs(diffX) * 5;
+  int stepsY = abs(diffY) * 10;
 
   int steps = 0;
   boolean endX = false;
