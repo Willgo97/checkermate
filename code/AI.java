@@ -74,11 +74,11 @@ public class AI {
 		}
 		String result;
 		if(hit){
-			result = "Steen " + oldPos + " sloeg " + removedPos + " en belandde op " + newPos +".\n";
+			result = "Steen " + oldPos[0] + " sloeg " + removedPos[0] + " en belandde op " + newPos[0] +".\n";
 			ArduinoJavaComms.arduino.robotSlaat(oldPos[1], oldPos[2], newPos[1], newPos[2], removedPos[1], removedPos[2]);
 		}else{
 			ArduinoJavaComms.arduino.robotSchuift(oldPos[1], oldPos[2], newPos[1], newPos[2]);
-			result = "Steen " + oldPos + " schoof naar " + newPos + ".\n";
+			result = "Steen " + oldPos[0] + " schoof naar " + newPos[0] + ".\n";
 		}
 		
 		return result;

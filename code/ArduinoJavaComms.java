@@ -24,6 +24,18 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     };
     
     public static int[][] fysiekDambord = new int[10][10];
+    
+    public static void main(String[] args){
+    	System.out.println("making object.");
+    	ArduinoJavaComms arduino = new ArduinoJavaComms();
+    	
+    	System.out.println("initialising");
+    	arduino.initialize();
+    	arduino.robotSchuift(6, 1, 7, 2);
+    	System.out.println("sending r");
+    	arduino.send("d");
+    	System.out.println("hiu");
+    }
 
     //Starts the communication.
     public void initialize() {
@@ -55,9 +67,9 @@ public class ArduinoJavaComms implements SerialPortEventListener {
                     }
                 }
             }
-            while ( true) {
+            /*while ( true) {
                 try { Thread.sleep(100); } catch (Exception ex) { }
-            }
+            }*/
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -115,26 +127,26 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     //Method to send codes to the Arduino so that the robot can capture a piece.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
     	System.out.println("Trying to move a piece with the robot...");
-    	send(oldX,oldY);
+    	send(newX,newY);
     	send("d");
     	send("a");
     	send("p");
-    	send(newX,newY);
+    	send(oldX,oldY);
     	send("d");
     	send("u");
+    	send("p");
     	send("r");    	
     }
     
     public int naarCoördinaten(int dambordpositie, String axis){
-    	//Within range of the board: 0 t/m 9, add 1 to get normal coördinates.
-    	dambordpositie += 1;
+    	//Within range of the board: 0 t/m 9.
     	
-    	if(dambordpositie <= 10){
+    	if(dambordpositie < 10){
     		if (axis == "x"){
     			dambordpositie = dambordpositie * 40;
     		}
     		else if (axis == "y"){
-    			dambordpositie = dambordpositie * 40 + 40;//The y-axis has a blank spot to put the dead stones 0_o
+    			dambordpositie = dambordpositie * 40 + 40 ;//The y-axis has a blank spot to put the dead stones 0_o
     		}
     		return (dambordpositie);
     	}

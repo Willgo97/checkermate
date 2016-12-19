@@ -10,6 +10,7 @@ public class App {
 	//private static ArduinoJavaComms arduino = new ArduinoJavaComms();
 	private static Server server = new Server();
 	private static Client client = new Client();
+	
 
 	//Starts the main application.
 	public static void main(String[] args) {
