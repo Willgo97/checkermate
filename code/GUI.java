@@ -343,7 +343,7 @@ public class GUI extends JFrame {
 		txtSchuiven.setColumns(10);
 		
 		//button to end turn
-		JButton endTurn = new JButton("EndTurn");
+		JButton endTurn = new JButton("Beëindig beurt");
 		endTurn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -446,7 +446,7 @@ public class GUI extends JFrame {
 	
 	//updates the interface
 	public void updatePanel(){
-		aanDeBeurtTekst.setText(Dambord.bord.getBeurt());
+		aanDeBeurtTekst.setText(Dambord.bord.getBeurt());		
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] != null){
@@ -467,6 +467,11 @@ public class GUI extends JFrame {
 					}
 				}
 			}
+		}
+		Dambord.bord.makeAIMove();
+		if(Dambord.bord.isAIDone()){
+			geschiedenisTekst.append(Dambord.bord.getAIMove());
+			Dambord.bord.setAIDone(false);
 		}
 	}
 	
@@ -528,8 +533,8 @@ public class GUI extends JFrame {
 			public void mouseReleased(MouseEvent arg0) {
 				if (soort == "schuif"){
 					if(Dambord.bord.schuif(richting)){
-						updatePanel();
 						geschiedenisTekst.append("Steen " + Dambord.bord.getVeldNummer() + " schoof naar " + Dambord.bord.getVeldNummer(richting) + ".\n");
+						updatePanel();
 					}
 					else{
 						statusText.setText(Dambord.bord.getFoutmelding());
@@ -537,8 +542,8 @@ public class GUI extends JFrame {
 				}
 				else if (soort == "sla"){
 					if(Dambord.bord.sla(richting)){
-						updatePanel();
 						geschiedenisTekst.append("Steen " + Dambord.bord.getVeldNummer() + " sloeg " + Dambord.bord.getVeldNummer(richting) + " en belandde op " + Dambord.bord.getVeldNummerNaSlaan(richting) +".\n");
+						updatePanel();
 					}
 					else{
 						statusText.setText(Dambord.bord.getFoutmelding());

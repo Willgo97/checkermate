@@ -12,6 +12,7 @@ import java.util.Enumeration;
 //Class that makes communication channels with the Arduino.
 
 public class ArduinoJavaComms implements SerialPortEventListener {
+	public static ArduinoJavaComms arduino = new ArduinoJavaComms();
     SerialPort port = null;
 
     private BufferedReader input = null;

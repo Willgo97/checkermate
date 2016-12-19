@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 public class App {
 
-	private static ArduinoJavaComms arduino = new ArduinoJavaComms();
+	//private static ArduinoJavaComms arduino = new ArduinoJavaComms();
 	private static Server server = new Server();
 	private static Client client = new Client();
 
@@ -18,7 +18,7 @@ public class App {
 		Thread arduinoThread = new Thread(new Runnable() {
 		    @Override
 		    public void run() {
-		        arduino.initialize();
+		        ArduinoJavaComms.arduino.initialize();
 		    }
 		});
 		
@@ -93,6 +93,9 @@ public class App {
 					message.dispose();
 				}
 	    	}
+	    	if(response == 0){
+	    		Dambord.bord.setAgainstAi(true);
+	    	}
 	    	if(response == 0 || connected){
 	    		String[] options2 = new String[] {"Wit", "Zwart"};
 	    	    int decision = JOptionPane.showOptionDialog(
@@ -105,10 +108,10 @@ public class App {
 	    	    		options2,
 	    	    		options2[0]);
 	    	    if(decision == 0){
-	    	    	Dambord.bord.setSpelerKleur(2);
+	    	    	Dambord.bord.setSpelerKleur(2); // number 2 is color white
 	    	    }
 	    	    if(decision == 1){
-	    	    	Dambord.bord.setSpelerKleur(1);
+	    	    	Dambord.bord.setSpelerKleur(1); // number 1 is color black
 	    	    }
 	    	    if(decision == 2){
 	    	    	System.exit(0);

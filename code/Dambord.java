@@ -45,7 +45,12 @@ public class Dambord{
 	private boolean klaarVoorVerzending = false;
 	private String laatsteZet = "";
 	
-	private ArduinoJavaComms arduino = new ArduinoJavaComms();
+	//private ArduinoJavaComms.arduinoJavaComms ArduinoJavaComms.arduino = new ArduinoJavaComms.arduinoJavaComms();
+	
+	public static AI ai = new AI();
+	private boolean againstAi = false;
+	private boolean aiDone = false;
+	private String aiMove = "";
 	
 	//################################# METHODS #####################################
 	
@@ -76,6 +81,9 @@ public class Dambord{
 	public void setSpelerKleur(int kleur){
 		spelerKleur = kleur;
 		beurt = getSpelerBeurtString();
+		if(kleur == ZWART && againstAi){
+			ai.makeAMove(WIT, ZWART);
+		}
 	}
 	
 	public String getKleurString(){
@@ -88,14 +96,12 @@ public class Dambord{
 		else return "???";
 	}
 	
-	//testing method for the Arduino to send data of the physical checkers board.
+	//testing method for the ArduinoJavaComms.arduino to send data of the physical checkers board.
 	public void testFysiekBord(){
-		//arduino.setFysiekDambord(input);
-		fysiekStenen = arduino.getFysiekDambord();
-		
+		fysiekStenen = ArduinoJavaComms.arduino.getFysiekDambord();
+
 		int movedPiece = 0; // a piece that was moved by the player this turn, either a normal piece or a dam
 		
-		System.out.println("oud");
 		for(int row = 0; row<10; row++){ // this loop is the find out which piece was moved by the player
 			for(int column = 0; column<10; column++){
 				
@@ -106,33 +112,26 @@ public class Dambord{
 					if(oldPiece > 0){ 									// if there was a piece there previously
 						if(oldPiece == aanDeBeurt || oldPiece == aanDeBeurt+2){ // if that piece belonged to the player who made a move
 							movedPiece = oldPiece;						// save which piece was moved, either a normal piece or a dam
-							System.out.println(movedPiece);
 						}
 					}
 				}
-				System.out.print(oldPiece);
-			}
-			System.out.println();
-			
+			}			
 		}
-		System.out.println("nieuw");
 		for(int row = 0; row<10; row++){
 			for(int column = 0; column<10; column++){
 				
-				int newPiece = fysiekStenen[row][column]; 				// take the new piece from the physical board
-				int oldPiece = stenen[row][column];						// this is the piece that was in the same spot last turn
+				int newPiece = fysiekStenen[row][column]; 		// take the new piece from the physical board
+				int oldPiece = stenen[row][column];				// this is the piece that was in the same spot last turn
 						
 				if(newPiece == 1){ 								// if there is a piece
 					if(oldPiece > 0){ 							// if there also was a piece there last turn
 						fysiekStenen[row][column]=oldPiece; 	// that piece should then still be the same piece
 					}
 					if(oldPiece == 0){							// if there was no piece last turn,
-						fysiekStenen[row][column] = movedPiece; 	// that piece was moved by the player who's turn it was.
+						fysiekStenen[row][column] = movedPiece; // that piece was moved by the player who's turn it was.
 					}
 				}
-				System.out.print(fysiekStenen[row][column]);
 			}
-			System.out.println();
 		}
 		stenen = fysiekStenen;
 	}
@@ -246,7 +245,7 @@ public class Dambord{
 						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
-						arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+						ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
 						laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 						beurtVoorbij();
 						klaarVoorVerzending = true;
@@ -269,7 +268,7 @@ public class Dambord{
 					if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
 					}
-					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1);
+					ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1);
 					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
 					klaarVoorVerzending = true;
@@ -287,7 +286,7 @@ public class Dambord{
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]-1] = temp;
-					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1);
+					ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1);
 					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
 					klaarVoorVerzending = true;
@@ -305,7 +304,7 @@ public class Dambord{
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]+1] = temp;
-					arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1);
+					ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1);
 					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
 					klaarVoorVerzending = true;
@@ -386,7 +385,7 @@ public class Dambord{
 							stenen[geselecteerd[0]-2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[0]-1);
+							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[0]-1);
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -410,7 +409,7 @@ public class Dambord{
 							stenen[geselecteerd[0]-2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-1, geselecteerd[0]+1);
+							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-1, geselecteerd[0]+1);
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -434,7 +433,7 @@ public class Dambord{
 							stenen[geselecteerd[0]+2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+1, geselecteerd[0]-1);
+							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+1, geselecteerd[0]-1);
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -458,7 +457,7 @@ public class Dambord{
 							stenen[geselecteerd[0]+2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
-							arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+1, geselecteerd[0]+1);
+							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+1, geselecteerd[0]+1);
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -499,6 +498,15 @@ public class Dambord{
 			nietAanDeBeurt = temp;
 			beurt = getSpelerBeurtString();
 	}
+	public void makeAIMove(){
+		if(aanDeBeurt!=spelerKleur && againstAi){ //If AI is enabled and its not the players turn.
+			try{Thread.sleep(1000);}
+			catch(Exception e){
+				
+			}
+			ai.makeAMove(aanDeBeurt, nietAanDeBeurt);
+		}
+	}
 	
 	public String getSpelerBeurtString(){
 		String spelerString = "";
@@ -531,6 +539,9 @@ public class Dambord{
 		}
 		return bord;
 	}
+	public int[][] getBordArray(){
+		return stenen;
+	}
 	
 	public void setBord(String newBord){
 		int x = 0;
@@ -548,6 +559,14 @@ public class Dambord{
 			}
 		}
 	}
+	public void setBord(int[][] newBord){
+		for(int i=0;i<10;i++){
+			for(int j=0;j<10;j++){
+				stenen[i][j]= newBord[i][j];
+			}
+			
+		}
+	}
 	
 	//Prints the board in the output console.
 	public void printBord(){
@@ -557,5 +576,25 @@ public class Dambord{
 			}
 			System.out.println();
 		}
+	}
+	
+	public void endAITurn(String s){
+		beurtVoorbij();
+		aiDone = true;
+		aiMove = s;
+		GUI.gui.updatePanel();
+	}
+	
+	public void setAgainstAi(boolean b) {
+		againstAi  = b;
+	}
+	public boolean isAIDone(){
+		return aiDone;
+	}
+	public void setAIDone(boolean b){
+		aiDone = b;
+	}
+	public String getAIMove(){
+		return aiMove;
 	}
 }
