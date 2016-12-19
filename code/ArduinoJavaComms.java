@@ -194,8 +194,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 	}
 
 	//Sets physical board data from a given String.
-	//Inputstring format: "f <numbers 0 and 1, after every 10 digits follows a comma>"
-
+	//Inputstring format: "f <numbers 0 and 1, after every 10 digits follows a comma>" 
 
 	public void setFysiekDambord(String rauweInput) {
 		int[][] updatedBord = new int[10][10];

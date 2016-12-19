@@ -6,11 +6,12 @@ CheckBoard checkBoard(0);// I have to give an int as parameter, otherwise it won
 MagnetControl magnetControl(0);
 RobotArm robotArm(0);
 
-int gotoX;
-int gotoY;
+int gotoX = 0;
+int gotoY = 0;
 
 void setup() {
   Serial.begin(9600);
+  robotArm.moveRobot(0, 0);
 }
 
 void loop() {
@@ -25,11 +26,11 @@ void loop() {
         robotArm.moveRobot(gotoX, gotoY);
         delay(1000);
         break;
-      case '1' :
+      case 'a' :
         Serial.println("enable magnet");
         magnetControl.enMagnet();
         break;
-      case '2' :
+      case 'u' :
         Serial.println("disable magnet");
         magnetControl.disMagnet();
         break;
