@@ -29,7 +29,6 @@ public class AI {
 			newField = possibleOutComes.get(0);
 		}else{							// if it's not possible to take a piece.
 			movePiece(currentField);
-
 			newField = possibleOutComes.get(ThreadLocalRandom.current().nextInt(0,possibleOutComes.size()));
 		}
 		System.out.println(possibleOutComes.size());
@@ -39,9 +38,9 @@ public class AI {
 	
 	public String createMoveString(){
 		int movedPiece = 0; // a piece that was moved by the player this turn, either a normal piece or a dam
-		int oldPos =0;
-		int newPos =0;
-		int removedPos=0;
+		int oldPos[] ={0,0,0};
+		int newPos[] ={0,0,0};
+		int removedPos[] = {0,0,0};
 		boolean hit = false;
 		for(int row = 0; row<10; row++){ // this loop is the find out which piece was moved by the player
 			for(int column = 0; column<10; column++){
@@ -52,16 +51,22 @@ public class AI {
 				if(newPiece == EMPTY){ 									// if there is no piece
 					if(oldPiece != EMPTY){ 								// if there was a piece there previously
 						if(oldPiece == color || oldPiece == color+2){ 	// if that piece belonged to the player who made a move
-							oldPos = row*5 + column/2+1; 				// save the location of the moved piece.
+							oldPos[0] = row*5 + column/2+1; 				// save the location of the moved piece.
+							oldPos[1] = column;
+							oldPos[2] = row;
 							
 						}else{											// if it doesnt belong to the player who made it move it means it was removed.
-							removedPos=row*5+column/2+1;				// save the location of the hit piece
+							removedPos[0]=row*5+column/2+1;				// save the location of the hit piece
+							removedPos[1] = column;
+							removedPos[2] = row;
 							hit = true;
 						}
 					}
 				}else if(newPiece != EMPTY){		// if there is a piece
 					if(oldPiece == EMPTY){			// but there was no piece there previously
-						newPos = row*5+column/2+1; 	// it's been moved there
+						newPos[0] = row*5+column/2+1; 	// it's been moved there
+						newPos[1] = column;
+						newPos[2] = row;
 					}	
 				}
 				
@@ -70,9 +75,9 @@ public class AI {
 		String result;
 		if(hit){
 			result = "Steen " + oldPos + " sloeg " + removedPos + " en belandde op " + newPos +".\n";
-			//ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[0]-1);
+			ArduinoJavaComms.arduino.robotSlaat(oldPos[1], oldPos[2], newPos[1], newPos[2], removedPos[1], removedPos[2]);
 		}else{
-			//ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+			ArduinoJavaComms.arduino.robotSchuift(oldPos[1], oldPos[2], newPos[1], newPos[2]);
 			result = "Steen " + oldPos + " schoof naar " + newPos + ".\n";
 		}
 		
