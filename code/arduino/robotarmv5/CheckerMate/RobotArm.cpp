@@ -6,10 +6,10 @@
 #include "Arduino.h"
 #include "RobotArm.h"
 
-const int stepPinY = 3; // Y axis
-const int dirPinY = 4;
-const int stepPinX = 5; // X axis
-const int dirPinX = 6;
+const int stepPinX = 3; // Y axis
+const int dirPinX = 4;
+const int stepPinY = 5; // X axis
+const int dirPinY = 6;
 
 const int limitsY = 50;
 const int limitsX = 52;
@@ -32,8 +32,8 @@ void RobotArm::moveRobot(int x, int y) { //  beweeg de robot naar deze positie i
   int diffX = x - curX;
   int diffY = y - curY;
 
-  (diffX < 0) ? digitalWrite(dirPinX, HIGH) : digitalWrite(dirPinX, LOW);
-  (diffY < 0) ? digitalWrite(dirPinY, HIGH) : digitalWrite(dirPinY, LOW);
+  (diffX < 0) ? digitalWrite(dirPinX, LOW) : digitalWrite(dirPinX, HIGH);
+  (diffY < 0) ? digitalWrite(dirPinY, LOW) : digitalWrite(dirPinY, HIGH);
 
   int stepsX = abs(diffX) * 5;
   int stepsY = abs(diffY) * 10;
@@ -62,7 +62,7 @@ void RobotArm::moveRobot(int x, int y) { //  beweeg de robot naar deze positie i
     }
     
     if (endY == false) {
-      digitalWrite(stepPinX, LOW);
+      digitalWrite(stepPinY, LOW);
       if (steps > stepsY) {
         endY = true;
       }
@@ -70,8 +70,8 @@ void RobotArm::moveRobot(int x, int y) { //  beweeg de robot naar deze positie i
     delayMicroseconds(delayms);
   }
   // tijdelijk op 0
-  curX = 0; // curX = x
-  curY = 0; // curY = y
+  curX = x; // curX = x
+  curY = y; // curY = y
 }
 
 void RobotArm::resetRobot() { // beweeg de robot terug naar de begin positie
@@ -80,9 +80,14 @@ void RobotArm::resetRobot() { // beweeg de robot terug naar de begin positie
 
   digitalWrite(dirPinY, LOW);
   digitalWrite(dirPinX, LOW);
+  int limitXCount = 0;
+  int limitYCount = 0;
 
-  while (limitX == false) {
-    limitX = digitalRead(limitsX);
+  while (limitXCount < 2) {
+      limitX = digitalRead(limitsX);
+      if (limitX == true){
+            limitXCount++;
+      }    
     digitalWrite(stepPinX, HIGH);
     delayMicroseconds(delayms * 0.8);
     digitalWrite(stepPinX, LOW);
@@ -90,16 +95,19 @@ void RobotArm::resetRobot() { // beweeg de robot terug naar de begin positie
   }
   delay(300);
   
-  while (limitY == false) {
-    limitY = digitalRead(limitsY);
+  while (limitYCount < 4) {
+      limitY = digitalRead(limitsY);
+      if (limitY == true){
+            limitYCount++;
+      }
     digitalWrite(stepPinY, HIGH);
-    delayMicroseconds(delayms * 0.8);
+    delayMicroseconds(delayms * 0.7);
     digitalWrite(stepPinY, LOW);
-    delayMicroseconds(delayms * 0.8);
+    delayMicroseconds(delayms * 0.7);
   }
   delay(300);
-  moveRobot(-4, -4);
+  moveRobot(20, 4);
 
-  curX = 0;
-  curY = 0;
+  curX = x;
+  curY = y;
 }

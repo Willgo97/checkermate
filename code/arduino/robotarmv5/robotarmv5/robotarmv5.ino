@@ -12,6 +12,7 @@ int gotoY = 0;
 void setup() {
   Serial.begin(9600);
   robotArm.moveRobot(0, 0);
+  robotArm.resetRobot();
 }
 
 void loop() {

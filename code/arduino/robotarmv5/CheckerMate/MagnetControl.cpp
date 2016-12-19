@@ -121,7 +121,7 @@ void MagnetControl::goUp(){
         stepsLeft--;
         delay(1);
       }
-    delay(2000);
+   // delay(2000);
 }
 
 void MagnetControl::goDown(){
@@ -131,6 +131,6 @@ void MagnetControl::goDown(){
       delay(1);
     }
     digitalWrite(magnet, LOW);
-    delay(2000);
+    //delay(2000);
 }
 
