@@ -13,17 +13,18 @@ void setup() {
   Serial.begin(9600);
   robotArm.moveRobot(0, 0);
   robotArm.resetRobot();
+  Serial.println("ready");
 }
 
 void loop() {
   if (Serial.available()) {
     char byteIn = Serial.read();
-
+    
     switch (byteIn) {
       case 'c':
         gotoX = Serial.parseInt();
         gotoY = Serial.parseInt();
-        printf("X: ", gotoX, " Y: ", gotoY);
+        //printf("X: ", gotoX, " Y: ", gotoY);
         robotArm.moveRobot(gotoX, gotoY);
         delay(1000);
         break;
