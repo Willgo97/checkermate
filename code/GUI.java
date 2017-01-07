@@ -31,6 +31,7 @@ public class GUI extends JFrame {
 	private JTextArea statusText;
 	private JTextArea geschiedenisTekst;
 	private JTextField aanDeBeurtTekst;
+	private JLabel scoreLabel;
 	
 	 //creates the graphical user interface.
 	public GUI() {
@@ -405,20 +406,6 @@ public class GUI extends JFrame {
 		dambord.setIcon(new ImageIcon(GUI.class.getResource("/checkers-board.jpg")));
 		contentPane.add(dambord);
 		
-		//turn board 90 degrees (invisible)
-		JButton btnNewButton = new JButton("Draai bord");
-		btnNewButton.setVisible(false);
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {
-				Dambord.bord.draaiBord();
-				updatePanel();
-			}
-		});
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnNewButton.setBounds(839, 684, 139, 63);
-		contentPane.add(btnNewButton);
-		
 		//move history
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(773, 553, 266, 120);
@@ -441,12 +428,26 @@ public class GUI extends JFrame {
 		contentPane.add(aanDeBeurtTekst);
 		aanDeBeurtTekst.setColumns(10);
 		
+		scoreLabel = new JLabel(Dambord.bord.getScore());
+		scoreLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+		scoreLabel.setBounds(812, 718, 200, 37);
+		contentPane.add(scoreLabel);
 		
+		JLabel lblScore = new JLabel("Score:");
+		lblScore.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblScore.setBounds(884, 684, 46, 14);
+		contentPane.add(lblScore);
+		
+		JLabel scoreLabel2 = new JLabel("Wit                                Zwart");
+		scoreLabel2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		scoreLabel2.setBounds(814, 699, 194, 14);
+		contentPane.add(scoreLabel2);
 	}
 	
 	//updates the interface
 	public void updatePanel(){
-		aanDeBeurtTekst.setText(Dambord.bord.getBeurt());		
+		scoreLabel.setText(Dambord.bord.getScore());
+		aanDeBeurtTekst.setText(Dambord.bord.getBeurt());
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] != null){

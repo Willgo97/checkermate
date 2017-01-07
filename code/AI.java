@@ -27,12 +27,18 @@ public class AI {
 		
 		if(takePiece(currentField)){ 	// if it's possible to take a piece.
 			newField = possibleOutComes.get(0);
+			Dambord.bord.setBord(newField);
 		}else{							// if it's not possible to take a piece.
 			movePiece(currentField);
-			newField = possibleOutComes.get(ThreadLocalRandom.current().nextInt(0,possibleOutComes.size()));
+			try{
+				newField = possibleOutComes.get(ThreadLocalRandom.current().nextInt(0,possibleOutComes.size()));
+				Dambord.bord.setBord(newField);
+			}
+			catch(IllegalArgumentException e){
+				System.out.println("U heeft gewonnen!");
+			}
 		}
-		System.out.println(possibleOutComes.size());
-		Dambord.bord.setBord(newField);
+		
 		Dambord.bord.endAITurn(createMoveString()); // end the AI's turn
 	}// end of makeAMove method
 	
@@ -188,6 +194,9 @@ public class AI {
 					}
 				}
 			}
+		}
+		if(hit){
+			Dambord.bord.aiSloeg(opponent);
 		}
 		return hit;
 	}// End method takePiece

@@ -14,7 +14,8 @@ public class Dambord{
 			{0,2,0,2,0,2,0,2,0,2},
 			{2,0,2,0,2,0,2,0,2,0}};
 	
-	private int[][] fysiekStenen = {{0,0,0,0,0,0,0,0,0,0},
+	private int[][] fysiekStenen = 
+		   {{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0},
@@ -24,6 +25,7 @@ public class Dambord{
 			{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0}};
+	
 
 	private int[] geselecteerd = {9,0};
 	
@@ -66,6 +68,20 @@ public class Dambord{
 	//Method to notify a sent message between sockets
 	public void verzonden(){
 		klaarVoorVerzending = false;
+	}
+	
+	public String getScore(){
+		String score = "" + aantalWitteStenen + "                  " + aantalZwarteStenen;
+		return score;
+	}
+	
+	public void aiSloeg(int verwijderdeKleur){
+		if(verwijderdeKleur == ZWART){
+			aantalZwarteStenen--;
+		}
+		if(verwijderdeKleur == WIT){
+			aantalWitteStenen--;
+		}
 	}
 	
 	//Method to send the last turn to the other player's socket
