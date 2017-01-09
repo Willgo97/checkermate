@@ -25,7 +25,8 @@ void loop() {
       case 'c':
         gotoX = Serial.parseInt();
         gotoY = Serial.parseInt();
-        //printf("X: ", gotoX, " Y: ", gotoY);
+        //String s = "X: ", String(gotoX), " Y; ", String(gotoY);
+        //Serial.println(s);
         robotArm.moveRobot(gotoX, gotoY);
         delay(1000);
         break;
