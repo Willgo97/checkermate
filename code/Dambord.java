@@ -60,6 +60,15 @@ public class Dambord{
 	//Static, so other classes can share this one board.
 	public static Dambord bord = new Dambord();
 	
+	
+	public int getAantalWitteStenen(){
+		return aantalWitteStenen;
+	}
+	
+	public int getAantalZwarteStenen(){
+		return aantalZwarteStenen;
+	}
+	
 	//Prints last turn for online communication.
 	public boolean klaarVoorVerzending(){
 		return klaarVoorVerzending;
@@ -70,6 +79,7 @@ public class Dambord{
 		klaarVoorVerzending = false;
 	}
 	
+	//Returns the 
 	public String getScore(){
 		String score = "" + aantalWitteStenen + "                  " + aantalZwarteStenen;
 		return score;

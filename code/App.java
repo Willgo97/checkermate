@@ -5,31 +5,58 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import static java.nio.file.StandardOpenOption.*;
+
+import java.nio.file.*;
+import java.io.*;
+
 public class App {
 
 	//private static ArduinoJavaComms arduino = new ArduinoJavaComms();
 	private static Server server = new Server();
 	private static Client client = new Client();
+	private static Thread arduinoThread;
+	private static Thread serverThread;
+	private static Thread clientThread;
 	
-
 	//Starts the main application.
 	public static void main(String[] args) {
-		
+		startProgram();
+	}
+	
+	public static JDialog showMessage(String message){
+		final JOptionPane optionPane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+
+		final JDialog dialog = new JDialog();
+		dialog.setTitle("CheckerMate");
+		dialog.setModal(false);
+
+		dialog.setContentPane(optionPane);
+
+		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		dialog.pack();
+		dialog.setLocationRelativeTo(null);
+		dialog.setVisible(true);
+		return dialog;
+	}
+	
+	public static void startProgram(){
+
 		//Creates threads for the Arduino, Server and Client
-		Thread arduinoThread = new Thread(new Runnable() {
+		arduinoThread = new Thread(new Runnable() {
 		    @Override
 		    public void run() {
 		        ArduinoJavaComms.arduino.initialize();
 		    }
 		});
 		
-		Thread serverThread = new Thread(new Runnable() {
+		serverThread = new Thread(new Runnable() {
 		    @Override
 		    public void run() {
 		        server.run();
 		    }
 		});
-		Thread clientThread = new Thread(new Runnable() {
+		clientThread = new Thread(new Runnable() {
 		    @Override
 		    public void run() {
 		        try {
@@ -38,6 +65,27 @@ public class App {
 				}
 		    }
 		});
+		
+		//Maakt of edit een save file.
+		Path p = Paths.get("./names.txt");
+		String name = null;
+		while(name == null){
+		    try (OutputStream out = new BufferedOutputStream(
+		    	Files.newOutputStream(p, CREATE, APPEND))) {
+		    	name = (String) JOptionPane.showInputDialog(
+			    		null,
+			    		"Wat is uw naam?", 
+			    		"CheckerMate",
+			    		JOptionPane.QUESTION_MESSAGE,
+			    		new ImageIcon(GUI.class.getResource("/white king.png")),
+			    		null,
+			    		null);
+			    byte data[] = name.getBytes();
+		    	out.write(data, 0, data.length);
+		    } catch (IOException | NullPointerException x) {
+		      		//Try again
+		    }
+		}
 		
 		//Creates a dialog to choose the game mode (1P/host/client).
 		String[] options = new String[] {"Tegen de computer", "Iemand uitnodigen", "Uitnodiging accepteren", "Afsluiten"};
@@ -128,23 +176,41 @@ public class App {
 					}
 				});
 				arduinoThread.start();
+				
+				//Checks if the game is finished.
+				while(true){
+					if(GUI.gui.gameFinished()){
+						
+						Object[] options3 = {"Ja",
+						                    "Nee"};
+						int response3 = JOptionPane.showOptionDialog(null,
+						    "Het spel is afgelopen, wilt u nog een keer spelen?",
+						    "CheckerMate",
+						    JOptionPane.YES_NO_OPTION,
+						    JOptionPane.QUESTION_MESSAGE,
+						    null,
+						    options3,
+						    options3[1]);
+						if(response3 == 0){
+							//resets the GUI, board, and all Threads.
+							GUI.gui.setVisible(false);
+							GUI.gui.dispose();
+							Dambord.bord = new Dambord();
+							GUI.gui = new GUI();
+							startProgram();
+						}
+						if(response3 == 1){
+							System.exit(0);
+						}
+					}
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 	    	}
 		}
-	}
 	
-	public static JDialog showMessage(String message){
-		final JOptionPane optionPane = new JOptionPane(message, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
-
-		final JDialog dialog = new JDialog();
-		dialog.setTitle("CheckerMate");
-		dialog.setModal(false);
-
-		dialog.setContentPane(optionPane);
-
-		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		dialog.pack();
-		dialog.setLocationRelativeTo(null);
-		dialog.setVisible(true);
-		return dialog;
 	}
 }

@@ -15,6 +15,7 @@ import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -32,6 +33,7 @@ public class GUI extends JFrame {
 	private JTextArea geschiedenisTekst;
 	private JTextField aanDeBeurtTekst;
 	private JLabel scoreLabel;
+	private boolean gameFinished = false;
 	
 	 //creates the graphical user interface.
 	public GUI() {
@@ -474,6 +476,9 @@ public class GUI extends JFrame {
 			geschiedenisTekst.append(Dambord.bord.getAIMove());
 			Dambord.bord.setAIDone(false);
 		}
+		if(Dambord.bord.getAantalWitteStenen() == 0 || Dambord.bord.getAantalZwarteStenen() == 0){
+			gameFinished = true;
+		}
 	}
 	
 	//Focuses the icon that is clicked on.
@@ -570,5 +575,9 @@ public class GUI extends JFrame {
 		button.setBounds(size1, size2, size3, 23);
 		contentPane.add(button);
 		button.setFont(new Font("Tahoma", Font.PLAIN, 10));
+	}
+	
+	public boolean gameFinished(){
+		return gameFinished;
 	}
 }
