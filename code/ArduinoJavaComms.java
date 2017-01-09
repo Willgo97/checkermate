@@ -127,11 +127,11 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     //Method to send codes to the Arduino so that the robot can capture a piece.
     public void robotSchuift(int oldX, int oldY, int newX, int newY){
     	System.out.println("Trying to move a piece with the robot...");
-    	send(newX,newY);
+    	send(oldX,oldY);
     	send("d");
     	send("a");
     	send("p");
-    	send(oldX,oldY);
+    	send(newX,newY);
     	send("d");
     	send("u");
     	send("p");
@@ -143,23 +143,23 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	
     	if(dambordpositie < 10){
     		if (axis == "x"){
-    			dambordpositie = dambordpositie * 40;
+    			dambordpositie = dambordpositie * 40 + 40;
     		}
     		else if (axis == "y"){
-    			dambordpositie = dambordpositie * 40 + 40 ;//The y-axis has a blank spot to put the dead stones 0_o
+    			dambordpositie = dambordpositie * 40 ;//The y-axis has a blank spot to put the dead stones 0_o
     		}
     		return (dambordpositie);
     	}
     	//Outside range of the board: 10
     	else{
-    		return (450);
+    		return (5);
     	}
     }
     
     //Helper method to send coordinates to the Arduino.
     public void send(int x, int y){
     	try{
-    		String coords = "c " + naarCoördinaten(x, "x") + " " + naarCoördinaten(y, "y") + " ";
+    		String coords = "c" + naarCoördinaten(x, "x") + " " + naarCoördinaten(y, "y");
         	output.write(coords.getBytes());
         	output.flush();
         	System.out.println("Gelukt!");

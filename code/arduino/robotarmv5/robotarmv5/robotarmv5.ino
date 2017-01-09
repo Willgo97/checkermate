@@ -11,6 +11,7 @@ int gotoY = 0;
 
 void setup() {
   Serial.begin(9600);
+  Serial.flush();
   robotArm.moveRobot(0, 0);
   robotArm.resetRobot();
   Serial.println("ready");
@@ -19,7 +20,7 @@ void setup() {
 void loop() {
   if (Serial.available()) {
     char byteIn = Serial.read();
-    
+    Serial.println("inc: "+(char)byteIn);
     switch (byteIn) {
       case 'c':
         gotoX = Serial.parseInt();

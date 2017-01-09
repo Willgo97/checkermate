@@ -58,21 +58,21 @@ public class AI {
 					if(oldPiece != EMPTY){ 								// if there was a piece there previously
 						if(oldPiece == color || oldPiece == color+2){ 	// if that piece belonged to the player who made a move
 							oldPos[0] = row*5 + column/2+1; 				// save the location of the moved piece.
-							oldPos[1] = column;
-							oldPos[2] = row;
+							oldPos[2] = column;
+							oldPos[1] = row;
 							
 						}else{											// if it doesnt belong to the player who made it move it means it was removed.
 							removedPos[0]=row*5+column/2+1;				// save the location of the hit piece
-							removedPos[1] = column;
-							removedPos[2] = row;
+							removedPos[2] = column;
+							removedPos[1] = row;
 							hit = true;
 						}
 					}
 				}else if(newPiece != EMPTY){		// if there is a piece
 					if(oldPiece == EMPTY){			// but there was no piece there previously
 						newPos[0] = row*5+column/2+1; 	// it's been moved there
-						newPos[1] = column;
-						newPos[2] = row;
+						newPos[2] = column;
+						newPos[1] = row;
 					}	
 				}
 				

@@ -106,8 +106,10 @@ void RobotArm::resetRobot() { // beweeg de robot terug naar de begin positie
     delayMicroseconds(delayms * 0.7);
   }
   delay(300);
+  curY = 0;
+  curX = 0;
   moveRobot(20, 4);
+  curY = 0;
+  curX = 0;
 
-  curX = x;
-  curY = y;
 }

@@ -114,12 +114,12 @@ void MagnetControl::disMagnet(){
 }
 
 void MagnetControl::goUp(){
-    stepsLeft = 2048;
+    stepsLeft = 1500;
     Direction = false;
     while (stepsLeft > 0 && Direction == false) {
         stepper(1);
         stepsLeft--;
-        delay(1);
+        delayMicroseconds(500);
       }
    // delay(2000);
 }
@@ -128,7 +128,7 @@ void MagnetControl::goDown(){
     Direction = true;
     while (digitalRead(48) == LOW) {
       stepper(1);
-      delay(1);
+      delayMicroseconds(500);
     }
     digitalWrite(magnet, LOW);
     //delay(2000);
