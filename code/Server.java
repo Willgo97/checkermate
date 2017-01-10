@@ -8,6 +8,8 @@ public class Server {
 	
 	private static int portNumber = 13337;
 	private static boolean connectionEstablished = false;
+	private int chosenColor = 0;
+	private int opponentChoseColor = 0;
 	
 	//check for connection with this method
 	public boolean hasConnection(){
@@ -32,13 +34,19 @@ public class Server {
               
                     System.out.println("Connected to client on port " + portNumber + ".");
                  
+                    String inputLine;
                     while (true) { 
-						if(Dambord.bord.klaarVoorVerzending()){
+                    	if(chosenColor != 0){
+                    		out.println("color " + chosenColor);
+                    		chosenColor = 0;
+						}
+                    	else if(Dambord.bord.klaarVoorVerzending()){
     	            		out.println(Dambord.bord.getLaatsteZet());
     	            		Dambord.bord.verzonden();
     	            	}
 						else if(in.ready()){
-							processTurn(in.readLine());
+							inputLine = in.readLine();
+    	            		processTurn(inputLine);
 							Dambord.bord.verzonden();
 						}
 						else{
@@ -99,6 +107,17 @@ public class Server {
     		temporarilySwitchPlayers();
     		GUI.gui.updatePanel();
     	}
+    	else if(input.contains("color")){
+    		if(Integer.parseInt(input.replaceAll("[\\D]", "")) == 1){
+    			opponentChoseColor = 1;
+    			Dambord.bord.setSpelerKleur(2);
+    		}
+    		else if(Integer.parseInt(input.replaceAll("[\\D]", "")) == 2){
+    			opponentChoseColor = 2;
+    			Dambord.bord.setSpelerKleur(1);
+    		}
+    		System.out.println("Received: " + Integer.parseInt(input.replaceAll("[\\D]", "")));
+    	}
     	else{
     		System.out.println("No valid String was sent: " + input);
     	}
@@ -113,4 +132,12 @@ public class Server {
   			Dambord.bord.setSpelerKleur(1);
   		}
   	}
+
+	public void sendChosenColor(int color) {
+		chosenColor = color;
+	}
+	
+	public int getOpponentColor(){
+		return opponentChoseColor;
+	}
 }

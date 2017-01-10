@@ -5,6 +5,8 @@ public class Client {
 	private static int portNumber = 13337;
 	private static String hostName = "localhost";
 	private static boolean connectionEstablished = false;
+	private int chosenColor = 0;
+	private int opponentChoseColor = 0;
 	
 	//check for connection with this method
 	public boolean hasConnection(){
@@ -28,14 +30,16 @@ public class Client {
     	        	System.out.println("Connected to " + hostName + " on port " + echoSocket.getPort() + ".");
     	           String inputLine;
     	            while (true) {
-    	            	if(Dambord.bord.klaarVoorVerzending()){
+    	            	if(chosenColor != 0){
+                    		out.println("color " + chosenColor);
+                    		chosenColor = 0;
+						}
+    	            	else if(Dambord.bord.klaarVoorVerzending()){
     	            		out.println(Dambord.bord.getLaatsteZet());
     	            		Dambord.bord.verzonden();
     	            	}
     	            	else if(in.ready()){
-    	            		System.out.println("Input received:");
     	            		inputLine = in.readLine();
-    	            		System.out.println(inputLine);
     	            		processTurn(inputLine);
     	            		Dambord.bord.verzonden();
     	            	}
@@ -105,6 +109,17 @@ public class Client {
     		temporarilySwitchPlayers();
     		GUI.gui.updatePanel();
     	}
+    	else if(input.contains("color")){
+    		if(Integer.parseInt(input.replaceAll("[\\D]", "")) == 1){
+    			opponentChoseColor = 1;
+    			Dambord.bord.setSpelerKleur(2);
+    		}
+    		else if(Integer.parseInt(input.replaceAll("[\\D]", "")) == 2){
+    			opponentChoseColor = 2;
+    			Dambord.bord.setSpelerKleur(1);
+    		}
+    		System.out.println("Received: " + input);
+    	}
     	else{
     		System.out.println("No valid String was sent: " + input);
     	}
@@ -118,5 +133,13 @@ public class Client {
 		else if(Dambord.bord.getSpelerKleur() == 2){
 			Dambord.bord.setSpelerKleur(1);
 		}
+	}
+
+	public void sendChosenColor(int color) {
+		chosenColor = color;
+	}
+	
+	public int getOpponentColor(){
+		return opponentChoseColor;
 	}
 }

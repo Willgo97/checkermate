@@ -146,25 +146,53 @@ public class App {
 	    		Dambord.bord.setAgainstAi(true);
 	    	}
 	    	if(response == 0 || connected){
-	    		String[] options2 = new String[] {"Wit", "Zwart"};
-	    	    int decision = JOptionPane.showOptionDialog(
-	    	    		null, 
-	    	    		"Welke kleur stenen wilt u gebruiken?", 
-	    	    		"CheckerMate",
-	    	    		JOptionPane.DEFAULT_OPTION, 
-	    	    		JOptionPane.QUESTION_MESSAGE,
-	    	    		null,
-	    	    		options2,
-	    	    		options2[0]);
-	    	    if(decision == 0){
-	    	    	Dambord.bord.setSpelerKleur(2); // number 2 is color white
-	    	    }
-	    	    if(decision == 1){
-	    	    	Dambord.bord.setSpelerKleur(1); // number 1 is color black
-	    	    }
-	    	    if(decision == 2){
-	    	    	System.exit(0);
-	    	    }
+	    		if(server.getOpponentColor() == 0 && client.getOpponentColor() == 0){
+	    			String[] options2 = new String[] {"Wit", "Zwart"};
+		    	    int decision = JOptionPane.showOptionDialog(
+		    	    		null, 
+		    	    		"Welke kleur stenen wilt u gebruiken?", 
+		    	    		"CheckerMate",
+		    	    		JOptionPane.DEFAULT_OPTION, 
+		    	    		JOptionPane.QUESTION_MESSAGE,
+		    	    		null,
+		    	    		options2,
+		    	    		options2[0]);
+		    	    if(decision == 0 && server.getOpponentColor() == 0 && client.getOpponentColor() == 0){
+		    	    	Dambord.bord.setSpelerKleur(2); // number 2 is color white
+		    	    	if(response == 1 && connected){
+		    	    		server.sendChosenColor(2);
+		    	    	}
+		    	    	if(response == 2 && connected){
+		    	    		client.sendChosenColor(2);
+		    	    	}
+		    	    }
+		    	    if(decision == 1 && server.getOpponentColor() == 0 && client.getOpponentColor() == 0){
+		    	    	Dambord.bord.setSpelerKleur(1); // number 1 is color black
+		    	    	if(response == 1 && connected){
+		    	    		server.sendChosenColor(1);
+		    	    	}
+		    	    	if(response == 2 && connected){
+		    	    		client.sendChosenColor(1);
+		    	    	}
+		    	    }
+		    	    if(decision == 2){
+		    	    	System.exit(0);
+		    	    }
+		    	    if(server.getOpponentColor() != 0 || client.getOpponentColor() != 0){
+		    	    	JOptionPane.showMessageDialog(null,
+		    	    		    "Uw tegenstander heeft al een kleur gekozen.\nUw spel zal nu beginnen.",
+		    	    		    "U was net te laat...",
+		    	    		    JOptionPane.ERROR_MESSAGE);
+		    	    }
+		    	    if(response == 0 && decision == 0){
+		    	    	Dambord.bord.setSpelerKleur(2);
+		    	    }
+		    	    if(response == 0 && decision == 1){
+		    	    	Dambord.bord.setSpelerKleur(1);
+		    	    }
+		    	    
+	    		}
+	    		
 	    		//starts GUI and Arduino threads
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
