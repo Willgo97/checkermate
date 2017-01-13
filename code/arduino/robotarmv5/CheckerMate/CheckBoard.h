@@ -12,6 +12,7 @@ class CheckBoard{
         CheckBoard(int init);
         void checkB();
         void printB();
+        bool changedBoard();
     private:
         int init;
 };

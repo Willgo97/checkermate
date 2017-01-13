@@ -350,6 +350,7 @@ public class GUI extends JFrame {
 		endTurn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				ArduinoJavaComms.arduino.send("b"); // ask the arduino to send the board
 				Dambord.bord.testFysiekBord();
 				Dambord.bord.beurtVoorbij();
 				updatePanel();

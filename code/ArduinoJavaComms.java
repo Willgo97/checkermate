@@ -55,6 +55,8 @@ public class ArduinoJavaComms implements SerialPortEventListener {
                             || portid.getName().contains(portName)) {  // CONTAINS
                         port = (SerialPort) portid.open("ArduinoJavaComms", TIME_OUT);
                         port.setFlowControlMode(SerialPort.FLOWCONTROL_XONXOFF_IN+SerialPort.FLOWCONTROL_XONXOFF_OUT); // FLOW-CONTROL
+                        
+                        port.setSerialPortParams(57600, 8, 1, 0);
                         //open streams
                         input = new BufferedReader(
                                 new InputStreamReader( port.getInputStream() ));
@@ -89,6 +91,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
                     else if(inputLine.length() > 1){
                         System.out.println(inputLine);
                         if(inputLine.startsWith("f")){
+                        	System.out.println("getting dambord layout");
                         	setFysiekDambord(inputLine);
                         }
                     }
@@ -152,7 +155,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	}
     	//Outside range of the board: 10
     	else{
-    		return (5);
+    		return (0);
     	}
     }
     
@@ -161,7 +164,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	try{
     		String coords = "c" + naarCoördinaten(x, "x") + " " + naarCoördinaten(y, "y");
         	output.write(coords.getBytes());
-        	output.flush();
+        	//output.flush();
         	System.out.println("Gelukt!");
     	}
     	catch(IOException|NullPointerException e){
@@ -173,7 +176,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	try{
     		String out = s;
     		output.write(out.getBytes());
-            output.flush();
+            //output.flush();
             System.out.println("Gelukt!");	
     	}
     	catch(IOException | NullPointerException e){
@@ -184,7 +187,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     public void printBoard(){
     	try{
         	output.write('b');
-        	output.flush();
+        	//output.flush();
         	System.out.println("Gelukt!");
     	}
     	catch(IOException|NullPointerException e){
@@ -201,7 +204,6 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 			}
 			System.out.println();
 		}
-		System.out.println("return nu de shit");
 		return fysiekDambord;
 	}
 

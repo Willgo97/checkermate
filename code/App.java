@@ -33,6 +33,8 @@ public class App {
 
 		dialog.setContentPane(optionPane);
 
+		
+		
 		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		dialog.pack();
 		dialog.setLocationRelativeTo(null);

@@ -9,6 +9,7 @@ int array[10][10];
 const int rows[5] = {23, 25, 27, 29, 31};// checkerboard
 const int columns[10] = {33, 35, 37, 39, 41, 43, 45, 47, 49, 51};
 
+
 CheckBoard::CheckBoard(int init){
     
   // Set the pins for the checkerboard
@@ -45,7 +46,28 @@ void CheckBoard::checkB() { // This reads the sensors under the board to determi
     //Serial.println();
   }
 }
+bool CheckBoard::changedBoard(){
+  int oldArray[10][10];
+
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) {
+      oldArray[i][j] = array[i][j];   
+    }
+  }
+
+  checkB();
+
+  for (int i = 0; i < 10; i++) {
+    for (int j = 0; j < 10; j++) {
+      if(array[i][j] != oldArray[i][j]){
+        return true;
+      }
+    }
+  }
+  return false;
+}
 void CheckBoard::printB() {
+  Serial.print("f");
   for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10; j++) {
       if (array[i][j]) {
