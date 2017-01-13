@@ -73,7 +73,9 @@ public class Dambord{
 	public boolean klaarVoorVerzending(){
 		return klaarVoorVerzending;
 	}
-	
+	public void setKlaarVoorVerzending(boolean b){
+		klaarVoorVerzending = b;
+	}
 	//Method to notify a sent message between sockets
 	public void verzonden(){
 		klaarVoorVerzending = false;
@@ -127,7 +129,8 @@ public class Dambord{
 		fysiekStenen = ArduinoJavaComms.arduino.getFysiekDambord();
 
 		int movedPiece = 0; // a piece that was moved by the player this turn, either a normal piece or a dam
-		
+		int newX=0, newY=0, oldX=0, oldY=0;
+		int oldstones =0, newstones=0;
 		for(int row = 0; row<10; row++){ // this loop is the find out which piece was moved by the player
 			for(int column = 0; column<10; column++){
 				
@@ -138,7 +141,10 @@ public class Dambord{
 					if(oldPiece > 0){ 									// if there was a piece there previously
 						if(oldPiece == aanDeBeurt || oldPiece == aanDeBeurt+2){ // if that piece belonged to the player who made a move
 							movedPiece = oldPiece;						// save which piece was moved, either a normal piece or a dam
+							oldX = row;
+							oldY = column;
 						}
+						
 					}
 				}
 			}			
@@ -155,11 +161,35 @@ public class Dambord{
 					}
 					if(oldPiece == 0){							// if there was no piece last turn,
 						fysiekStenen[row][column] = movedPiece; // that piece was moved by the player who's turn it was.
+						newX = row;
+						newY = column;
 					}
+				}
+				if(oldPiece>0){
+					oldstones++;
+				}
+				if(newPiece>0){
+					newstones++;
 				}
 			}
 		}
 		stenen = fysiekStenen;
+		String richting="";
+		if(newX>oldX&&newY>oldY){
+			richting = "rechtsonder";
+		}else if(newX<oldX && newY<oldY){
+			richting = "linksboven";
+		}else if(newX<oldX && newY>oldY){
+			richting = "rechtsboven";
+		}else{
+			richting = "linksonder";
+		}
+		if(newstones<oldstones){
+			laatsteZet = ""+oldX+""+oldY+"sla"+richting;
+		}else{
+			laatsteZet = ""+oldX+""+oldY+"schuif"+richting;
+		}
+		System.out.println(laatsteZet);
 	}
 	
 	

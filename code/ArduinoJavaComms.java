@@ -120,11 +120,12 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	send("d");
     	send("a");
     	send("p");
+    	send("p");
     	send(10,10);
     	send("d");
     	send("u");
     	send("p");
-    	send("r");
+    	//send("r");
     }
 
     //Method to send codes to the Arduino so that the robot can capture a piece.
@@ -164,7 +165,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	try{
     		String coords = "c" + naarCoördinaten(x, "x") + " " + naarCoördinaten(y, "y");
         	output.write(coords.getBytes());
-        	//output.flush();
+        	output.flush();
         	System.out.println("Gelukt!");
     	}
     	catch(IOException|NullPointerException e){
@@ -176,7 +177,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	try{
     		String out = s;
     		output.write(out.getBytes());
-            //output.flush();
+            output.flush();
             System.out.println("Gelukt!");	
     	}
     	catch(IOException | NullPointerException e){
@@ -197,13 +198,13 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 
     //Returns data retrieved from physical board.
 	public int[][] getFysiekDambord() {
-		System.out.println("Print de return shit");
+		/*System.out.println("Print de return shit");
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				System.out.print(fysiekDambord[i][j] + " ");
 			}
 			System.out.println();
-		}
+		}*/
 		return fysiekDambord;
 	}
 

@@ -15,6 +15,7 @@ public class AI {
 	private int opponent;
 	private int[][] newField;
 	
+	
 	// METHODS
 	public void makeAMove(int c, int o){
 		System.out.println("The AI is making a move..");
@@ -79,9 +80,11 @@ public class AI {
 			}			
 		}
 		String result;
+		
 		if(hit){
 			result = "Steen " + oldPos[0] + " sloeg " + removedPos[0] + " en belandde op " + newPos[0] +".\n";
 			ArduinoJavaComms.arduino.robotSlaat(oldPos[1], oldPos[2], newPos[1], newPos[2], removedPos[1], removedPos[2]);
+			
 		}else{
 			ArduinoJavaComms.arduino.robotSchuift(oldPos[1], oldPos[2], newPos[1], newPos[2]);
 			result = "Steen " + oldPos[0] + " schoof naar " + newPos[0] + ".\n";
@@ -200,5 +203,9 @@ public class AI {
 		}
 		return hit;
 	}// End method takePiece
+	public void hit(int x, int y){
+		
+	}// End method hit
+	
 	
 }

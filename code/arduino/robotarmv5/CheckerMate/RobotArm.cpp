@@ -16,7 +16,7 @@ const int limitsX = 52;
 
 int curX = 0;
 int curY = 0;
-int delayms = 1000;
+int delayms = 800;
 
 RobotArm::RobotArm(int init){
   pinMode(stepPinY, OUTPUT);
@@ -89,21 +89,21 @@ void RobotArm::resetRobot() { // beweeg de robot terug naar de begin positie
             limitXCount++;
       }    
     digitalWrite(stepPinX, HIGH);
-    delayMicroseconds(delayms * 0.8);
+    delayMicroseconds(delayms);
     digitalWrite(stepPinX, LOW);
-    delayMicroseconds(delayms * 0.8);
+    delayMicroseconds(delayms);
   }
   delay(300);
   
-  while (limitYCount < 4) {
+  while (limitYCount < 5) {
       limitY = digitalRead(limitsY);
       if (limitY == true){
             limitYCount++;
       }
     digitalWrite(stepPinY, HIGH);
-    delayMicroseconds(delayms * 0.7);
+    delayMicroseconds(delayms);
     digitalWrite(stepPinY, LOW);
-    delayMicroseconds(delayms * 0.7);
+    delayMicroseconds(delayms);
   }
   delay(300);
   curY = 0;

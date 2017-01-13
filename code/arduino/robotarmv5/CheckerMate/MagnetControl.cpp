@@ -114,7 +114,7 @@ void MagnetControl::disMagnet(){
 }
 
 void MagnetControl::goUp(){
-    stepsLeft = 1800;
+    stepsLeft = 2048;
     Direction = false;
     while (stepsLeft > 0 && Direction == false) {
         stepper(1);
