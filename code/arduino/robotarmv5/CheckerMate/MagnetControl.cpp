@@ -124,6 +124,12 @@ void MagnetControl::goUp(){
    // delay(2000);
 }
 
+void MagnetControl::goUpReset(int hitStonesCount){
+    for (int i = 0; i < hitStonesCount; i++){
+        goUp();
+    }
+}
+
 void MagnetControl::goDown(){
     Direction = true;
     while (digitalRead(48) == LOW) {

@@ -301,7 +301,13 @@ public class Dambord{
 						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
 						}
-						ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+	
+						if (geselecteerd[0]-1 == 0 && temp == WITTEDAM || temp == ZWARTEDAM){
+							ArduinoJavaComms.arduino.robotGetDam(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+						}
+						else {
+							ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+						}
 						laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 						beurtVoorbij();
 						klaarVoorVerzending = true;
@@ -434,15 +440,20 @@ public class Dambord{
 				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && getGeselecteerd() == aanDeBeurt){
 					if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]-2] == LEEG){
+							int temp = getGeselecteerd();
 							if(getGeselecteerd() == WIT)
 								aantalZwarteStenen--;
 							if(getGeselecteerd() == ZWART)
 								aantalWitteStenen--;
 							stenen[geselecteerd[0]-2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
-							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
+							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;							
 							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[1]-1);
+							if(geselecteerd[0]-2 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
+								stenen[geselecteerd[0]-2][geselecteerd[1]-2] += 2;
+							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
 								beurtVoorbij();

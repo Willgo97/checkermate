@@ -8,6 +8,8 @@ RobotArm robotArm(0);
 
 int gotoX = 0;
 int gotoY = 0;
+int geslagenSteen = 0;
+int kingNumber = 0;
 
 void setup() {
   Serial.begin(57600);
@@ -30,32 +32,50 @@ void loop() {
       case 'c':
         gotoX = Serial.parseInt();
         gotoY = Serial.parseInt();
-        //String s = "X: ", String(gotoX), " Y; ", String(gotoY);
-        //Serial.println(s);
-        robotArm.moveRobot(gotoX, gotoY);
-        delay(300);
-        break;
-      case 'a' :
-        //Serial.println("enable magnet");
-        magnetControl.enMagnet();
-        break;
-      case 'u' :
-        //Serial.println("disable magnet");
-        magnetControl.disMagnet();
-        break;
-      case 'p' :
-        //Serial.println("pick stone up");
-        magnetControl.goUp();
-        break;
-      case 'd' :
-        //Serial.println("drop the stone");
-        magnetControl.goDown();
-        break;
-      case 'r' :
-        //Serial.println("move to origin");
-        robotArm.resetRobot();
-        //Serial.println("at origin");
-        break;
+        if (gotoX == 10 && gotoY == 10) {
+          geslagenSteen++;
+          if (geslagenSteen < 8) {
+            magnetControl.goUpReset(geslagenSteen);
+          }
+          else if (geslagenSteen > 8 && geslagenSteen < 16) {
+            magnetControl.goUpReset(geslagenSteen - 8);
+            robotArm.moveRobot(0, 40);
+          }
+          else if (geslagenSteen > 16 && geslagenSteen < 24) {
+            magnetControl.goUpReset(geslagenSteen - 16);
+            robotArm.moveRobot(0, 80);
+          }
+          else {
+            robotArm.moveRobot(gotoX, gotoY);
+            delay(300);
+          }
+          break;
+        case 'a' :
+          //Serial.println("enable magnet");
+          magnetControl.enMagnet();
+          break;
+        case 'u' :
+          //Serial.println("disable magnet");
+          magnetControl.disMagnet();
+          break;
+        case 'p' :
+          //Serial.println("pick stone up");
+          magnetControl.goUp();
+          break;
+        case 'd' :
+          //Serial.println("drop the stone");
+          magnetControl.goDown();
+          break;
+        case 'r' :
+          //Serial.println("move to origin");
+          robotArm.resetRobot();
+          (geslagenSteen < 8) ? magnetControl.goUpReset(geslagenSteen) : magnetControl.goUpReset(8);
+          //Serial.println("at origin");
+          break;
+        case 'g':
+          kingNumber ++;
+          (kingNumber == 1) ? robotArm.moveRobot(0, 80) : robotArm.moveRobot(0, 120);
+        }
       case 'b' :
         //Serial.println("printing board layout");
         checkBoard.checkB();
@@ -63,7 +83,7 @@ void loop() {
         break;
     }
   } else {
-    if(checkBoard.changedBoard()){
+    if (checkBoard.changedBoard()) {
       checkBoard.checkB();
       checkBoard.printB();
       Serial.flush();

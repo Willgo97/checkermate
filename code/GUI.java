@@ -356,7 +356,18 @@ public class GUI extends JFrame {
 				Dambord.bord.setKlaarVoorVerzending(true);
 			}
 		});
-		maakButtonLayout(endTurn, 862, 316, 89);
+		
+		JButton refreshBoard = new JButton("ververs bord");
+		refreshBoard.addMouseListener(new MouseAdapter(){
+			@Override
+			public void mouseReleased(MouseEvent arg0){
+				Dambord.bord.testFysiekBord();
+				updatePanel();
+			}
+		});
+		
+		maakButtonLayout(endTurn, 920, 316, 100);
+		maakButtonLayout(refreshBoard, 810, 316, 100);
 		
 		//buttons to move
 		JButton schuifLinksboven = new JButton("Linksboven");

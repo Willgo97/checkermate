@@ -12,12 +12,14 @@ class MagnetControl{
         MagnetControl(int init);
         void goUp();
         void goDown();
+        void goUpReset(int hitStonesCount);
         
         void enMagnet();
         void disMagnet();        
         
     private:
         int init;
+        int hitStonesCount;
 };
 
 #endif

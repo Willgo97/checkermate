@@ -26,7 +26,7 @@ public class AI {
 		int [][] tempField = Dambord.bord.getBordArray(); // get the current field layout.
 		currentField = cloneArray(tempField); 	 // copy the field into a new array so we can manipulate without manipulating the live playing field.
 		
-		if(takePiece(currentField)){ 	// if it's possible to take a piece.
+		if(takePiece(currentField)){
 			newField = possibleOutComes.get(0);
 			Dambord.bord.setBord(newField);
 		}else{							// if it's not possible to take a piece.

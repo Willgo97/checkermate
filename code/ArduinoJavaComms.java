@@ -120,12 +120,28 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	send("d");
     	send("a");
     	send("p");
-    	send("p");
     	send(10,10);
-    	send("d");
     	send("u");
     	send("p");
     	//send("r");
+    }
+    public void robotGetDam(int oldX, int oldY, int newX, int newY){
+    	System.out.println("Trying to get a king...");
+    	send(oldX,oldY);
+    	send("d");
+    	send("a");
+    	send("p");
+    	send(10,10);
+    	send("u");
+    	send("p");
+    	send("g");
+    	send("d");
+    	send("a");
+    	send(newX, newY);  
+    	send("d");
+    	send("u");
+    	send("p");
+    	send("r");    	
     }
 
     //Method to send codes to the Arduino so that the robot can capture a piece.
