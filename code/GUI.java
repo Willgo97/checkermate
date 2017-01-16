@@ -34,6 +34,7 @@ public class GUI extends JFrame {
 	private JTextField aanDeBeurtTekst;
 	private JLabel scoreLabel;
 	private boolean gameFinished = false;
+	private boolean testField = false;
 	
 	 //creates the graphical user interface.
 	public GUI() {
@@ -350,18 +351,25 @@ public class GUI extends JFrame {
 		endTurn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
-				Dambord.bord.testFysiekBord();
+				testField = false;
+				Dambord.bord.testFysiekBord(false);
 				Dambord.bord.beurtVoorbij();
 				updatePanel();
 				Dambord.bord.setKlaarVoorVerzending(true);
 			}
 		});
 		
-		JButton refreshBoard = new JButton("ververs bord");
+		JButton refreshBoard = new JButton("Check Stenen");
 		refreshBoard.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseReleased(MouseEvent arg0){
-				Dambord.bord.testFysiekBord();
+				Dambord.bord.testFysiekBord(true);
+				testField = !testField;
+				if(testField){
+					refreshBoard.setText("show huidig Board");
+				}else{
+					refreshBoard.setText("Check Stenen");
+				}
 				updatePanel();
 			}
 		});
@@ -465,7 +473,7 @@ public class GUI extends JFrame {
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] != null){
-					int kleur = Dambord.bord.getSoortSteen(i, j);
+					int kleur = Dambord.bord.getSoortSteen(i, j,testField);
 					switch(kleur){
 						case 0: stenen[i][j].setIcon(null);
 								break;
@@ -498,7 +506,7 @@ public class GUI extends JFrame {
 		for(int i = 0; i <= 9; i++){
 			for(int j = 0; j <= 9; j++){
 				if(stenen[i][j] == label){
-					int kleur = Dambord.bord.getSoortSteen(i, j);
+					int kleur = Dambord.bord.getSoortSteen(i, j,testField);
 					switch(kleur){
 						case 0: stenen[i][j].setIcon(null);
 								break;

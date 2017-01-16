@@ -121,17 +121,25 @@ void MagnetControl::goUp(){
         stepsLeft--;
         delayMicroseconds(800);
       }
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
    // delay(2000);
 }
 
 void MagnetControl::goUpReset(int hitStonesCount){
-    stepsLeft = 1024 + 512 * (hitStonesCount);
+    stepsLeft = 1024 + 500 * (hitStonesCount);
     Direction = false;
     while (stepsLeft > 0 && Direction == false) {
         stepper(1);
         stepsLeft--;
         delayMicroseconds(800);
       }
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
 }
 
 void MagnetControl::goDown(){
@@ -141,6 +149,10 @@ void MagnetControl::goDown(){
       delayMicroseconds(700);
     }
     digitalWrite(magnet, LOW);
+        digitalWrite(magnetMotorPin1, LOW);
+        digitalWrite(magnetMotorPin2, LOW);
+        digitalWrite(magnetMotorPin3, LOW);
+        digitalWrite(magnetMotorPin4, LOW);
     //delay(2000);
 }
 

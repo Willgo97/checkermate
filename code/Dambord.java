@@ -26,7 +26,18 @@ public class Dambord{
 			{0,0,0,0,0,0,0,0,0,0},
 			{0,0,0,0,0,0,0,0,0,0}};
 	
-
+	private int[][] testStenen = 
+		   {{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0},
+			{0,0,0,0,0,0,0,0,0,0}};
+	
 	private int[] geselecteerd = {9,0};
 	
 	private static final int LEEG = 0;
@@ -125,12 +136,21 @@ public class Dambord{
 	}
 	
 	//testing method for the ArduinoJavaComms.arduino to send data of the physical checkers board.
-	public void testFysiekBord(){
-		fysiekStenen = ArduinoJavaComms.arduino.getFysiekDambord();
-
+	public void testFysiekBord(boolean test){
+		
+		fysiekStenen= ArduinoJavaComms.arduino.getFysiekDambord();
+		
+		/*int[][] tempField = ArduinoJavaComms.arduino.getFysiekDambord();
+		
+		for(int i=0;i<10;i++){
+			for(int j=0;j<10;j++){
+				fysiekStenen[i][j] = tempField[i][j];
+			}
+		}*/
 		int movedPiece = 0; // a piece that was moved by the player this turn, either a normal piece or a dam
 		int newX=0, newY=0, oldX=0, oldY=0;
 		int oldstones =0, newstones=0;
+		
 		for(int row = 0; row<10; row++){ // this loop is the find out which piece was moved by the player
 			for(int column = 0; column<10; column++){
 				
@@ -143,6 +163,7 @@ public class Dambord{
 							movedPiece = oldPiece;						// save which piece was moved, either a normal piece or a dam
 							oldX = row;
 							oldY = column;
+							System.out.println("oldx: "+oldX+"oldY: "+oldY);
 						}
 						
 					}
@@ -159,10 +180,12 @@ public class Dambord{
 					if(oldPiece > 0){ 							// if there also was a piece there last turn
 						fysiekStenen[row][column]=oldPiece; 	// that piece should then still be the same piece
 					}
-					if(oldPiece == 0){							// if there was no piece last turn,
-						fysiekStenen[row][column] = movedPiece; // that piece was moved by the player who's turn it was.
+					else{							// if there was no piece last turn,
+						//if(!test)
+						//fysiekStenen[row][column] = movedPiece; // that piece was moved by the player who's turn it was.
 						newX = row;
 						newY = column;
+						System.out.println("newX: "+newX+"newY: "+newY);
 					}
 				}
 				if(oldPiece>0){
@@ -173,23 +196,38 @@ public class Dambord{
 				}
 			}
 		}
-		stenen = fysiekStenen;
-		String richting="";
-		if(newX>oldX&&newY>oldY){
-			richting = "rechtsonder";
-		}else if(newX<oldX && newY<oldY){
-			richting = "linksboven";
-		}else if(newX<oldX && newY>oldY){
-			richting = "rechtsboven";
+		if(!test){
+			stenen = fysiekStenen;
+			stenen[newX][newY] = movedPiece;
+			String richting="";
+			if(newX>oldX&&newY>oldY){
+				richting = "rechtsonder";
+			}else if(newX<oldX && newY<oldY){
+				richting = "linksboven";
+			}else if(newX<oldX && newY>oldY){
+				richting = "rechtsboven";
+			}else{
+				richting = "linksonder";
+			}
+			if(newstones<oldstones){
+				laatsteZet = ""+oldX+""+oldY+"sla"+richting;
+			}else{
+				laatsteZet = ""+oldX+""+oldY+"schuif"+richting;
+			}
+			System.out.println(laatsteZet);
+			System.out.println("newX: "+newX+" newY: "+newY);
 		}else{
-			richting = "linksonder";
+			//testStenen = fysiekStenen;
+			
+			for(int i=0;i<10;i++){
+				for(int j=0;j<10;j++){
+					testStenen[i][j] = fysiekStenen[i][j];
+				}
+			}
+			
+			testStenen[newX][newY] = movedPiece;
+			
 		}
-		if(newstones<oldstones){
-			laatsteZet = ""+oldX+""+oldY+"sla"+richting;
-		}else{
-			laatsteZet = ""+oldX+""+oldY+"schuif"+richting;
-		}
-		System.out.println(laatsteZet);
 	}
 	
 	
@@ -232,7 +270,10 @@ public class Dambord{
 	}
 	
 	//Returns the kind of piece that is currently on (x,y)
-	public int getSoortSteen(int x, int y){
+	public int getSoortSteen(int x, int y, boolean b){
+		if(b){
+			return testStenen[x][y];
+		}
 		return stenen[x][y];
 	}
 	

@@ -45,7 +45,7 @@ void loop() {
             magnetControl.goUpReset(geslagenSteen);
             robotArm.moveRobot(0, 0);
             magnetControl.disMagnet();            
-            robotArm.moveRobot(0, 80);
+            robotArm.moveRobot(0, 50);
             magnetControl.goDown();
             geslagenSteen = 0;
             magnetControl.goUpReset(geslagenSteen);
