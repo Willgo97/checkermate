@@ -125,9 +125,13 @@ void MagnetControl::goUp(){
 }
 
 void MagnetControl::goUpReset(int hitStonesCount){
-    for (int i = 0; i < hitStonesCount; i++){
-        goUp();
-    }
+    stepsLeft = 1024 + 512 * (hitStonesCount);
+    Direction = false;
+    while (stepsLeft > 0 && Direction == false) {
+        stepper(1);
+        stepsLeft--;
+        delayMicroseconds(800);
+      }
 }
 
 void MagnetControl::goDown(){

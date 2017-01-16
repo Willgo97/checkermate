@@ -144,9 +144,7 @@ public class App {
 					message.dispose();
 				}
 	    	}
-	    	if(response == 0){
-	    		Dambord.bord.setAgainstAi(true);
-	    	}
+	    	
 	    	if(response == 0 || connected){
 	    		if(server.getOpponentColor() == 0 && client.getOpponentColor() == 0){
 	    			String[] options2 = new String[] {"Wit", "Zwart"};
@@ -192,6 +190,10 @@ public class App {
 		    	    if(response == 0 && decision == 1){
 		    	    	Dambord.bord.setSpelerKleur(1);
 		    	    }
+		    	    if(response == 0){
+			    		Dambord.bord.setAgainstAi(true);
+			    		GUI.gui.updatePanel();
+			    	}
 		    	    
 	    		}
 	    		
@@ -223,16 +225,22 @@ public class App {
 						    options3[1]);
 						if(response3 == 0){
 							//resets the GUI, board, and all Threads.
+							ArduinoJavaComms.arduino.send("y");
+							ArduinoJavaComms.arduino.closeArduino();
 							GUI.gui.setVisible(false);
 							GUI.gui.dispose();
 							Dambord.bord = new Dambord();
 							GUI.gui = new GUI();
 							startProgram();
+							
 						}
 						if(response3 == 1){
 							System.exit(0);
 						}
 					}
+					
+					
+					
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {

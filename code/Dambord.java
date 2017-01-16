@@ -298,12 +298,9 @@ public class Dambord{
 						stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 						stenen[geselecteerd[0]-1][geselecteerd[1]-1] = temp;
 						//If a piece moved to the side of the opponent, it becomes a king.
-						if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
+						if(geselecteerd[0]-1== 0 && temp != WITTEDAM && temp != ZWARTEDAM){
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] += 2;
-						}
-	
-						if (geselecteerd[0]-1 == 0 && temp == WITTEDAM || temp == ZWARTEDAM){
-							ArduinoJavaComms.arduino.robotGetDam(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
+							ArduinoJavaComms.arduino.robotGetDam(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1, aanDeBeurt);
 						}
 						else {
 							ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]-1);
@@ -327,10 +324,12 @@ public class Dambord{
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]-1][geselecteerd[1]+1] = temp;
 					//If a piece moved to the side of the opponent, it becomes a king.
-					if(geselecteerd[0]-1 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
+					if( geselecteerd[0]-1== 0 &&temp != WITTEDAM && temp != ZWARTEDAM){
 						stenen[geselecteerd[0]-1][geselecteerd[1]+1] += 2;
+						ArduinoJavaComms.arduino.robotGetDam(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1, aanDeBeurt);
+					}else{
+						ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1);
 					}
-					ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-1, geselecteerd[1]+1);
 					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
 					klaarVoorVerzending = true;
@@ -348,7 +347,12 @@ public class Dambord{
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]-1] = temp;
-					ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1);
+					if(geselecteerd[0]+1== 9 &&temp != WITTEDAM && temp != ZWARTEDAM){
+						stenen[geselecteerd[0]+1][geselecteerd[1]-1] += 2;
+						ArduinoJavaComms.arduino.robotGetDam(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1, aanDeBeurt);
+					}else{
+						ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]-1);
+					}
 					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
 					klaarVoorVerzending = true;
@@ -366,7 +370,12 @@ public class Dambord{
 					int temp = getGeselecteerd();
 					stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 					stenen[geselecteerd[0]+1][geselecteerd[1]+1] = temp;
-					ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1);
+					if(geselecteerd[0]+1== 9 &&temp != WITTEDAM && temp != ZWARTEDAM){
+						stenen[geselecteerd[0]+1][geselecteerd[1]+1] += 2;
+						ArduinoJavaComms.arduino.robotGetDam(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1, aanDeBeurt);
+					}else{
+						ArduinoJavaComms.arduino.robotSchuift(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+1, geselecteerd[1]+1);
+					}
 					laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "schuif" + richting;
 					beurtVoorbij();
 					klaarVoorVerzending = true;
@@ -393,7 +402,7 @@ public class Dambord{
 		
 		for(int x = 0; x <= 9; x++){
 			for(int y = 0; y <= 9; y++){
-				if(stenen[x][y] == aanDeBeurt && stenen[x][y] == spelerKleur){
+				if((stenen[x][y] == aanDeBeurt || stenen[x][y] == aanDeBeurt+2)  && (stenen[x][y] == spelerKleur || stenen[x][y] == spelerKleur+2)){
 					//check left-up
 					if(x != 0 && y != 0){
 						if(stenen[x-1][y-1] == nietAanDeBeurt && x-1 != 0 && y-1 != 0){
@@ -437,20 +446,21 @@ public class Dambord{
 		if(kanSlaan()){
 			switch(richting){
 			case "linksboven": 
-				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && getGeselecteerd() == aanDeBeurt){
+				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
 					if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]-2] == LEEG){
 							int temp = getGeselecteerd();
-							if(getGeselecteerd() == WIT)
+							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
 								aantalZwarteStenen--;
-							if(getGeselecteerd() == ZWART)
+							if(getGeselecteerd() == ZWART || getGeselecteerd() == ZWARTEDAM)
 								aantalWitteStenen--;
 							stenen[geselecteerd[0]-2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;							
 							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-1, geselecteerd[1]-1);
-							if(geselecteerd[0]-2 == 0 && temp != WITTEDAM && temp != ZWARTEDAM){
+							if(geselecteerd[0]-2 == 0 && temp ==WIT ){
 								stenen[geselecteerd[0]-2][geselecteerd[1]-2] += 2;
+								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-2, geselecteerd[1]-2, aanDeBeurt);
 							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							
@@ -466,17 +476,22 @@ public class Dambord{
 				}
 				break;
 			case "rechtsboven":
-				if(geselecteerd[0] != 0 && geselecteerd[1] != 9 && getGeselecteerd() == aanDeBeurt){
+				if(geselecteerd[0] != 0 && geselecteerd[1] != 9 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
 					if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]+2] == LEEG){
-							if(getGeselecteerd() == WIT)
+							int temp = getGeselecteerd();
+							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
 								aantalZwarteStenen--;
-							if(getGeselecteerd() == ZWART)
+							if(getGeselecteerd() == ZWART || getGeselecteerd() == ZWARTEDAM)
 								aantalWitteStenen--;
 							stenen[geselecteerd[0]-2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]-1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-1, geselecteerd[1]+1);
+							if(geselecteerd[0]-2 == 0 &&  temp==WIT){
+								stenen[geselecteerd[0]-2][geselecteerd[1]+2] += 2;
+								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-2, geselecteerd[1]+2, aanDeBeurt);
+							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -490,17 +505,22 @@ public class Dambord{
 				}
 				break;
 			case "linksonder":
-				if(geselecteerd[0] != 9 && geselecteerd[1] != 0 && getGeselecteerd() == aanDeBeurt){
+				if(geselecteerd[0] != 9 && geselecteerd[1] != 0 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
 					if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]+1 != 9 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]-2] == LEEG){
-							if(getGeselecteerd() == WIT)
+							int temp = getGeselecteerd();
+							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
 								aantalZwarteStenen--;
-							if(getGeselecteerd() == ZWART)
+							if(getGeselecteerd() == ZWART || getGeselecteerd() == ZWARTEDAM)
 								aantalWitteStenen--;
 							stenen[geselecteerd[0]+2][geselecteerd[1]-2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]-1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+1, geselecteerd[1]-1);
+							if(geselecteerd[0]+2 == 9 && temp==ZWART){
+								stenen[geselecteerd[0]+2][geselecteerd[1]-2] += 2;
+								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+2, geselecteerd[1]-2, aanDeBeurt);
+							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -514,17 +534,22 @@ public class Dambord{
 				}
 				break;
 			case "rechtsonder":
-				if(geselecteerd[0] != 9 && geselecteerd[1] != 9 && getGeselecteerd() == aanDeBeurt){
+				if(geselecteerd[0] != 9 && geselecteerd[1] != 9 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
 					if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == nietAanDeBeurt && geselecteerd[0]+1 != 9 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]+2] == LEEG){
-							if(getGeselecteerd() == WIT)
+							int temp = getGeselecteerd();
+							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
 								aantalZwarteStenen--;
-							if(getGeselecteerd() == ZWART)
+							if(getGeselecteerd() == ZWART || getGeselecteerd() == ZWARTEDAM)
 								aantalWitteStenen--;
 							stenen[geselecteerd[0]+2][geselecteerd[1]+2] = getGeselecteerd();
 							stenen[geselecteerd[0]+1][geselecteerd[1]+1] = LEEG;
 							stenen[geselecteerd[0]][geselecteerd[1]] = LEEG;
 							ArduinoJavaComms.arduino.robotSlaat(getGeselecteerdeX(), getGeselecteerdeY(), geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+1, geselecteerd[1]+1);
+							if(geselecteerd[0]+2 == 9 && temp==ZWART){
+								stenen[geselecteerd[0]+2][geselecteerd[1]+2] += 2;
+								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+2, geselecteerd[1]+2, aanDeBeurt);
+							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
@@ -567,10 +592,7 @@ public class Dambord{
 	}
 	public void makeAIMove(){
 		if(aanDeBeurt!=spelerKleur && againstAi){ //If AI is enabled and its not the players turn.
-			try{Thread.sleep(1000);}
-			catch(Exception e){
-				
-			}
+			
 			ai.makeAMove(aanDeBeurt, nietAanDeBeurt);
 		}
 	}

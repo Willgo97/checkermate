@@ -119,29 +119,40 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	send(geslagenX, geslagenY);
     	send("d");
     	send("a");
-    	send("p");
+    	//send("p");
     	send(10,10);
     	send("u");
-    	send("p");
+    	//send("p");
     	//send("r");
     }
-    public void robotGetDam(int oldX, int oldY, int newX, int newY){
+    public void robotSlaStuk(int x, int y){
+    	System.out.println("removing piece");
+    	send(x, y);
+    	send("d");
+    	send("a");
+    	send(10,10);
+    	send("u");
+    	
+    }
+    public void robotGetDam(int oldX, int oldY, int newX, int newY, int color){
     	System.out.println("Trying to get a king...");
     	send(oldX,oldY);
     	send("d");
     	send("a");
-    	send("p");
     	send(10,10);
     	send("u");
-    	send("p");
-    	send("g");
+    	if(color == 2){
+    		send("w");
+    	}else{
+    		send("z");
+    	}
     	send("d");
     	send("a");
+    	send("p");
     	send(newX, newY);  
     	send("d");
     	send("u");
-    	send("p");
-    	send("r");    	
+    	send("p");    	
     }
 
     //Method to send codes to the Arduino so that the robot can capture a piece.
@@ -155,7 +166,7 @@ public class ArduinoJavaComms implements SerialPortEventListener {
     	send("d");
     	send("u");
     	send("p");
-    	send("r");    	
+    	//send("r");    	
     }
     
     public int naarCoördinaten(int dambordpositie, String axis){
@@ -244,5 +255,9 @@ public class ArduinoJavaComms implements SerialPortEventListener {
 			}
 		}
 		this.fysiekDambord = updatedBord;	
+	}
+	
+	public void closeArduino(){
+		port.close();
 	}
 }
