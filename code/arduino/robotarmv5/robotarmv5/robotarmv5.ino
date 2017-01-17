@@ -1,3 +1,11 @@
+// BELANGRIJK!!
+// ga naar: C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino
+// open de file HardwareSerial.h
+// pas de volgende regels aan zodat ze 512 zijn
+// #define SERIAL_TX_BUFFER_SIZE 512
+// #define SERIAL_RX_BUFFER_SIZE 512
+// dit zorgt ervoor dat de arduino de commands die die binnenkrijgt kan opslaan.
+
 #include <CheckBoard.h>
 #include <MagnetControl.h>
 #include <RobotArm.h>
@@ -41,7 +49,7 @@ void loop() {
         if (gotoX == 0 && gotoY == 0) {
           geslagenSteen++;
           
-          if (geslagenSteen == 4) {
+          if (geslagenSteen == 5) {
             magnetControl.goUpReset(geslagenSteen);
             robotArm.moveRobot(0, 0);
             magnetControl.disMagnet();            

@@ -39,6 +39,7 @@ public class Dambord{
 			{0,0,0,0,0,0,0,0,0,0}};
 	
 	private int[] geselecteerd = {9,0};
+	private int[] geslagenSteen = {0,0};
 	
 	private static final int LEEG = 0;
 	private static final int ZWART = 1;
@@ -198,7 +199,12 @@ public class Dambord{
 		}
 		if(!test){
 			stenen = fysiekStenen;
-			stenen[newX][newY] = movedPiece;
+			if((newX == 9 && aanDeBeurt == ZWART) || (newX == 0 && aanDeBeurt == WIT)){
+				stenen[newX][newY] = movedPiece+2;
+				ArduinoJavaComms.arduino.robotGetDam(newX, newY, newX, newY, aanDeBeurt);
+			}else{
+				stenen[newX][newY] = movedPiece;
+			}
 			String richting="";
 			if(newX>oldX&&newY>oldY){
 				richting = "rechtsonder";
@@ -214,6 +220,23 @@ public class Dambord{
 			}else{
 				laatsteZet = ""+oldX+""+oldY+"schuif"+richting;
 			}
+			geslagenSteen[0] = newX;
+			geslagenSteen[1] = newY;
+			if(!kanSlaan()){
+				beurtVoorbij();
+				int witte =0;
+				int zwarte =0;
+				for(int i=0;i<10;i++){
+					for(int j=0;j<10;j++){
+						if(stenen[i][j] == WIT||stenen[i][j] == WITTEDAM)
+							witte++;
+						if(stenen[i][j] == ZWART||stenen[i][j] == ZWARTEDAM)
+							zwarte++;
+					}
+				}
+				aantalWitteStenen = witte;
+				aantalZwarteStenen = zwarte;
+			}
 			System.out.println(laatsteZet);
 			System.out.println("newX: "+newX+" newY: "+newY);
 		}else{
@@ -224,8 +247,11 @@ public class Dambord{
 					testStenen[i][j] = fysiekStenen[i][j];
 				}
 			}
-			
-			testStenen[newX][newY] = movedPiece;
+			if((newX == 9 && aanDeBeurt == ZWART) || (newX == 0 && aanDeBeurt == WIT)){
+				testStenen[newX][newY] = movedPiece+2;
+			}else{
+				testStenen[newX][newY] = movedPiece;
+			}
 			
 		}
 	}
@@ -440,39 +466,41 @@ public class Dambord{
 	
 	//If you are able to capture, you must capture.
 	public boolean kanSlaan(){
-		
+		System.out.println("slasteen: "+geslagenSteen[0]+","+geslagenSteen[1]);
 		for(int x = 0; x <= 9; x++){
 			for(int y = 0; y <= 9; y++){
-				if((stenen[x][y] == aanDeBeurt || stenen[x][y] == aanDeBeurt+2)  && (stenen[x][y] == spelerKleur || stenen[x][y] == spelerKleur+2)){
-					//check left-up
-					if(x != 0 && y != 0){
-						if(stenen[x-1][y-1] == nietAanDeBeurt && x-1 != 0 && y-1 != 0){
-							if(stenen[x-2][y-2] == LEEG){
-								return true;
+				if((geslagenSteen[0]==x && geslagenSteen[1] == y) || (geslagenSteen[0]==0 && geslagenSteen[1] == 0)){
+					if((stenen[x][y] == aanDeBeurt || stenen[x][y] == aanDeBeurt+2)  && (stenen[x][y] == spelerKleur || stenen[x][y] == spelerKleur+2)){
+						//check left-up
+						if(x != 0 && y != 0){
+							if((stenen[x-1][y-1] == nietAanDeBeurt|| stenen[x-1][y-1] == nietAanDeBeurt+2) && x-1 != 0 && y-1 != 0){
+								if(stenen[x-2][y-2] == LEEG){
+									return true;
+								}
 							}
 						}
-					}
-					//check right-up
-					if(x != 0 && y != 9){
-						if(stenen[x-1][y+1] == nietAanDeBeurt && x-1 != 0 && y+1 != 9){
-							if(stenen[x-2][y+2] == LEEG){
-								return true;
+						//check right-up
+						if(x != 0 && y != 9){
+							if((stenen[x-1][y+1] == nietAanDeBeurt|| stenen[x-1][y+1] == nietAanDeBeurt+2)&& x-1 != 0 && y+1 != 9){
+								if(stenen[x-2][y+2] == LEEG){
+									return true;
+								}
 							}
 						}
-					}
-					//check left-down
-					if(x != 9 && y != 0){
-						if(stenen[x+1][y-1] == nietAanDeBeurt && x+1 != 9 && y-1 != 0){
-							if(stenen[x+2][y-2] == LEEG){
-								return true;
+						//check left-down
+						if(x != 9 && y != 0){
+							if((stenen[x+1][y-1] == nietAanDeBeurt ||stenen[x+1][y-1] == nietAanDeBeurt+2) && x+1 != 9 && y-1 != 0){
+								if(stenen[x+2][y-2] == LEEG){
+									return true;
+								}
 							}
 						}
-					}
-					//check right-down
-					if(x != 9 && y != 9){
-						if(stenen[x+1][y+1] == nietAanDeBeurt && x+1 != 9 && y+1 != 9){
-							if(stenen[x+2][y+2] == LEEG){
-								return true;
+						//check right-down
+						if(x != 9 && y != 9){
+							if((stenen[x+1][y+1] == nietAanDeBeurt || stenen[x+1][y+1] == nietAanDeBeurt+2) && x+1 != 9 && y+1 != 9){
+								if(stenen[x+2][y+2] == LEEG){
+									return true;
+								}
 							}
 						}
 					}
@@ -488,7 +516,7 @@ public class Dambord{
 			switch(richting){
 			case "linksboven": 
 				if(geselecteerd[0] != 0 && geselecteerd[1] != 0 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
-					if(stenen[geselecteerd[0]-1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
+					if((stenen[geselecteerd[0]-1][geselecteerd[1]-1] == nietAanDeBeurt ||stenen[geselecteerd[0]-1][geselecteerd[1]-1] == nietAanDeBeurt+2) && geselecteerd[0]-1 != 0 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]-2] == LEEG){
 							int temp = getGeselecteerd();
 							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
@@ -504,7 +532,8 @@ public class Dambord{
 								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]-2, geselecteerd[1]-2, geselecteerd[0]-2, geselecteerd[1]-2, aanDeBeurt);
 							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
-							
+							geslagenSteen[0] = geselecteerd[0]-2;
+							geslagenSteen[1] = geselecteerd[1]-2;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
 								beurtVoorbij();
@@ -518,7 +547,7 @@ public class Dambord{
 				break;
 			case "rechtsboven":
 				if(geselecteerd[0] != 0 && geselecteerd[1] != 9 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
-					if(stenen[geselecteerd[0]-1][geselecteerd[1]+1] == nietAanDeBeurt && geselecteerd[0]-1 != 0 && geselecteerd[1]+1 != 9){
+					if((stenen[geselecteerd[0]-1][geselecteerd[1]+1] == nietAanDeBeurt || stenen[geselecteerd[0]-1][geselecteerd[1]+1] == nietAanDeBeurt+2) && geselecteerd[0]-1 != 0 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]-2][geselecteerd[1]+2] == LEEG){
 							int temp = getGeselecteerd();
 							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
@@ -534,6 +563,8 @@ public class Dambord{
 								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]-2, geselecteerd[1]+2, geselecteerd[0]-2, geselecteerd[1]+2, aanDeBeurt);
 							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							geslagenSteen[0] = geselecteerd[0]-2;
+							geslagenSteen[1] = geselecteerd[1]+2;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
 								beurtVoorbij();
@@ -547,7 +578,7 @@ public class Dambord{
 				break;
 			case "linksonder":
 				if(geselecteerd[0] != 9 && geselecteerd[1] != 0 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
-					if(stenen[geselecteerd[0]+1][geselecteerd[1]-1] == nietAanDeBeurt && geselecteerd[0]+1 != 9 && geselecteerd[1]-1 != 0){
+					if((stenen[geselecteerd[0]+1][geselecteerd[1]-1] == nietAanDeBeurt || stenen[geselecteerd[0]+1][geselecteerd[1]-1] == nietAanDeBeurt+2) && geselecteerd[0]+1 != 9 && geselecteerd[1]-1 != 0){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]-2] == LEEG){
 							int temp = getGeselecteerd();
 							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
@@ -563,6 +594,8 @@ public class Dambord{
 								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]+2, geselecteerd[1]-2, geselecteerd[0]+2, geselecteerd[1]-2, aanDeBeurt);
 							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							geslagenSteen[0] = geselecteerd[0]+2;
+							geslagenSteen[1] = geselecteerd[1]-2;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
 								beurtVoorbij();
@@ -576,7 +609,7 @@ public class Dambord{
 				break;
 			case "rechtsonder":
 				if(geselecteerd[0] != 9 && geselecteerd[1] != 9 && (getGeselecteerd() == aanDeBeurt || getGeselecteerd() == aanDeBeurt+2)){
-					if(stenen[geselecteerd[0]+1][geselecteerd[1]+1] == nietAanDeBeurt && geselecteerd[0]+1 != 9 && geselecteerd[1]+1 != 9){
+					if((stenen[geselecteerd[0]+1][geselecteerd[1]+1] == nietAanDeBeurt || stenen[geselecteerd[0]+1][geselecteerd[1]+1] == nietAanDeBeurt +2) && geselecteerd[0]+1 != 9 && geselecteerd[1]+1 != 9){
 						if(stenen[geselecteerd[0]+2][geselecteerd[1]+2] == LEEG){
 							int temp = getGeselecteerd();
 							if(getGeselecteerd() == WIT || getGeselecteerd() == WITTEDAM)
@@ -592,6 +625,8 @@ public class Dambord{
 								ArduinoJavaComms.arduino.robotGetDam(geselecteerd[0]+2, geselecteerd[1]+2, geselecteerd[0]+2, geselecteerd[1]+2, aanDeBeurt);
 							}
 							laatsteZet = "" + getGeselecteerdeX() + getGeselecteerdeY() + "sla" + richting;
+							geslagenSteen[0] = geselecteerd[0]+2;
+							geslagenSteen[1] = geselecteerd[1]+2;
 							klaarVoorVerzending = true;
 							if(!kanSlaan()){
 								beurtVoorbij();
@@ -626,6 +661,8 @@ public class Dambord{
 	
 	//Method to pass the turn to the opponent.
 	public void beurtVoorbij(){
+			geslagenSteen[0] =0;
+			geslagenSteen[1] =0;
 			int temp = aanDeBeurt;
 			aanDeBeurt = nietAanDeBeurt;
 			nietAanDeBeurt = temp;
@@ -708,11 +745,28 @@ public class Dambord{
 		}
 	}
 	
-	public void endAITurn(String s){
+	public void endAITurn(String s,boolean dam, int[] damC){
+		if(dam){
+			ArduinoJavaComms.arduino.robotGetDam(damC[0], damC[1], damC[0], damC[1], aanDeBeurt);
+		}
+			
+		int witte =0;
+		int zwarte =0;
+		for(int i=0;i<10;i++){
+			for(int j=0;j<10;j++){
+				if(stenen[i][j] == WIT||stenen[i][j] == WITTEDAM)
+					witte++;
+				if(stenen[i][j] == ZWART||stenen[i][j] == ZWARTEDAM)
+					zwarte++;
+			}
+		}
+		aantalWitteStenen = witte;
+		aantalZwarteStenen = zwarte;
+		
 		beurtVoorbij();
 		aiDone = true;
 		aiMove = s;
-		GUI.gui.updatePanel();
+		GUI.gui.updatePanel();		
 	}
 	
 	public void setAgainstAi(boolean b) {

@@ -353,7 +353,7 @@ public class GUI extends JFrame {
 			public void mouseReleased(MouseEvent arg0) {
 				testField = false;
 				Dambord.bord.testFysiekBord(false);
-				Dambord.bord.beurtVoorbij();
+				//Dambord.bord.beurtVoorbij();
 				updatePanel();
 				Dambord.bord.setKlaarVoorVerzending(true);
 			}

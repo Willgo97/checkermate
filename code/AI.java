@@ -16,10 +16,12 @@ public class AI {
 	private int opponent;
 	private int[][] newField;
 	private int difficulty = 2;
-	
+	private boolean dam = false;
+	private int[] damC ={0,0};
 	
 	// METHODS
 	public void makeAMove(int c, int o){
+		dam = false;
 		System.out.println("The AI is making a move..");
 		possibleOutComes.clear(); // clear the list of possible moves so there are no old moves stored.
 		color = c;		// this is for which color the AI is taking a turn.
@@ -52,7 +54,7 @@ public class AI {
 			}
 		}
 		
-		Dambord.bord.endAITurn(createMoveString()); // end the AI's turn
+		Dambord.bord.endAITurn(createMoveString(),dam,damC); // end the AI's turn
 	}// end of makeAMove method
 	
 	public String createMoveString(){
@@ -102,11 +104,9 @@ public class AI {
 		if(hit){
 			result = "Steen " + oldPos[0] + " sloeg " + removedPos[0] + " en belandde op " + newPos[0] +".\n";
 			ArduinoJavaComms.arduino.robotSlaat(oldPos[1], oldPos[2], newPos[1], newPos[2], removedPos[1], removedPos[2]);
-			Dambord.bord.aiSloeg(opponent);
 			if(hits>1){
 				for(int i=1;i<hits;i++){
 					ArduinoJavaComms.arduino.robotSlaStuk(hitPos[i][0], hitPos[i][1]);
-					Dambord.bord.aiSloeg(opponent);
 					System.out.println("Robot slaat x: "+hitPos[i][0]+"y: "+hitPos[i][1]);
 				}
 			}
@@ -115,7 +115,12 @@ public class AI {
 			ArduinoJavaComms.arduino.robotSchuift(oldPos[1], oldPos[2], newPos[1], newPos[2]);
 			result = "Steen " + oldPos[0] + " schoof naar " + newPos[0] + ".\n";
 		}
-		
+		System.out.println(newPos[1]);
+		if((newPos[1] == 9 && color == ZWART) || (newPos[1] == 0 && color == WIT)){
+			dam = true;
+			damC[0] = newPos[1];
+			damC[1] = newPos[2];
+		}
 		return result;
 	}
 	
@@ -147,7 +152,11 @@ public class AI {
 							if(field[i+direction][j-1] == EMPTY){	// if it's empty we can put the piece there.
 								int[][] newField = cloneArray(field);
 								newField[i][j] = EMPTY;					// remove the piece making a move.
-								newField[i+direction][j-1] = square;	// put the piece in the new position.
+								if(i+direction == 9 || i+direction == 0){ // if its the endline
+									newField[i+direction][j-1] = square+2;	// make it a dam
+								}else{
+									newField[i+direction][j-1] = square;	// put the piece in the new position.
+								}
 								possibleOutComes.add(newField); 		// add the new field to the possible outcomes.					
 							}
 						}
@@ -155,11 +164,53 @@ public class AI {
 							if(field[i+direction][j+1] == EMPTY){ // if it's empty we can put the piece there.
 								int[][] newField = cloneArray(field);
 								newField[i][j] = EMPTY;					// remove the piece making a move.
-								newField[i+direction][j+1] = square;	// put the piece in the new position.
+								if(i+direction == 9 || i+direction == 0){ // if its the endline
+									newField[i+direction][j+1] = square+2;	// make it a dam
+								}else{
+									newField[i+direction][j+1] = square;	// put the piece in the new position.
+								}
 								possibleOutComes.add(newField); 		// add the new field to the possible outcomes.	
 							}
 						}
 					}
+				}else if(square == (color+2)){
+					if(i-1>=0){
+						if(j-1>=0){ 							// don't want out of bounds exception.
+							if(field[i-1][j-1] == EMPTY){	// if it's empty we can put the piece there.
+								int[][] newField = cloneArray(field);
+								newField[i][j] = EMPTY;					// remove the piece making a move.
+								newField[i-1][j-1] = square;	// put the piece in the new position.
+								possibleOutComes.add(newField); 		// add the new field to the possible outcomes.					
+							}
+						}
+						if(j+1<=9){								// don't want out of bounds exception.
+							if(field[i-1][j+1] == EMPTY){ // if it's empty we can put the piece there.
+								int[][] newField = cloneArray(field);
+								newField[i][j] = EMPTY;					// remove the piece making a move.
+								newField[i-1][j+1] = square;	// put the piece in the new position.
+								possibleOutComes.add(newField); 		// add the new field to the possible outcomes.	
+							}
+						}
+					}
+					if(i+1<=9){
+						if(j-1>=0){ 							// don't want out of bounds exception.
+							if(field[i+1][j-1] == EMPTY){	// if it's empty we can put the piece there.
+								int[][] newField = cloneArray(field);
+								newField[i][j] = EMPTY;					// remove the piece making a move.
+								newField[i+1][j-1] = square;	// put the piece in the new position.
+								possibleOutComes.add(newField); 		// add the new field to the possible outcomes.					
+							}
+						}
+						if(j+1<=9){								// don't want out of bounds exception.
+							if(field[i+1][j+1] == EMPTY){ // if it's empty we can put the piece there.
+								int[][] newField = cloneArray(field);
+								newField[i][j] = EMPTY;					// remove the piece making a move.
+								newField[i+1][j+1] = square;	// put the piece in the new position.
+								possibleOutComes.add(newField); 		// add the new field to the possible outcomes.	
+							}
+						}
+					}
+					
 				}
 			}
 		}
@@ -190,7 +241,11 @@ public class AI {
 						int[][] newField = cloneArray(field);
 						newField[i][j] = EMPTY;			// remove the piece making a move.
 						newField[i-1][j-1] = EMPTY;		// remove the piece getting taken.
-						newField[i-2][j-2] = square;	// place your piece behind the taken piece.
+						if(i-2==0 && square == WIT){ // if its the endline
+							newField[i-2][j-2] = square+2;
+						}else{
+							newField[i-2][j-2] = square;	// place your piece behind the taken piece.
+						}
 						if(hit(i-2,j-2,newField)){
 							
 						}else{
@@ -206,7 +261,11 @@ public class AI {
 						int[][] newField = cloneArray(field);
 						newField[i][j] = EMPTY;			// remove the piece making a move.
 						newField[i-1][j+1] = EMPTY;		// remove the piece getting taken.
-						newField[i-2][j+2] = square;	// place your piece behind the taken piece.
+						if(i-2==0 && square == WIT){ // if its the endline
+							newField[i-2][j+2] = square+2;
+						}else{
+							newField[i-2][j+2] = square;	// place your piece behind the taken piece.
+						}
 						if(hit(i-2,j+2,newField)){
 							
 						}else{
@@ -222,7 +281,11 @@ public class AI {
 						int[][] newField = cloneArray(field);
 						newField[i][j] = EMPTY;			// remove the piece making a move.
 						newField[i+1][j-1] = EMPTY;		// remove the piece getting taken.
-						newField[i+2][j-2] = square;	// place your piece behind the taken piece.
+						if(i+2==9 && square == ZWART){ // if its the endline
+							newField[i+2][j-2] = square+2;
+						}else{
+							newField[i+2][j-2] = square;	// place your piece behind the taken piece.
+						}
 						if(hit(i+2,j-2,newField)){
 							
 						}else{
@@ -238,7 +301,11 @@ public class AI {
 						int[][] newField = cloneArray(field);
 						newField[i][j] = EMPTY;			// remove the piece making a move.
 						newField[i+1][j+1] = EMPTY;		// remove the piece getting taken.
-						newField[i+2][j+2] = square;	// place your piece behind the taken piece.
+						if(i+2==9 && square == ZWART){ // if its the endline
+							newField[i+2][j+2] = square+2;
+						}else{
+							newField[i+2][j+2] = square;	// place your piece behind the taken piece.
+						}
 						if(hit(i+2,j+2,newField)){
 							
 						}else{
